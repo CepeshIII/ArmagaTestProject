@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
-using UnityEngine.Tilemaps;
 
 
 [RequireComponent(typeof(GridBounds))]
-public class IsometricGrid : MonoBehaviour
+public class IsometricGrid : Singleton<IsometricGrid>
 {
-    private struct Cell
+    public struct Cell
     {
         public Vector2Int gridPosition;
         public Vector2 centerRectPosition;
@@ -25,20 +24,17 @@ public class IsometricGrid : MonoBehaviour
     [SerializeField] private Vector2 cellSize;
     [SerializeField] private GridBounds gridBounds;
 
-    // For debugging with Tilemap
-    [SerializeField] private Tilemap tilemap;
-    [SerializeField] private TileBase TileBase;
-
     private Vector2Int indexOffset;
+    private Vector2Int gridSize;
 
     private Cell[] cells;
     private MouseClickInfo mouseClickInfo;
 
     public Vector2 CellSize { get => cellSize; set => cellSize = value; }
 
-
-    private void Awake()
+    new private void Awake()
     {
+        base.Awake();
         gridBounds = GetComponent<GridBounds>();
     }
 
@@ -84,8 +80,6 @@ public class IsometricGrid : MonoBehaviour
             // Debug output
             Debug.Log($"MousePosition: {mouseWorldPosition}, mouseRectPosition: {mouseRectPosition}");
             Debug.Log($"globalCellIndex: {cellIndex}, moved to origin cellIndex: {mouseClickInfo.cellIndex}");
-
-            tilemap.SetTile((Vector3Int)(cellIndex), TileBase);
         }
     }
 
@@ -112,6 +106,7 @@ public class IsometricGrid : MonoBehaviour
 
         cells = new Cell[innerCols * innerRows];
         indexOffset = firstCellIndex + new Vector2Int(1, -1); // skip first row and column
+        gridSize = new Vector2Int(innerCols, innerRows);
 
         // Calculate the cell center in rectangular (grid) space.
         // Store both the rectangular and isometric positions.
@@ -138,6 +133,36 @@ public class IsometricGrid : MonoBehaviour
             }
         }
     }
+
+
+    private Cell GetCellData(Vector2Int gridPosition)
+    {
+        var index = gridPosition.y * gridSize.x + gridPosition.x;
+        return cells[index];
+    }
+
+
+    public bool TryGetCellData(Vector2Int gridPosition, out Cell cellData)
+    {
+        cellData = default;
+        if (CheckIndexBounds(gridPosition))
+        {
+            cellData = GetCellData(gridPosition);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
+    public bool CheckIndexBounds(Vector2Int gridPosition)
+    {
+        return !(gridPosition.x >= gridSize.x || gridPosition.y >= gridSize.y
+               || gridPosition.x < 0 || gridPosition.y < 0);
+    }
+
 
     /// <summary>
     /// Transform a 2D position to isometric projection
@@ -178,9 +203,18 @@ public class IsometricGrid : MonoBehaviour
             Mathf.FloorToInt(deformedPosition.y / cellSize.y)
         );
 
-        cellIndex.y = -cellIndex.y; // y axis is inverted
+        // move to origin
+        var movedCellIndex = cellIndex - indexOffset;
 
-        return cellIndex;
+        movedCellIndex.y = -movedCellIndex.y; // y axis is inverted
+
+        return movedCellIndex;
+    }
+
+    
+    public Vector3Int IndexToGridPosition(Vector2Int index) 
+    {
+        return new Vector3Int(index.x, -index.y, 0) + (Vector3Int)indexOffset;
     }
 
 

@@ -9,13 +9,13 @@ public class GridBoundsInspector : Editor
 
     private const float wpSize = 0.1f;
 
-    private IsometricGrid grid;
+    private UnityEngine.Grid grid;
 
 
     private void OnEnable()
     {
         cb = (GridBounds)target;
-        grid = cb.GetComponent<IsometricGrid>();
+        grid = cb.GetComponent<UnityEngine.Grid>();
     }
 
     public override void OnInspectorGUI()
