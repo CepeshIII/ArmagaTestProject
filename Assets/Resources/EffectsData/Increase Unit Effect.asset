@@ -9,9 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff2ae867862c9ea4e8e63c103b2515c4, type: 3}
-  m_Name: WoodTower
+  m_Script: {fileID: 11500000, guid: 1382a8554ba05674ba8d839207ec18d2, type: 3}
+  m_Name: Increase Unit Effect
   m_EditorClassIdentifier: 
-  tile: {fileID: 11400000, guid: 4e36538909cbc1d4ca9d6ae8c7eb9266, type: 2}
-  entityName: WoodTower
-  entityId: 0
+  effectsId: 0
+  effectsName: Increase Unit Effect
+  area: 1
+  target: 1
+  count: 1

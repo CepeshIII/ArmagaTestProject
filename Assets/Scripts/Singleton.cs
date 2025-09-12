@@ -32,7 +32,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
             _instance = this as T;
             DontDestroyOnLoad(Instance.gameObject);
         }
-        else
+        else if(_instance != this)
         {
             Destroy(gameObject);
         }

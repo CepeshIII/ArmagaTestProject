@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 
 [RequireComponent(typeof(GridBounds))]
@@ -6,41 +7,28 @@ public class IsometricGrid : Singleton<IsometricGrid>
 {
     public struct Cell
     {
-        public Vector2Int gridPosition;
-        public Vector2 centerRectPosition;
-        public Vector2 centerIsoPosition;
+        public Vector2Int gridPosition;     // row/col
+        public Vector2 centerRectPosition;  // center in rectangular coords
+        public Vector2 centerIsoPosition;   // center in isometric coords
         public bool isOccupied;
-    }
-
-    private struct MouseClickInfo
-    {
-        public Vector2Int cellIndex;
-
-        public Vector2 rectPosition; // position in rectangular space
-        public Vector2 isoPosition; // position in isometric space
     }
 
 
     [SerializeField] private Vector2 cellSize;
     [SerializeField] private GridBounds gridBounds;
 
-    private Vector2Int indexOffset;
+    private Vector2Int gridOriginOffset;
     private Vector2Int gridSize;
 
-    private Cell[] cells;
-    private MouseClickInfo mouseClickInfo;
+    public Vector2 CellSize { get => cellSize;}
+    public Vector2Int GridSize { get => gridSize; }
 
-    public Vector2 CellSize { get => cellSize; set => cellSize = value; }
+
 
     new private void Awake()
     {
         base.Awake();
         gridBounds = GetComponent<GridBounds>();
-    }
-
-
-    private void Start()
-    {
         InitGridArray();
     }
 
@@ -48,39 +36,12 @@ public class IsometricGrid : Singleton<IsometricGrid>
     private void Update()
     {
         InitGridArray();
-        if (Input.GetMouseButtonDown(0))
-        {
-            var mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            mouseWorldPosition.z = 0f;
-
-            var mouseIsoPosition = mouseWorldPosition; // We see game in isometric space,
-                                                       // so our world position is isometric position
-
-            // Transform isometric position to rectangular position
-            var mouseRectPosition = ReverseIsoProject(mouseIsoPosition);
-
-            // Find the cell index in rectangular space
-            var cellIndex = new Vector2Int(
-                Mathf.FloorToInt(mouseRectPosition.x / cellSize.x),
-                Mathf.FloorToInt(mouseRectPosition.y / cellSize.y)
-            );
+    }
 
 
-            // Compute world center of that cell
-            var cellCenterRect = new Vector2(
-                (cellIndex.x + 0.5f) * cellSize.x,
-                (cellIndex.y + 0.5f) * cellSize.y
-            );
-
-
-            mouseClickInfo.rectPosition = mouseRectPosition;
-            mouseClickInfo.isoPosition = mouseIsoPosition;
-            mouseClickInfo.cellIndex = cellIndex - indexOffset; // move index to origin
-
-            // Debug output
-            Debug.Log($"MousePosition: {mouseWorldPosition}, mouseRectPosition: {mouseRectPosition}");
-            Debug.Log($"globalCellIndex: {cellIndex}, moved to origin cellIndex: {mouseClickInfo.cellIndex}");
-        }
+    public void BuildGrid()
+    {
+        InitGridArray();
     }
 
 
@@ -104,173 +65,133 @@ public class IsometricGrid : Singleton<IsometricGrid>
         var innerCols = Mathf.Max(0, totalCols - 2);
         var innerRows = Mathf.Max(0, totalRows - 2);
 
-        cells = new Cell[innerCols * innerRows];
-        indexOffset = firstCellIndex + new Vector2Int(1, -1); // skip first row and column
+        gridOriginOffset = firstCellIndex + new Vector2Int(1, -1); // skip first row and column
         gridSize = new Vector2Int(innerCols, innerRows);
-
-        // Calculate the cell center in rectangular (grid) space.
-        // Store both the rectangular and isometric positions.
-        // This lets us keep grid indexing simple while still being able
-        // to place objects correctly in isometric world space.
-        int index = 0;
-        for (int row = 1; row < totalRows - 1; row++) // skip first and last row
-        {
-            for (int col = 1; col < totalCols - 1; col++) // skip first and last column
-            {
-                // Calculate the cell center in rect coordinates
-                var center = new Vector2(
-                    (firstCellIndex.x + col + 0.5f) * cellSize.x,
-                    (firstCellIndex.y - row + 0.5f) * cellSize.y // minus row to go down
-                );
-
-                // Store both rect position and isometric projection
-                cells[index].centerRectPosition = center;
-                cells[index].centerIsoPosition = IsoProject(center);
-                cells[index].isOccupied = false;
-                cells[index].gridPosition = new Vector2Int(row, col);
-
-                index++;
-            }
-        }
     }
 
 
-    private Cell GetCellData(Vector2Int gridPosition)
+    public void SetCellData()
     {
-        var index = gridPosition.y * gridSize.x + gridPosition.x;
-        return cells[index];
+        throw new NotImplementedException();
     }
 
 
-    public bool TryGetCellData(Vector2Int gridPosition, out Cell cellData)
+    public bool IsInsideGridIndex(Vector2Int indexCoords)
     {
-        cellData = default;
-        if (CheckIndexBounds(gridPosition))
-        {
-            cellData = GetCellData(gridPosition);
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return !(indexCoords.x >= gridSize.x || indexCoords.y >= gridSize.y
+               || indexCoords.x < 0 || indexCoords.y < 0);
     }
 
 
-    public bool CheckIndexBounds(Vector2Int gridPosition)
-    {
-        return !(gridPosition.x >= gridSize.x || gridPosition.y >= gridSize.y
-               || gridPosition.x < 0 || gridPosition.y < 0);
-    }
-
+    #region Projection
 
     /// <summary>
-    /// Transform a 2D position to isometric projection
+    /// Projects rectangular coordinates into isometric space.
     /// </summary>
-    /// <param name="position">world position</param>
-    public static Vector3 IsoProject(Vector2 position)
+    public static Vector3 IsoProject(Vector2 rectPos)
     {
         return new Vector3(
-            (position.x - position.y),
-            (position.x + position.y) * 0.5f
+            rectPos.x - rectPos.y,
+            (rectPos.x + rectPos.y) * 0.5f
         );
     }
 
-
     /// <summary>
-    /// Transform isometric position back to 2D world position
+    /// Reverses isometric projection back to rectangular space.
     /// </summary>
-    /// <param name="position">isometric position</param>
-    public static Vector3 ReverseIsoProject(Vector2 position)
+    public static Vector2 ReverseIsoProject(Vector2 isoPos)
     {
         return new Vector2(
-            (position.x + position.y / 0.5f) * 0.5f,
-            (position.y / 0.5f - position.x) * 0.5f
+            (isoPos.x + isoPos.y / 0.5f) * 0.5f,
+            (isoPos.y / 0.5f - isoPos.x) * 0.5f
         );
     }
+
+    #endregion
+
+
+
 
     /// <summary>
-    /// Return the cell index in grid coordinates from a world position
+    /// Converts world isometric IndexCoords to grid coordinates.
     /// </summary>
-    /// <param name="worldPosition"> world position</param>
-    /// <returns></returns>
-    public Vector2Int WorldToCellIndex(Vector2 worldPosition)
+    /// <param name="isoWorldPos">World IndexCoords in isometric space.</param>
+    public Vector2Int WorldToGridPosition(Vector2 isoWorldPos)
     {
-        var deformedPosition = ReverseIsoProject(worldPosition);
-
-        var cellIndex = new Vector2Int(
-            Mathf.FloorToInt(deformedPosition.x / cellSize.x),
-            Mathf.FloorToInt(deformedPosition.y / cellSize.y)
+        var rectCoords = ReverseIsoProject(isoWorldPos);
+        return new Vector2Int(
+            Mathf.FloorToInt(rectCoords.x / cellSize.x),
+            Mathf.FloorToInt(rectCoords.y / cellSize.y)
         );
-
-        // move to origin
-        var movedCellIndex = cellIndex - indexOffset;
-
-        movedCellIndex.y = -movedCellIndex.y; // y axis is inverted
-
-        return movedCellIndex;
-    }
-
-    
-    public Vector3Int IndexToGridPosition(Vector2Int index) 
-    {
-        return new Vector3Int(index.x, -index.y, 0) + (Vector3Int)indexOffset;
     }
 
 
-    private void DrawCellRectProjection(Vector2 position, Vector2 cellSize, Color color)
+    /// <summary>
+    /// Converts world isometric IndexCoords to grid index coordinates.
+    /// </summary>
+    /// <param name="isoWorldPos">World IndexCoords in isometric space.</param>
+    public Vector2Int WorldToIndexCoords(Vector2 isoWorldPos)
     {
-        var halfCellSize = (cellSize) / 2f;
-
-        // Draw Normal Projection
-        var leftUpCorner = (position + new Vector2(-halfCellSize.x, halfCellSize.y));
-        var rightDownCorner = (position + new Vector2(halfCellSize.x, -halfCellSize.y));
-        var leftDownCorner = (position + new Vector2(-halfCellSize.x, -halfCellSize.y));
-        var rightUpCorner = (position + new Vector2(halfCellSize.x, halfCellSize.y));
-
-        DrawRect(leftUpCorner, rightUpCorner, rightDownCorner, leftDownCorner, color);
+        var gridPos = WorldToGridPosition(isoWorldPos);
+        return GridPositionToIndexCoords(gridPos);
     }
 
 
-    private static void DrawCellIsometricProjection(Vector2 position, Vector2 cellSize, Color color)
+    /// <summary>
+    /// Converts grid IndexCoords to array index.
+    /// </summary>
+    public int IndexCoordsToArrayIndex(Vector2Int indexCoords)
     {
-        var halfCellSize = (cellSize) / 2f;
-
-        // Draw Isometric Projection
-        var leftUpCorner = IsoProject(position + new Vector2(-halfCellSize.x, halfCellSize.y));
-        var rightUpCorner = IsoProject(position + new Vector2(halfCellSize.x, halfCellSize.y));
-        var rightDownCorner = IsoProject(position + new Vector2(halfCellSize.x, -halfCellSize.y));
-        var leftDownCorner = IsoProject(position + new Vector2(-halfCellSize.x, -halfCellSize.y));
-
-        DrawRect(leftUpCorner, rightUpCorner, rightDownCorner, leftDownCorner, color);
+        return indexCoords.y * gridSize.x + indexCoords.x;
     }
 
 
-    private static void DrawRect(Vector3 a, Vector3 b, Vector3 c, Vector3 d, Color color)
+    /// <summary>
+    /// Converts grid IndexCoords to index coordinates (not array index).
+    /// </summary>
+    public Vector2Int GridPositionToIndexCoords(Vector2Int gridPos)
     {
-        Gizmos.color = color;
-        Gizmos.DrawLine(a, b);
-        Gizmos.DrawLine(b, c);
-        Gizmos.DrawLine(c, d);
-        Gizmos.DrawLine(d, a);
+        var localCoords = gridPos - gridOriginOffset;
+        localCoords.y = -localCoords.y;
+        return localCoords;
     }
 
 
-    private void OnDrawGizmos()
+    /// <summary>
+    /// Converts index coordinates back to grid IndexCoords.
+    /// </summary>
+    public Vector2Int IndexCoordsToGridPosition(Vector2Int indexCoords)
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(mouseClickInfo.rectPosition, 0.1f);
+        return new Vector2Int(indexCoords.x, -indexCoords.y) + gridOriginOffset;
+    }
 
-        Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(mouseClickInfo.isoPosition, 0.1f);
 
-        if (cells == null || cells.Length == 0)
-            return;
 
-        foreach (var cell in cells)
-        {
-            DrawCellRectProjection(cell.centerRectPosition, cellSize, Color.black);
-            DrawCellIsometricProjection(cell.centerRectPosition, cellSize, Color.blue);
-        }
+    /// <summary>
+    /// Converts grid IndexCoords to isometric world IndexCoords.
+    /// </summary>
+    public Vector3 GridPositionToWorld(Vector2 gridPos)
+    {
+        return IsoProject(gridPos * cellSize);
+    }
+
+
+    /// <summary>
+    /// Converts index coordinates to isometric world IndexCoords (cell corner).
+    /// </summary>
+    public Vector3 IndexCoordsToWorldCorner(Vector2Int indexCoords)
+    {
+        var gridPos = IndexCoordsToGridPosition(indexCoords);
+        return GridPositionToWorld(gridPos);
+    }
+
+
+    /// <summary>
+    /// Converts index coordinates to isometric world IndexCoords (cell center).
+    /// </summary>
+    public Vector3 IndexCoordsToWorldCenter(Vector2Int indexCoords)
+    {
+        var gridPos = IndexCoordsToGridPosition(indexCoords);
+        return GridPositionToWorld(gridPos + new Vector2(0.5f, 0.5f));
     }
 }

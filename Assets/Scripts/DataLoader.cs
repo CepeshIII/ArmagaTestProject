@@ -18,12 +18,12 @@ public static class DataLoader
         data = Resources.LoadAll<T>(path);
         if (data == null || data.Length == 0)
         {
-            Debug.LogError($"Failed to load data with type: {typeof(T)} at path: {path}");
+            Debug.LogError($"Failed to load data with CardType: {typeof(T)} at path: {path}");
             return false;
         }
         else
         {
-            Debug.Log($"Loaded {data.Length} Data assets with type: {typeof(T)}");
+            Debug.Log($"Loaded {data.Length} Data assets with CardType: {typeof(T)}");
             return true;
         }
     }
