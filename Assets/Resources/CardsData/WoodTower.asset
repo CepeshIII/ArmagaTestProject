@@ -9,15 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2db41dcb40b6c846a19a39964d39e8a, type: 3}
+  m_Script: {fileID: 11500000, guid: 7e8be5dedbb6fd74f94852ba51f60e23, type: 3}
   m_Name: WoodTower
   m_EditorClassIdentifier: 
   cardId: 1
-  type: 0
   cardName: WoodTower
   description: WoodTower
-  sprite: {fileID: 0}
+  sprite: {fileID: -1929597620, guid: 67385ed92c625cc4d93a35208da1eec6, type: 3}
   tile: {fileID: 11400000, guid: 4b3892231e3ce364cb2b40ed7814ed6c, type: 2}
-  baseCount: 0
   buildingPrefab: {fileID: 0}
   effect: {fileID: 0}
