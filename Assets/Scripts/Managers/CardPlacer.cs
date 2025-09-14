@@ -22,6 +22,11 @@ public class CardPlacer : MonoBehaviour
 
     public void TryPlaceCard(Vector2Int gridPosition, CardData cardData)
     {
+        if (!IsometricGrid.Instance.IsInsideGridIndex(gridPosition))
+        {
+            return;
+        }
+
         var indexCoords = IsometricGrid.Instance.GridPositionToIndexCoords(gridPosition);
         GameBoard.Instance.SetCard(cardData, indexCoords);
         TileMapManager.Instance.SetTile((Vector3Int)gridPosition, cardData.tile);
