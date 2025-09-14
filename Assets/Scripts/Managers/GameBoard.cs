@@ -10,16 +10,26 @@ public class GameBoard : Singleton<GameBoard>
         public List<CardInstance> cards;
         public List<EffectData> effects;
         public Vector2Int indexCoord;
+        public bool isAvailable;
     }
 
     private IsometricGrid grid;
     private Cell[] board;
+
+    public Cell[] Board { get => board; }
+    public IsometricGrid Grid { get => grid; }
 
 
     // Temporary for debug
     public void Start()
     {
         SetGrid(IsometricGrid.Instance);
+        SetCellsAvailable(new Vector2Int[] 
+        { 
+            new Vector2Int(0, 0), new Vector2Int(1, 0), new Vector2Int(2, 0),
+            new Vector2Int(0, 1), new Vector2Int(1, 1), new Vector2Int(2, 1),
+            new Vector2Int(0, 2), new Vector2Int(1, 2), new Vector2Int(2, 2),
+        });
     }
 
 
@@ -27,6 +37,20 @@ public class GameBoard : Singleton<GameBoard>
     {
         grid = newGrid;
         InitializeBoard(grid);
+    }
+
+
+    public void SetCellsAvailable(Vector2Int[] cellIndexCoord)
+    {
+        foreach(var indexCoord in cellIndexCoord)
+        {
+            if(!grid.IsInsideGridIndex(indexCoord))
+            {
+                continue;
+            }
+            var index = grid.IndexCoordsToArrayIndex(indexCoord);
+            board[index].isAvailable = true;
+        }
     }
 
 
@@ -118,6 +142,7 @@ public class GameBoard : Singleton<GameBoard>
                 { 
                     cards = new(),
                     effects = new(),
+                    isAvailable = false,
                     indexCoord = new Vector2Int(x, y)
                 };
                 index++;

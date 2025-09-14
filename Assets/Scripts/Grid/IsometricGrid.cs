@@ -22,6 +22,7 @@ public class IsometricGrid : Singleton<IsometricGrid>
 
     public Vector2 CellSize { get => cellSize;}
     public Vector2Int GridSize { get => gridSize; }
+    public Vector2Int GridOffset { get => gridOriginOffset; }
 
 
 
