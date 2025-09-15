@@ -1,25 +1,48 @@
+using System;
 using UnityEngine;
-using static IsometricGrid;
+using UnityEngine.InputSystem;
 
 
 public class CardPlacer : MonoBehaviour
 {
-    //private IsometricGrid grid;
+    public static event Action<Vector2Int> OnCellSelected;
 
-    private void Update()
+    private CardData selectedCard;
+
+
+    public void OnEnable()
     {
-        if(Input.GetMouseButtonDown(0))
-        {
-            Debug.Log("Left mouse button clicked");
-            var cameraWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            var cardForPlace = CardDataBase.Instance.GetCardDataById(0); // Example: Get the first card data
-            var gridPosition = IsometricGrid.Instance.WorldToGridPosition(cameraWorldPosition);
-            
-
-            var indexCoords = IsometricGrid.Instance.GridPositionToIndexCoords(gridPosition);
-            GameBoard.Instance.SetCard(cardForPlace, indexCoords);
-        }
+        InputManager.Instance.OnBoardClick += _ => LeftMouseClick();
+        InputManager.Instance.OnBoardClick += _ => RightMouseClick();
     }
 
+
+    private void LeftMouseClick()
+    {
+        var mouseCameraPosition = InputManager.Instance.GetMousePosition();
+        var mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseCameraPosition);
+        var cardForPlace = CardDataBase.Instance.GetCardDataById(0); // Example: Get the first card data
+        SetCard(mouseWorldPosition, cardForPlace);
+    }
+
+
+    private void RightMouseClick()
+    {
+
+    }
+
+
+    private void SetCard(Vector3 worldPosition, CardData card)
+    {
+        var gridPosition = IsometricGrid.Instance.WorldToGridPosition(worldPosition);
+        var indexCoords = IsometricGrid.Instance.GridPositionToIndexCoords(gridPosition);
+        GameBoard.Instance.SetCard(card, indexCoords);
+    }
+
+
+    public void OnDisable()
+    {
+        InputManager.actions.BoardManageMode.LeftMouseClick.started -= _ => LeftMouseClick();
+        InputManager.actions.BoardManageMode.RightMouseClick.started -= _ => RightMouseClick();
+    }
 }

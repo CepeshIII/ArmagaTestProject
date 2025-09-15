@@ -77,11 +77,13 @@ public class GameBoard : Singleton<GameBoard>
 
     private void CreateCardInstance(CardData card, Vector2Int indexCoords, Cell cell)
     {
+        // Create card instance using factory method by card type
         if (CardInstance.cardFactory.TryGetValue(card.CardType, out var creator))
         {
             var cardInstance = creator(card, indexCoords);
             cell.cards.Add(cardInstance);
 
+            // Get and apply effects if the card is an effect source
             if (card is IEffectSourceCard effectSourceCard)
             {
                 if (effectSourceCard.GetEffect() != null)
@@ -133,7 +135,7 @@ public class GameBoard : Singleton<GameBoard>
         }
     }
 
-    
+    // Call this method after all placements are done for resetting effects values
     private void ResetParameters()
     {
         foreach (var cell in board)
@@ -145,7 +147,7 @@ public class GameBoard : Singleton<GameBoard>
         }
     }
 
-
+    // Call this methods after all parameters are reset for calculation new values
     private void ApplyEffects()
     {
         foreach (var cell in board)
