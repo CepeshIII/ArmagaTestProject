@@ -15,21 +15,11 @@ public class CardPlacer : MonoBehaviour
 
             var cardForPlace = CardDataBase.Instance.GetCardDataById(0); // Example: Get the first card data
             var gridPosition = IsometricGrid.Instance.WorldToGridPosition(cameraWorldPosition);
-            TryPlaceCard(gridPosition, cardForPlace);
+            
+
+            var indexCoords = IsometricGrid.Instance.GridPositionToIndexCoords(gridPosition);
+            GameBoard.Instance.SetCard(cardForPlace, indexCoords);
         }
-    }
-
-
-    public void TryPlaceCard(Vector2Int gridPosition, CardData cardData)
-    {
-        if (!IsometricGrid.Instance.IsInsideGridIndex(gridPosition))
-        {
-            return;
-        }
-
-        var indexCoords = IsometricGrid.Instance.GridPositionToIndexCoords(gridPosition);
-        GameBoard.Instance.SetCard(cardData, indexCoords);
-        TileMapManager.Instance.SetTile((Vector3Int)gridPosition, cardData.tile);
     }
 
 }

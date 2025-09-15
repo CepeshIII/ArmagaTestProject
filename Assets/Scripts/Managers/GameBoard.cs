@@ -15,6 +15,8 @@ public class GameBoard : Singleton<GameBoard>
 
     private IsometricGrid grid;
     private Cell[] board;
+    private PlacementValidator placementValidator;
+
 
     public Cell[] Board { get => board; }
     public IsometricGrid Grid { get => grid; }
@@ -30,6 +32,14 @@ public class GameBoard : Singleton<GameBoard>
             new Vector2Int(0, 1), new Vector2Int(1, 1), new Vector2Int(2, 1),
             new Vector2Int(0, 2), new Vector2Int(1, 2), new Vector2Int(2, 2),
         });
+
+        placementValidator = new PlacementValidator(this);
+
+        placementValidator.AddMandatoryRule(new PlacementRules.CellIsNotNullRule());
+        placementValidator.AddMandatoryRule(new PlacementRules.CellAvailableRule());
+
+        placementValidator.AddOptionalRule(new PlacementRules.CellEmptyRule());
+        placementValidator.AddOptionalRule(new PlacementRules.SameCardRule());
     }
 
 
@@ -56,21 +66,43 @@ public class GameBoard : Singleton<GameBoard>
 
     public void SetCard(CardData card, Vector2Int indexCoords)
     {
-        var arrayIndex = grid.IndexCoordsToArrayIndex(indexCoords);
-        var cell = board[arrayIndex];
+        if(placementValidator.CanPlace(indexCoords, card))
+        {
+            var arrayIndex = grid.IndexCoordsToArrayIndex(indexCoords);
+            var cell = board[arrayIndex];
+            CreateCardInstance(card, indexCoords, cell);
+        }
+    }
+
+
+    private void CreateCardInstance(CardData card, Vector2Int indexCoords, Cell cell)
+    {
         if (CardInstance.cardFactory.TryGetValue(card.CardType, out var creator))
         {
             var cardInstance = creator(card, indexCoords);
             cell.cards.Add(cardInstance);
 
-            if(card is IEffectSourceCard effectSourceCard)
+            if (card is IEffectSourceCard effectSourceCard)
             {
-                if(effectSourceCard.GetEffect() != null)
+                if (effectSourceCard.GetEffect() != null)
                 {
                     SetEffects(effectSourceCard.GetEffect(), indexCoords);
                 }
             }
         }
+    }
+
+
+    public bool TryGetCell(Vector2Int indexCoords, out Cell cell)
+    {
+        if (grid.IsInsideGridIndex(indexCoords))
+        {
+            var index = grid.IndexCoordsToArrayIndex(indexCoords);
+            cell = board[index];
+            return true;
+        }
+        cell = null;
+        return false;
     }
 
 
