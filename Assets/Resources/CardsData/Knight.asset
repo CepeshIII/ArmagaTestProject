@@ -15,7 +15,7 @@ MonoBehaviour:
   cardId: 0
   cardName: Knight
   description: knight
-  sprite: {fileID: -1493937310, guid: 1a7a6af7e141f4f4d9265e6f8b8a1586, type: 3}
+  sprite: {fileID: -1150803524, guid: 536758fa619c1b64b828f941df9eb479, type: 3}
   tile: {fileID: 11400000, guid: d5b61654630cc0e4ba137a14959cf06b, type: 2}
   baseCount: 10
   baseStrength: 1

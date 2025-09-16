@@ -1,38 +1,76 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 
-public class CardPlacer : MonoBehaviour
+public class CardPlacer : Singleton<CardPlacer>
 {
-    public static event Action<Vector2Int> OnCellSelected;
-
     private CardData selectedCard;
 
+    public static event Action<Vector2Int> OnCellSelected;
 
-    public void OnEnable()
+    public event Action<CardData> OnCardPlaced;
+    public event Action<CardData> OnCardPlacingCanceled;
+
+
+    private void OnEnable()
     {
-        InputManager.Instance.OnBoardClick += _ => LeftMouseClick();
-        InputManager.Instance.OnBoardClick += _ => RightMouseClick();
+        InputManager.Instance.OnBoardClicked_End += LeftMouseClick;
+        GameBoard.Instance.OnCardPlaced += CardPlaced;
+        GameBoard.Instance.OnCardPlacingCanceled += CardPlacingCanceled;
     }
 
 
-    private void LeftMouseClick()
+    private void Start()
     {
-        var mouseCameraPosition = InputManager.Instance.GetMousePosition();
-        var mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseCameraPosition);
-        var cardForPlace = CardDataBase.Instance.GetCardDataById(0); // Example: Get the first card data
-        SetCard(mouseWorldPosition, cardForPlace);
+        // for testing 
+        var cardDeck = new CardDeck(new List<CardData>() 
+        {
+            CardDataBase.Instance.GetCardDataById(0),
+            CardDataBase.Instance.GetCardDataById(1),
+        });
+
+        var cardDeckController = GameObject.FindAnyObjectByType<CardDeckController>();
+        var deckView = GameObject.FindAnyObjectByType<CardDeckDisplay>();
+
+        cardDeckController.SetCardDeck(cardDeck);
+        cardDeckController.SetDeckView(deckView);
+
+        // for testing purposes, set a default selected card
+        //selectedCard = CardDataBase.Instance.GetCardDataById(0); // Example: Get the first card data
     }
 
 
-    private void RightMouseClick()
+    private void OnDisable()
     {
+        if(InputManager.Instance != null)
+            InputManager.Instance.OnBoardClicked_Start -= LeftMouseClick;
 
+        GameBoard.Instance.OnCardPlaced -= CardPlaced;
+        GameBoard.Instance.OnCardPlacingCanceled -= CardPlacingCanceled;
     }
 
 
-    private void SetCard(Vector3 worldPosition, CardData card)
+    public void SetSelectedCard(CardData cardData)
+    {
+        selectedCard = cardData;
+    }
+
+
+    private void LeftMouseClick(Vector3 mousePosition)
+    {
+        // if no card selected to place return
+        if (selectedCard == null)
+        {
+            return;
+        }
+
+        SetCard(selectedCard, mousePosition);
+    }
+
+
+    private void SetCard(CardData card, Vector3 worldPosition)
     {
         var gridPosition = IsometricGrid.Instance.WorldToGridPosition(worldPosition);
         var indexCoords = IsometricGrid.Instance.GridPositionToIndexCoords(gridPosition);
@@ -40,9 +78,21 @@ public class CardPlacer : MonoBehaviour
     }
 
 
-    public void OnDisable()
+    private void CardPlaced(CardData card, Vector2Int indexCoords)
     {
-        InputManager.actions.BoardManageMode.LeftMouseClick.started -= _ => LeftMouseClick();
-        InputManager.actions.BoardManageMode.RightMouseClick.started -= _ => RightMouseClick();
+        var gridPosition = IsometricGrid.Instance.IndexCoordsToGridPosition(indexCoords);
+        TileMapManager.Instance.SetTile(gridPosition, card.tile);
+
+        OnCardPlaced.Invoke(selectedCard);
+        selectedCard = null;
     }
+
+
+    private void CardPlacingCanceled(CardData card, Vector2Int indexCoords)
+    {
+        OnCardPlacingCanceled.Invoke(selectedCard);
+        selectedCard = null;
+    }
+
+
 }

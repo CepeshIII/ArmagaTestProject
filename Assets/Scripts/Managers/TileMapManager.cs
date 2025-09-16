@@ -13,9 +13,9 @@ public class TileMapManager : Singleton<TileMapManager>
     }
 
 
-    public void SetTile(Vector3Int position, TileBase tile)
+    public void SetTile(Vector2Int position, TileBase tile)
     {
-        buildingTilemap.SetTile(position, tile);
+        buildingTilemap.SetTile((Vector3Int)position, tile);
     }
 
 }

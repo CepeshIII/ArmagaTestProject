@@ -82,7 +82,7 @@ Material:
     m_Colors:
     - _CellSize: {r: 2, g: 2, b: 0, a: 0}
     - _Color: {r: 1, g: 0.8400785, b: 0, a: 0}
-    - _GridOffset: {r: -5, g: -2, b: 0, a: 0}
+    - _GridOffset: {r: -5, g: -1, b: 0, a: 0}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _SizeCell2: {r: 2, g: 2, b: 0, a: 0}
     - _Tilling: {r: 6.47, g: 1, b: 0, a: 0}

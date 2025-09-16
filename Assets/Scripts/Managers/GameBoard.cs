@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -20,6 +21,10 @@ public class GameBoard : Singleton<GameBoard>
 
     public Cell[] Board { get => board; }
     public IsometricGrid Grid { get => grid; }
+
+
+    public event Action<CardData, Vector2Int> OnCardPlaced;
+    public event Action<CardData, Vector2Int> OnCardPlacingCanceled;
 
 
     // Temporary for debug
@@ -71,6 +76,11 @@ public class GameBoard : Singleton<GameBoard>
             var arrayIndex = grid.IndexCoordsToArrayIndex(indexCoords);
             var cell = board[arrayIndex];
             CreateCardInstance(card, indexCoords, cell);
+            OnCardPlaced?.Invoke(card, indexCoords);
+        }
+        else
+        {
+            OnCardPlacingCanceled?.Invoke(card, indexCoords);
         }
     }
 
