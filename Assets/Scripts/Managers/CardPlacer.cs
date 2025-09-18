@@ -26,6 +26,9 @@ public class CardPlacer : Singleton<CardPlacer>
         {
             CardDataBase.Instance.GetCardDataById(0),
             CardDataBase.Instance.GetCardDataById(1),
+            CardDataBase.Instance.GetCardDataById(2),
+            CardDataBase.Instance.GetCardDataById(3),
+            CardDataBase.Instance.GetCardDataById(4),
         });
 
         var cardDeckController = GameObject.FindAnyObjectByType<CardDeckController>();
