@@ -1,62 +1,75 @@
-using System;
-using TMPro;
 using UnityEngine;
 
 
 public class CardDeckController : MonoBehaviour
 {
-    // ----------------- Serialized Fields -----------------
-
-    // ----------------- Private Fields -----------------
-
     private CardDeck cardDeck;
     private CardDeckDisplay deckView;
 
-    // ----------------- Public Events -----------------
-
-
-    // ----------------- Public Properties -----------------
-
-
-    // ----------------- Unity Methods -----------------
 
     private void OnEnable()
     {
-        CardPlacer.Instance.OnCardPlaced += CardPlaced;
-        CardPlacer.Instance.OnCardPlacingCanceled += CardPlacingCanceled;
+        if (cardDeck != null)
+            cardDeck.DeckChanged += UpdateView;
 
+        if (deckView != null)
+            deckView.CardDropped += HandleCardDropped;
+
+        CardPlacer.Instance.CardPlacementConfirmed += HandleCardPlaced;
+        CardPlacer.Instance.CardPlacementCanceled += HandleCardPlacementCanceled;
     }
 
 
     private void OnDisable()
     {
         if(cardDeck != null)
-            cardDeck.OnDeckChanged -= UpdateView;
+            cardDeck.DeckChanged -= UpdateView;
 
         if(deckView != null)
-            deckView.OnCardChosen -= CardChosen;
+            deckView.CardDropped -= HandleCardDropped;
 
-        CardPlacer.Instance.OnCardPlaced -= CardPlaced;
-        CardPlacer.Instance.OnCardPlacingCanceled -= CardPlacingCanceled;
+        if (CardPlacer.Instance != null)
+        {
+            CardPlacer.Instance.CardPlacementConfirmed -= HandleCardPlaced;
+            CardPlacer.Instance.CardPlacementCanceled -= HandleCardPlacementCanceled;
+        }
+
     }
 
-    // ----------------- Public Methods -----------------
-
+    
     public void SetCardDeck(CardDeck newCardDeck)
     {
-        cardDeck = newCardDeck;
-        cardDeck.OnDeckChanged += UpdateView;
+        if (cardDeck != null)
+        {
+            cardDeck.DeckChanged -= UpdateView;
+        }
+
+        if (newCardDeck != null)
+        {   
+            cardDeck = newCardDeck;
+            cardDeck.DeckChanged += UpdateView;
+        }
+
         UpdateView();
     }
+
 
     public void SetDeckView(CardDeckDisplay newDeckView)
     {
-        deckView = newDeckView;
-        deckView.OnCardChosen += CardChosen;
+        if (deckView != null)
+        {
+            deckView.CardDropped -= HandleCardDropped;
+        }
+
+        if (newDeckView != null)
+        {
+            deckView = newDeckView;
+            deckView.CardDropped += HandleCardDropped;
+        }
+
         UpdateView();
     }
 
-    // ----------------- Private Methods -----------------
 
     private void UpdateView()
     {
@@ -65,19 +78,19 @@ public class CardDeckController : MonoBehaviour
     }
 
 
-    private void CardChosen(CardData cardData)
+    private void HandleCardDropped(CardData cardData, Vector3 position)
     {
-        CardPlacer.Instance.SetSelectedCard(cardData);
+        CardPlacer.Instance.TryPlaceCard(cardData, position);
     }
 
 
-    private void CardPlaced(CardData cardData)
+    private void HandleCardPlaced(CardData cardData)
     {
         cardDeck.RemoveCard(cardData);
     }
 
 
-    private void CardPlacingCanceled(CardData cardData)
+    private void HandleCardPlacementCanceled(CardData cardData)
     {
         UpdateView();
     }

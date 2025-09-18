@@ -6,7 +6,7 @@ public class CardDeck
 {
     private List<CardData> cards;
 
-    public event Action OnDeckChanged;
+    public event Action DeckChanged;
 
     public List<CardData> Cards { get => cards; }
 
@@ -24,13 +24,13 @@ public class CardDeck
     public void AddCard(CardData card)
     {
         cards.Add(card);
-        OnDeckChanged?.Invoke();
+        DeckChanged?.Invoke();
     }
 
 
     public void RemoveCard(CardData card)
     {
         cards.Remove(card);
-        OnDeckChanged?.Invoke();
+        DeckChanged?.Invoke();
     }
 }

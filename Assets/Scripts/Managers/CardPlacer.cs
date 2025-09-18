@@ -6,19 +6,16 @@ using UnityEngine.InputSystem;
 
 public class CardPlacer : Singleton<CardPlacer>
 {
-    private CardData selectedCard;
-
     public static event Action<Vector2Int> OnCellSelected;
 
-    public event Action<CardData> OnCardPlaced;
-    public event Action<CardData> OnCardPlacingCanceled;
+    public event Action<CardData> CardPlacementConfirmed;
+    public event Action<CardData> CardPlacementCanceled;
 
 
     private void OnEnable()
     {
-        InputManager.Instance.OnBoardClicked_End += LeftMouseClick;
-        GameBoard.Instance.OnCardPlaced += CardPlaced;
-        GameBoard.Instance.OnCardPlacingCanceled += CardPlacingCanceled;
+        GameBoard.Instance.OnCardPlaced += HandleCardPlaced;
+        GameBoard.Instance.OnCardPlacingCanceled += HandleCardPlacingCanceled;
     }
 
 
@@ -44,54 +41,34 @@ public class CardPlacer : Singleton<CardPlacer>
 
     private void OnDisable()
     {
-        if(InputManager.Instance != null)
-            InputManager.Instance.OnBoardClicked_Start -= LeftMouseClick;
-
-        GameBoard.Instance.OnCardPlaced -= CardPlaced;
-        GameBoard.Instance.OnCardPlacingCanceled -= CardPlacingCanceled;
-    }
-
-
-    public void SetSelectedCard(CardData cardData)
-    {
-        selectedCard = cardData;
-    }
-
-
-    private void LeftMouseClick(Vector3 mousePosition)
-    {
-        // if no card selected to place return
-        if (selectedCard == null)
+        if (GameBoard.Instance != null)
         {
-            return;
+            GameBoard.Instance.OnCardPlaced -= HandleCardPlaced;
+            GameBoard.Instance.OnCardPlacingCanceled -= HandleCardPlacingCanceled;
         }
-
-        SetCard(selectedCard, mousePosition);
     }
 
 
-    private void SetCard(CardData card, Vector3 worldPosition)
+    public void TryPlaceCard(CardData card, Vector3 worldPosition)
     {
         var gridPosition = IsometricGrid.Instance.WorldToGridPosition(worldPosition);
         var indexCoords = IsometricGrid.Instance.GridPositionToIndexCoords(gridPosition);
-        GameBoard.Instance.SetCard(card, indexCoords);
+        GameBoard.Instance.TryPlaceCard(card, indexCoords);
     }
 
 
-    private void CardPlaced(CardData card, Vector2Int indexCoords)
+    private void HandleCardPlaced(CardData card, Vector2Int indexCoords)
     {
         var gridPosition = IsometricGrid.Instance.IndexCoordsToGridPosition(indexCoords);
         TileMapManager.Instance.SetTile(gridPosition, card.tile);
 
-        OnCardPlaced.Invoke(selectedCard);
-        selectedCard = null;
+        CardPlacementConfirmed.Invoke(card);
     }
 
 
-    private void CardPlacingCanceled(CardData card, Vector2Int indexCoords)
+    private void HandleCardPlacingCanceled(CardData card, Vector2Int indexCoords)
     {
-        OnCardPlacingCanceled.Invoke(selectedCard);
-        selectedCard = null;
+        CardPlacementCanceled.Invoke(card);
     }
 
 

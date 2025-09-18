@@ -69,7 +69,7 @@ public class GameBoard : Singleton<GameBoard>
     }
 
 
-    public void SetCard(CardData card, Vector2Int indexCoords)
+    public void TryPlaceCard(CardData card, Vector2Int indexCoords)
     {
         if(placementValidator.CanPlace(indexCoords, card))
         {

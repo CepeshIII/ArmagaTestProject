@@ -27780,6 +27780,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplayPrefab: {fileID: 7581359654725366017, guid: 4d82a7e74427ec347b2c06af436c40c6, type: 3}
+  canvasGroup: {fileID: 0}
+  layoutGroup: {fileID: 1978434110}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

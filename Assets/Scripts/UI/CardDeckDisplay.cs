@@ -1,20 +1,36 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class CardDeckDisplay : MonoBehaviour
 {
     [SerializeField] private CardDisplay cardDisplayPrefab;
+    [SerializeField] private LayoutGroup layoutGroup;
 
     private List<CardDisplay> currentDeck = new List<CardDisplay>();
-    private CardDisplay selectedCard;
 
-    public event Action<CardData> OnCardChosen;
+    public event Action<CardData, Vector3> CardDropped;
+
+
+    private void Start()
+    {
+        layoutGroup = GetComponent<LayoutGroup>();
+
+        GroupActivate();
+    }
 
 
     public void UpdateDisplay(List<CardData> cards)
     {
+        // Enable the layout group to ensure proper layout
+        if (layoutGroup != null)
+        {
+            layoutGroup.enabled = true;
+        }
+
+
         // If the current deck is null create a new list
         currentDeck ??= new List<CardDisplay>(cards.Count);
 
@@ -47,7 +63,6 @@ public class CardDeckDisplay : MonoBehaviour
 
             // Set the card data to the cardDisplay
             cardDisplay.SetCardData(card);
-            cardDisplay.Deselected();
             cardDisplay.Activate();
             index++;
         }
@@ -70,7 +85,8 @@ public class CardDeckDisplay : MonoBehaviour
         if (cardDisplayPrefab != null)
         {
             var cardDisplay = Instantiate(cardDisplayPrefab, transform);
-            cardDisplay.OnCardClicked += CardDisplay_OnCardClicked;
+            cardDisplay.CardDragStarted += HandleCardDragStarted;
+            cardDisplay.CardDragEnded += HandleCardDragEnded;
             return cardDisplay;
         }
         Debug.LogError("CardDisplay prefab is not assigned in the inspector.");
@@ -78,15 +94,40 @@ public class CardDeckDisplay : MonoBehaviour
     }
 
 
-    private void CardDisplay_OnCardClicked(object sender, EventArgs e)
+    private void HandleCardDragStarted(object sender, CardDragEventArgs e)
     {
-        var cardDisplay = sender as CardDisplay;
-        selectedCard = cardDisplay;
-        selectedCard.Selected();
-
-        OnCardChosen?.Invoke(selectedCard.CardData);
+        // Deactivate the group to prevent layout issues during drag
+        GroupDeactivate();
     }
 
+
+    private void HandleCardDragEnded(object sender, CardDragEventArgs e)
+    {
+        CardDropped?.Invoke(e.cardData, e.worldPosition);
+        // Reactivate the group after drag ends
+        GroupActivate();
+    }
+
+
+    private void GroupActivate()
+    {
+        // Enable the layout group to ensure proper layout
+        if (layoutGroup != null)
+        {
+            layoutGroup.enabled = true;
+        }
+    }
+
+
+    private void GroupDeactivate()
+    {
+        // Disable the layout group to stop layout calculations
+        if (layoutGroup != null)
+        {
+            layoutGroup.enabled = false;
+        }
+    }
+    
 }
 
 
