@@ -4,16 +4,17 @@ using UnityEditor;
 using UnityEngine;
 
 
+public class Cell
+{
+    public List<CardInstance> cards;
+    public List<EffectData> effects;
+    public Vector2Int indexCoord;
+    public bool isAvailable;
+}
+
+
 public class GameBoard : Singleton<GameBoard>
 {
-    public class Cell
-    {
-        public List<CardInstance> cards;
-        public List<EffectData> effects;
-        public Vector2Int indexCoord;
-        public bool isAvailable;
-    }
-
     private IsometricGrid grid;
     private Cell[] board;
     private PlacementValidator placementValidator;
@@ -38,7 +39,7 @@ public class GameBoard : Singleton<GameBoard>
             new Vector2Int(0, 2), new Vector2Int(1, 2), new Vector2Int(2, 2),
         });
 
-        placementValidator = new PlacementValidator(this);
+        placementValidator = new PlacementValidator();
 
         placementValidator.AddMandatoryRule(new PlacementRules.CellIsNotNullRule());
         placementValidator.AddMandatoryRule(new PlacementRules.CellAvailableRule());
@@ -69,18 +70,25 @@ public class GameBoard : Singleton<GameBoard>
     }
 
 
+    public void TryPlaceCardAtWorldPosition(CardData card, Vector3 worldPosition)
+    {
+        var gridPosition = IsometricGrid.Instance.WorldToGridPosition(worldPosition);
+        var indexCoords = IsometricGrid.Instance.GridPositionToIndexCoords(gridPosition);
+        TryPlaceCard(card, indexCoords);
+    }
+
+
     public void TryPlaceCard(CardData card, Vector2Int indexCoords)
     {
-        if(placementValidator.CanPlace(indexCoords, card))
+        var gridPosition = IsometricGrid.Instance.IndexCoordsToGridPosition(indexCoords);
+        if (TryGetCell(indexCoords, out var cell) && placementValidator.CanPlace(cell, card))
         {
-            var arrayIndex = grid.IndexCoordsToArrayIndex(indexCoords);
-            var cell = board[arrayIndex];
             CreateCardInstance(card, indexCoords, cell);
-            OnCardPlaced?.Invoke(card, indexCoords);
+            OnCardPlaced?.Invoke(card, gridPosition);
         }
         else
         {
-            OnCardPlacingCanceled?.Invoke(card, indexCoords);
+            OnCardPlacingCanceled?.Invoke(card, gridPosition);
         }
     }
 

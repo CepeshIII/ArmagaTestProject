@@ -36,9 +36,6 @@ public class CardPlacer : Singleton<CardPlacer>
 
         cardDeckController.SetCardDeck(cardDeck);
         cardDeckController.SetDeckView(deckView);
-
-        // for testing purposes, set a default selected card
-        //selectedCard = CardDataBase.Instance.GetCardDataById(0); // Example: Get the first card data
     }
 
 
@@ -54,17 +51,12 @@ public class CardPlacer : Singleton<CardPlacer>
 
     public void TryPlaceCard(CardData card, Vector3 worldPosition)
     {
-        var gridPosition = IsometricGrid.Instance.WorldToGridPosition(worldPosition);
-        var indexCoords = IsometricGrid.Instance.GridPositionToIndexCoords(gridPosition);
-        GameBoard.Instance.TryPlaceCard(card, indexCoords);
+        GameBoard.Instance.TryPlaceCardAtWorldPosition(card, worldPosition);
     }
 
 
     private void HandleCardPlaced(CardData card, Vector2Int indexCoords)
     {
-        var gridPosition = IsometricGrid.Instance.IndexCoordsToGridPosition(indexCoords);
-        TileMapManager.Instance.SetTile(gridPosition, card.tile);
-
         CardPlacementConfirmed.Invoke(card);
     }
 

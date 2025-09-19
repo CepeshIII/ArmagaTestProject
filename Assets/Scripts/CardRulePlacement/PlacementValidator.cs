@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlacementValidator
 {
-    private readonly GameBoard gameBoard;
     private readonly List<IPlacementRule> mandatoryRules = new();
     private readonly List<IPlacementRule> optionalRules = new();
 
@@ -13,19 +12,13 @@ public class PlacementValidator
 
 
 
-    public PlacementValidator(GameBoard gameBoard) 
+    public PlacementValidator() 
     {
-        this.gameBoard = gameBoard;
     }
 
 
-    public bool CanPlace(Vector2Int indexCoords, CardData card)
+    public bool CanPlace(Cell cell, CardData card)
     {
-        if(!gameBoard.TryGetCell(indexCoords, out var cell))
-        {
-            return false;
-        }
-
         // All mandatory rules must pass
         foreach (var rule in mandatoryRules)
         {

@@ -1,4 +1,4 @@
 public interface IPlacementRule
 {
-    bool Validate(GameBoard.Cell cell, CardData cardData);
+    bool Validate(Cell cell, CardData cardData);
 }
