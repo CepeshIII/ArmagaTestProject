@@ -1,70 +1,66 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using Zenject;
 
 
-public class CardPlacer : Singleton<CardPlacer>
+public class CardPlacer : MonoBehaviour, IInitializable, IDisposable
 {
     public static event Action<Vector2Int> OnCellSelected;
+
+    private GameBoard gameBoard;
 
     public event Action<CardData> CardPlacementConfirmed;
     public event Action<CardData> CardPlacementCanceled;
 
 
-    private void OnEnable()
+
+    [Inject]
+    public void Construct(GameBoard gameBoard)
     {
-        GameBoard.Instance.OnCardPlaced += HandleCardPlaced;
-        GameBoard.Instance.OnCardPlacingCanceled += HandleCardPlacingCanceled;
+        this.gameBoard = gameBoard;
+
     }
 
 
-    private void Start()
+    public void Initialize()
     {
-        // for testing 
-        var cardDeck = new CardDeck(new List<CardData>() 
+        if (gameBoard != null)
         {
-            CardDataBase.Instance.GetCardDataById(0),
-            CardDataBase.Instance.GetCardDataById(1),
-            CardDataBase.Instance.GetCardDataById(2),
-            CardDataBase.Instance.GetCardDataById(3),
-            CardDataBase.Instance.GetCardDataById(4),
-        });
-
-        var cardDeckController = GameObject.FindAnyObjectByType<CardDeckController>();
-        var deckView = GameObject.FindAnyObjectByType<CardDeckDisplay>();
-
-        cardDeckController.SetCardDeck(cardDeck);
-        cardDeckController.SetDeckView(deckView);
+            gameBoard.OnCardPlaced += HandleCardPlaced;
+            gameBoard.OnCardPlacingCanceled += HandleCardPlacingCanceled;
+        }
     }
 
 
-    private void OnDisable()
+    public void Dispose()
     {
-        if (GameBoard.Instance != null)
+        if (gameBoard != null)
         {
-            GameBoard.Instance.OnCardPlaced -= HandleCardPlaced;
-            GameBoard.Instance.OnCardPlacingCanceled -= HandleCardPlacingCanceled;
+            gameBoard.OnCardPlaced -= HandleCardPlaced;
+            gameBoard.OnCardPlacingCanceled -= HandleCardPlacingCanceled;
         }
     }
 
 
     public void TryPlaceCard(CardData card, Vector3 worldPosition)
     {
-        GameBoard.Instance.TryPlaceCardAtWorldPosition(card, worldPosition);
+        if (gameBoard != null)
+        {
+            gameBoard.TryPlaceCardAtWorldPosition(card, worldPosition);
+        }
     }
 
 
-    private void HandleCardPlaced(CardData card, Vector2Int indexCoords)
+    private void HandleCardPlaced(CardData card, Vector2Int gridPosition)
     {
         CardPlacementConfirmed.Invoke(card);
     }
 
 
-    private void HandleCardPlacingCanceled(CardData card, Vector2Int indexCoords)
+    private void HandleCardPlacingCanceled(CardData card, Vector2Int gridPosition)
     {
         CardPlacementCanceled.Invoke(card);
     }
-
 
 }

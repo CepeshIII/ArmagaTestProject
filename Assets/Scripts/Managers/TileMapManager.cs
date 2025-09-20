@@ -1,24 +1,26 @@
 using System;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Zenject;
 
 
-public class TileMapManager : Singleton<TileMapManager>
+public class TileMapManager : MonoBehaviour
 {
     [SerializeField] private Tilemap buildingTilemap;
-    [SerializeField] private GameBoard gameBoard;
+    
+    private GameBoard gameBoard;
 
 
 
-    new public void Awake()
+    [Inject]
+    public void Construct(GameBoard gameBoard)
     {
-        base.Awake();
+        this.gameBoard = gameBoard;
     }
 
 
     private void OnEnable()
     {
-        gameBoard = GameBoard.Instance;
         if (gameBoard != null)
         gameBoard.OnCardPlaced += HandleCardPlaced;
     }

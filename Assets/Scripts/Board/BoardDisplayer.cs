@@ -1,8 +1,10 @@
 using UnityEngine;
+using Zenject;
 
 
 [RequireComponent(typeof(GameBoard))]
-public class BoardDisplayer : MonoBehaviour
+[RequireComponent(typeof(SpriteRenderer))]
+public class BoardDisplayer : MonoBehaviour, IInitializable
 {
     [SerializeField] private Material boardMaterial;
     [SerializeField] private Vector2Int textureSize = new Vector2Int(16, 16);
@@ -14,22 +16,32 @@ public class BoardDisplayer : MonoBehaviour
     private readonly Color availableColor = new Color(0, 0, 0, 1);
 
 
-    private void Awake()
+
+    [Inject]
+    public void Construct(GameBoard gameBoard)
     {
-        gameBoard = GetComponent<GameBoard>();
-        CreateTexture();
+        this.gameBoard = gameBoard;
     }
 
 
-    private void Start()
+    public void Initialize()
     {
-        // My ShaderGraph 's UV is rotated 90 degrees, so I need to swap x and y
-        var pixelOffset = new Vector2(gameBoard.Grid.GridOffset.y + 1, -gameBoard.Grid.GridOffset.x); // I do not know why I need to add 1 to x
-        boardMaterial.SetVector("_GridOffset", pixelOffset);
+        if (gameBoard != null)
+        {
+            CreateTexture();
+
+            // My ShaderGraph 's UV is rotated 90 degrees, so I need to swap x and y
+            var pixelOffset = new Vector2(gameBoard.Grid.GridOffset.y + 1, -gameBoard.Grid.GridOffset.x); // I do not know why I need to add 1 to x
+            boardMaterial.SetVector("_GridOffset", pixelOffset);
+        }
+
     }
+
 
     private void Update()
     {
+        if(texture == null || gameBoard == null) return;
+
         ResetTexture();
         DrawBoard();
         ApplyMaskToMaterial();

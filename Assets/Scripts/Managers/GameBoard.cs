@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using Zenject;
 
 
 public class Cell
@@ -13,7 +14,7 @@ public class Cell
 }
 
 
-public class GameBoard : Singleton<GameBoard>
+public class GameBoard : MonoBehaviour, IInitializable
 {
     private IsometricGrid grid;
     private Cell[] board;
@@ -28,12 +29,22 @@ public class GameBoard : Singleton<GameBoard>
     public event Action<CardData, Vector2Int> OnCardPlacingCanceled;
 
 
-    // Temporary for debug
-    public void Start()
+    [Inject]
+    public void Constructor(IsometricGrid grid)
     {
-        SetGrid(IsometricGrid.Instance);
-        SetCellsAvailable(new Vector2Int[] 
-        { 
+        this.grid = grid;
+    }
+
+
+    public void Initialize()
+    {
+        if(grid != null)
+        {
+            InitializeBoard(grid);
+        }
+
+        SetCellsAvailable(new Vector2Int[]
+        {
             new Vector2Int(0, 0), new Vector2Int(1, 0), new Vector2Int(2, 0),
             new Vector2Int(0, 1), new Vector2Int(1, 1), new Vector2Int(2, 1),
             new Vector2Int(0, 2), new Vector2Int(1, 2), new Vector2Int(2, 2),
@@ -46,13 +57,6 @@ public class GameBoard : Singleton<GameBoard>
 
         placementValidator.AddOptionalRule(new PlacementRules.CellEmptyRule());
         placementValidator.AddOptionalRule(new PlacementRules.SameCardRule());
-    }
-
-
-    public void SetGrid(IsometricGrid newGrid)
-    {
-        grid = newGrid;
-        InitializeBoard(grid);
     }
 
 
@@ -72,15 +76,15 @@ public class GameBoard : Singleton<GameBoard>
 
     public void TryPlaceCardAtWorldPosition(CardData card, Vector3 worldPosition)
     {
-        var gridPosition = IsometricGrid.Instance.WorldToGridPosition(worldPosition);
-        var indexCoords = IsometricGrid.Instance.GridPositionToIndexCoords(gridPosition);
+        var gridPosition = grid.WorldToGridPosition(worldPosition);
+        var indexCoords = grid.GridPositionToIndexCoords(gridPosition);
         TryPlaceCard(card, indexCoords);
     }
 
 
     public void TryPlaceCard(CardData card, Vector2Int indexCoords)
     {
-        var gridPosition = IsometricGrid.Instance.IndexCoordsToGridPosition(indexCoords);
+        var gridPosition = grid.IndexCoordsToGridPosition(indexCoords);
         if (TryGetCell(indexCoords, out var cell) && placementValidator.CanPlace(cell, card))
         {
             CreateCardInstance(card, indexCoords, cell);
@@ -210,7 +214,7 @@ public class GameBoard : Singleton<GameBoard>
         foreach (var cell in board)
         {
             var indexCoord = cell.indexCoord;
-            var position = IsometricGrid.Instance.IndexCoordsToWorldCenter(indexCoord);
+            var position = grid.IndexCoordsToWorldCenter(indexCoord);
 
             foreach (var card in cell.cards)
             {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardDataBase : Singleton<CardDataBase>
+public class CardDataBase
 {
     private Dictionary<int, CardData> idToCard;
     private Dictionary<string, CardData> nameToCard;
@@ -16,10 +16,8 @@ public class CardDataBase : Singleton<CardDataBase>
         nameToCard.TryGetValue(name, out var card) ? card : null;
 
 
-
-    new public void Awake()
+    public CardDataBase()
     {
-        base.Awake();
         LoadCardData();
     }
 

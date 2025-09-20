@@ -14,11 +14,33 @@ public class CardDeckDisplay : MonoBehaviour
     public event Action<CardData, Vector3> CardDropped;
 
 
-    private void Start()
+
+    private void OnEnable()
     {
         layoutGroup = GetComponent<LayoutGroup>();
-
         GroupActivate();
+    }
+
+
+    private void OnDisable()
+    {
+        if(currentDeck == null) return;
+
+        // Unsubscribe from events to prevent memory leaks
+        for (int i = 0; i < currentDeck.Count; i++)
+        {
+            var cardDisplay = currentDeck[i];
+            if (cardDisplay != null)
+            {
+                cardDisplay.CardDragStarted -= HandleCardDragStarted;
+                cardDisplay.CardDragEnded -= HandleCardDragEnded;
+
+                Destroy(cardDisplay.gameObject);
+            }
+        }
+
+        currentDeck.Clear();
+
     }
 
 

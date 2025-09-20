@@ -35,7 +35,7 @@ public class GridDisplayer : MonoBehaviour
                                                        // so our world IndexCoords is isometric IndexCoords
 
             // Transform isometric IndexCoords to rectangular IndexCoords
-            var mouseRectPosition = IsometricGrid.ReverseIsoProject(mouseIsoPosition);
+            var mouseRectPosition = IsoMath.ReverseIsoProject(mouseIsoPosition);
 
             // Find the cell index in rectangular space
             var cellIndex = new Vector2Int(
@@ -73,10 +73,10 @@ public class GridDisplayer : MonoBehaviour
         var halfCellSize = (cellSize) / 2f;
 
         // Draw Isometric Projection
-        var leftUpCorner = IsometricGrid.IsoProject(position + new Vector2(-halfCellSize.x, halfCellSize.y));
-        var rightUpCorner = IsometricGrid.IsoProject(position + new Vector2(halfCellSize.x, halfCellSize.y));
-        var rightDownCorner = IsometricGrid.IsoProject(position + new Vector2(halfCellSize.x, -halfCellSize.y));
-        var leftDownCorner = IsometricGrid.IsoProject(position + new Vector2(-halfCellSize.x, -halfCellSize.y));
+        var leftUpCorner = IsoMath.IsoProject(position + new Vector2(-halfCellSize.x, halfCellSize.y));
+        var rightUpCorner = IsoMath.IsoProject(position + new Vector2(halfCellSize.x, halfCellSize.y));
+        var rightDownCorner = IsoMath.IsoProject(position + new Vector2(halfCellSize.x, -halfCellSize.y));
+        var leftDownCorner = IsoMath.IsoProject(position + new Vector2(-halfCellSize.x, -halfCellSize.y));
 
         DrawRect(leftUpCorner, rightUpCorner, rightDownCorner, leftDownCorner, color);
     }

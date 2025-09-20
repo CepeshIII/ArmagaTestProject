@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
+
 [CustomEditor(typeof(GridBounds))]
 public class GridBoundsInspector : Editor
 {
@@ -9,23 +10,26 @@ public class GridBoundsInspector : Editor
 
     private const float wpSize = 0.1f;
 
-    private UnityEngine.Grid grid;
-
 
     private void OnEnable()
     {
         cb = (GridBounds)target;
-        grid = cb.GetComponent<UnityEngine.Grid>();
     }
 
     public override void OnInspectorGUI()
     {
-        DrawDefaultInspector();
+        if(cb != null)
+        {
+            DrawDefaultInspector();
+        }
     }
 
     private void OnSceneGUI()
     {
-        DrawBorderHandles();
+        if (cb != null)
+        {
+            DrawBorderHandles();
+        }
     }
 
     // Draw and edit the rectangle defined by gridBounds points (A, B, C, D).
@@ -68,7 +72,7 @@ public class GridBoundsInspector : Editor
         for (int i = 0; i < verts.Length; i++)
         {
             // Transform to isometric
-            verts[i] = IsometricGrid.IsoProject(verts[i]);
+            verts[i] = IsoMath.IsoProject(verts[i]);
             var newVert = verts[i];
 
             // Move vertex and record offset

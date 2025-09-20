@@ -1,92 +1,85 @@
+using System;
 using UnityEngine;
+using Zenject;
 
 
-public class CardDeckController : MonoBehaviour
+public class CardDeckController : MonoBehaviour, IInitializable, IDisposable
 {
     private CardDeck cardDeck;
-    private CardDeckDisplay deckView;
+    private CardDeckDisplay deckDisplay;
+    private CardPlacer cardPlacer;
 
 
-    private void OnEnable()
+
+    [Inject]
+    public void Construct(CardDeckDisplay deckDisplay, CardPlacer cardPlacer)
     {
-        if (cardDeck != null)
-            cardDeck.DeckChanged += UpdateView;
-
-        if (deckView != null)
-            deckView.CardDropped += HandleCardDropped;
-
-        CardPlacer.Instance.CardPlacementConfirmed += HandleCardPlaced;
-        CardPlacer.Instance.CardPlacementCanceled += HandleCardPlacementCanceled;
+        this.cardPlacer = cardPlacer;
+        this.deckDisplay = deckDisplay;
     }
 
 
-    private void OnDisable()
+    public void Initialize()
     {
-        if(cardDeck != null)
-            cardDeck.DeckChanged -= UpdateView;
+        if (deckDisplay != null)
+            deckDisplay.CardDropped += HandleCardDropped;
 
-        if(deckView != null)
-            deckView.CardDropped -= HandleCardDropped;
-
-        if (CardPlacer.Instance != null)
+        if (cardPlacer != null)
         {
-            CardPlacer.Instance.CardPlacementConfirmed -= HandleCardPlaced;
-            CardPlacer.Instance.CardPlacementCanceled -= HandleCardPlacementCanceled;
+            cardPlacer.CardPlacementConfirmed += HandleCardPlaced;
+            cardPlacer.CardPlacementCanceled += HandleCardPlacementCanceled;
         }
 
     }
 
+
+    public void Dispose()
+    {
+        if (cardDeck != null)
+            cardDeck.DeckChanged -= UpdateView;
+
+        if (deckDisplay != null)
+            deckDisplay.CardDropped -= HandleCardDropped;
+
+        if (cardPlacer != null)
+        {
+            cardPlacer.CardPlacementConfirmed -= HandleCardPlaced;
+            cardPlacer.CardPlacementCanceled -= HandleCardPlacementCanceled;
+        }
+    }
     
-    public void SetCardDeck(CardDeck newCardDeck)
+
+    public void SetDeck(CardDeck deck)
     {
+        cardDeck = deck;
+
         if (cardDeck != null)
         {
-            cardDeck.DeckChanged -= UpdateView;
-        }
-
-        if (newCardDeck != null)
-        {   
-            cardDeck = newCardDeck;
+            UpdateView();
             cardDeck.DeckChanged += UpdateView;
         }
 
-        UpdateView();
-    }
-
-
-    public void SetDeckView(CardDeckDisplay newDeckView)
-    {
-        if (deckView != null)
-        {
-            deckView.CardDropped -= HandleCardDropped;
-        }
-
-        if (newDeckView != null)
-        {
-            deckView = newDeckView;
-            deckView.CardDropped += HandleCardDropped;
-        }
-
-        UpdateView();
     }
 
 
     private void UpdateView()
     {
-        if(deckView != null && cardDeck != null)
-            deckView.UpdateDisplay(cardDeck.Cards);
+        if(deckDisplay != null && cardDeck != null)
+            deckDisplay.UpdateDisplay(cardDeck.Cards);
     }
 
 
     private void HandleCardDropped(CardData cardData, Vector3 position)
     {
-        CardPlacer.Instance.TryPlaceCard(cardData, position);
+        if(cardPlacer != null)
+            cardPlacer.TryPlaceCard(cardData, position);
     }
 
 
     private void HandleCardPlaced(CardData cardData)
     {
-        cardDeck.RemoveCard(cardData);
+        if (cardPlacer != null)
+            cardDeck.RemoveCard(cardData);
     }
 
 
@@ -94,4 +87,5 @@ public class CardDeckController : MonoBehaviour
     {
         UpdateView();
     }
+
 }

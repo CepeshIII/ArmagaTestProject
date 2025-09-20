@@ -1,9 +1,33 @@
 ﻿using System;
 using UnityEngine;
 
+public interface ILinearGrid
+{
+    public Vector2 CellSize { get; }
+    public Vector2Int GridOffset { get; }
+    public Vector2Int GridSize { get; }
+
+    public void BuildGrid();
+
+    public Vector2Int GridPositionToIndexCoords(Vector2Int gridPos);
+    public Vector3 GridPositionToWorld(Vector2 gridPos);
+
+    public int IndexCoordsToArrayIndex(Vector2Int indexCoords);
+
+    public Vector2Int IndexCoordsToGridPosition(Vector2Int indexCoords);
+
+    public Vector3 IndexCoordsToWorldCenter(Vector2Int indexCoords);
+    public Vector3 IndexCoordsToWorldCorner(Vector2Int indexCoords);
+
+    public bool IsInsideGridIndex(Vector2Int indexCoords);
+
+    public Vector2Int WorldToGridPosition(Vector2 isoWorldPos);
+    public Vector2Int WorldToIndexCoords(Vector2 isoWorldPos);
+}
+
 
 [RequireComponent(typeof(GridBounds))]
-public class IsometricGrid : Singleton<IsometricGrid>
+public class IsometricGrid : MonoBehaviour, ILinearGrid
 {
     public struct Cell
     {
@@ -20,15 +44,14 @@ public class IsometricGrid : Singleton<IsometricGrid>
     private Vector2Int gridOriginOffset;
     private Vector2Int gridSize;
 
-    public Vector2 CellSize { get => cellSize;}
+    public Vector2 CellSize { get => cellSize; }
     public Vector2Int GridSize { get => gridSize; }
     public Vector2Int GridOffset { get => gridOriginOffset; }
 
 
 
-    new private void Awake()
+    private void Awake()
     {
-        base.Awake();
         gridBounds = GetComponent<GridBounds>();
         InitGridArray();
     }
@@ -71,46 +94,11 @@ public class IsometricGrid : Singleton<IsometricGrid>
     }
 
 
-    public void SetCellData()
-    {
-        throw new NotImplementedException();
-    }
-
-
     public bool IsInsideGridIndex(Vector2Int indexCoords)
     {
         return !(indexCoords.x >= gridSize.x || indexCoords.y >= gridSize.y
                || indexCoords.x < 0 || indexCoords.y < 0);
     }
-
-
-    #region Projection
-
-    /// <summary>
-    /// Projects rectangular coordinates into isometric space.
-    /// </summary>
-    public static Vector3 IsoProject(Vector2 rectPos)
-    {
-        return new Vector3(
-            rectPos.x - rectPos.y,
-            (rectPos.x + rectPos.y) * 0.5f
-        );
-    }
-
-    /// <summary>
-    /// Reverses isometric projection back to rectangular space.
-    /// </summary>
-    public static Vector2 ReverseIsoProject(Vector2 isoPos)
-    {
-        return new Vector2(
-            (isoPos.x + isoPos.y / 0.5f) * 0.5f,
-            (isoPos.y / 0.5f - isoPos.x) * 0.5f
-        );
-    }
-
-    #endregion
-
-
 
 
     /// <summary>
@@ -119,7 +107,7 @@ public class IsometricGrid : Singleton<IsometricGrid>
     /// <param name="isoWorldPos">World IndexCoords in isometric space.</param>
     public Vector2Int WorldToGridPosition(Vector2 isoWorldPos)
     {
-        var rectCoords = ReverseIsoProject(isoWorldPos);
+        var rectCoords = IsoMath.ReverseIsoProject(isoWorldPos);
         return new Vector2Int(
             Mathf.FloorToInt(rectCoords.x / cellSize.x),
             Mathf.FloorToInt(rectCoords.y / cellSize.y)
@@ -173,7 +161,7 @@ public class IsometricGrid : Singleton<IsometricGrid>
     /// </summary>
     public Vector3 GridPositionToWorld(Vector2 gridPos)
     {
-        return IsoProject(gridPos * cellSize);
+        return IsoMath.IsoProject(gridPos * cellSize);
     }
 
 
