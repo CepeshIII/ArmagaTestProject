@@ -22,14 +22,14 @@ public class TileMapManager : MonoBehaviour
     private void OnEnable()
     {
         if (gameBoard != null)
-        gameBoard.OnCardPlaced += HandleCardPlaced;
+        gameBoard.CardPlaced += HandleCardPlaced;
     }
 
 
     private void OnDisable()
     {
         if (gameBoard != null)
-            gameBoard.OnCardPlaced -= HandleCardPlaced;
+            gameBoard.CardPlaced -= HandleCardPlaced;
     }
 
 

@@ -7,7 +7,7 @@ public class InputManager : Singleton<InputManager>
 {
     public static InputSystem_Actions actions;
 
-    // Board events
+    // BoardCells events
     public event Action<Vector3> OnBoardClicked_Start;
     public event Action<Vector3> OnBoardClicked_End;
     public event Action<Vector3> OnBoardClicked_Performed;

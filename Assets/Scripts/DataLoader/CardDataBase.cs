@@ -9,6 +9,8 @@ public class CardDataBase
     private readonly string path = "CardsData";
 
 
+    public int CardCount => idToCard.Count;
+
     public CardData GetCardDataById(int id) =>
         idToCard.TryGetValue(id, out var card) ? card : null;
 

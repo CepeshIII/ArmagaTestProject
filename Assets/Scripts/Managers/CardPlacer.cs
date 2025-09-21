@@ -19,7 +19,6 @@ public class CardPlacer : MonoBehaviour, IInitializable, IDisposable
     public void Construct(GameBoard gameBoard)
     {
         this.gameBoard = gameBoard;
-
     }
 
 
@@ -27,8 +26,8 @@ public class CardPlacer : MonoBehaviour, IInitializable, IDisposable
     {
         if (gameBoard != null)
         {
-            gameBoard.OnCardPlaced += HandleCardPlaced;
-            gameBoard.OnCardPlacingCanceled += HandleCardPlacingCanceled;
+            gameBoard.CardPlaced += HandleCardPlaced;
+            gameBoard.CardPlacingCanceled += HandleCardPlacingCanceled;
         }
     }
 
@@ -37,8 +36,8 @@ public class CardPlacer : MonoBehaviour, IInitializable, IDisposable
     {
         if (gameBoard != null)
         {
-            gameBoard.OnCardPlaced -= HandleCardPlaced;
-            gameBoard.OnCardPlacingCanceled -= HandleCardPlacingCanceled;
+            gameBoard.CardPlaced -= HandleCardPlaced;
+            gameBoard.CardPlacingCanceled -= HandleCardPlacingCanceled;
         }
     }
 

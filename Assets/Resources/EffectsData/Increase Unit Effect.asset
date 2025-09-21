@@ -16,4 +16,4 @@ MonoBehaviour:
   effectsName: Increase Unit Effect
   area: 1
   target: 1
-  count: 1
+  increaseAmount: 5

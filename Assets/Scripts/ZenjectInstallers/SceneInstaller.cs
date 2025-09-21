@@ -5,18 +5,26 @@ public class SceneInstaller : MonoInstaller
 {
     public override void InstallBindings()
     {
+        // Bind the grid component from the scene
         Container.Bind<IsometricGrid>().FromComponentInHierarchy().AsSingle();
 
-        Container.Bind<CardDeckDisplay>().FromComponentInHierarchy().AsSingle();
+        // Bind a new instance of GameBoard
+        Container.Bind<GameBoard>().FromNew().AsSingle();
 
-        Container.BindInterfacesAndSelfTo<GameBoard>().FromComponentInHierarchy().AsSingle().NonLazy();
+        // Bind the board display and initialize it immediately
+        Container.BindInterfacesAndSelfTo<BoardDisplayer>().FromComponentInHierarchy().AsSingle().NonLazy();
 
-        Container.BindInterfacesAndSelfTo<CardPlacer>().FromNewComponentOnNewGameObject().AsSingle();
+        // Bind factory for creating cells
+        Container.BindInterfacesAndSelfTo<BoardCellsBuilder>().FromNew().AsSingle().NonLazy();
 
+        // Bind game managers
         Container.BindInterfacesAndSelfTo<RoundManager>().FromNew().AsSingle().NonLazy();
-
         Container.BindInterfacesAndSelfTo<CardDeckController>().FromNewComponentOnNewGameObject().AsSingle();
 
-        Container.Bind<IInitializable>().To<BoardDisplayer>().FromComponentInHierarchy().AsSingle();
+        // Bind the card placer for handling card placement
+        Container.BindInterfacesAndSelfTo<CardPlacer>().FromNewComponentOnNewGameObject().AsSingle();
+
+        // Bind the deck display from the scene
+        Container.Bind<CardDeckDisplay>().FromComponentInHierarchy().AsSingle();
     }
 }

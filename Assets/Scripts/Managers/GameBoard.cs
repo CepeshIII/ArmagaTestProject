@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using Zenject;
 
@@ -14,63 +13,40 @@ public class Cell
 }
 
 
-public class GameBoard : MonoBehaviour, IInitializable
+public class GameBoard
 {
     private IsometricGrid grid;
-    private Cell[] board;
     private PlacementValidator placementValidator;
 
+    private Cell[] boardCells;
 
-    public Cell[] Board { get => board; }
+    public Cell[] BoardCells { get => boardCells; }
     public IsometricGrid Grid { get => grid; }
 
 
-    public event Action<CardData, Vector2Int> OnCardPlaced;
-    public event Action<CardData, Vector2Int> OnCardPlacingCanceled;
+    public event Action BoardCellsChange;
+    public event Action<Vector2Int, bool> CellAvailabilityChanged;
+    public event Action<CardData, Vector2Int> CardPlaced;
+    public event Action<CardData, Vector2Int> CardPlacingCanceled;
 
 
-    [Inject]
-    public void Constructor(IsometricGrid grid)
+
+    public GameBoard(IsometricGrid grid)
     {
         this.grid = grid;
     }
 
 
-    public void Initialize()
+    public void SetPlacementValidator(PlacementValidator placementValidator)
     {
-        if(grid != null)
-        {
-            InitializeBoard(grid);
-        }
-
-        SetCellsAvailable(new Vector2Int[]
-        {
-            new Vector2Int(0, 0), new Vector2Int(1, 0), new Vector2Int(2, 0),
-            new Vector2Int(0, 1), new Vector2Int(1, 1), new Vector2Int(2, 1),
-            new Vector2Int(0, 2), new Vector2Int(1, 2), new Vector2Int(2, 2),
-        });
-
-        placementValidator = new PlacementValidator();
-
-        placementValidator.AddMandatoryRule(new PlacementRules.CellIsNotNullRule());
-        placementValidator.AddMandatoryRule(new PlacementRules.CellAvailableRule());
-
-        placementValidator.AddOptionalRule(new PlacementRules.CellEmptyRule());
-        placementValidator.AddOptionalRule(new PlacementRules.SameCardRule());
+        this.placementValidator = placementValidator;
     }
 
 
-    public void SetCellsAvailable(Vector2Int[] cellIndexCoord)
+    public void SetBoardCells(Cell[] newBoard)
     {
-        foreach(var indexCoord in cellIndexCoord)
-        {
-            if(!grid.IsInsideGridIndex(indexCoord))
-            {
-                continue;
-            }
-            var index = grid.IndexCoordsToArrayIndex(indexCoord);
-            board[index].isAvailable = true;
-        }
+        boardCells = newBoard;
+        BoardCellsChange?.Invoke();
     }
 
 
@@ -88,11 +64,11 @@ public class GameBoard : MonoBehaviour, IInitializable
         if (TryGetCell(indexCoords, out var cell) && placementValidator.CanPlace(cell, card))
         {
             CreateCardInstance(card, indexCoords, cell);
-            OnCardPlaced?.Invoke(card, gridPosition);
+            CardPlaced?.Invoke(card, gridPosition);
         }
         else
         {
-            OnCardPlacingCanceled?.Invoke(card, gridPosition);
+            CardPlacingCanceled?.Invoke(card, gridPosition);
         }
     }
 
@@ -122,7 +98,7 @@ public class GameBoard : MonoBehaviour, IInitializable
         if (grid.IsInsideGridIndex(indexCoords))
         {
             var index = grid.IndexCoordsToArrayIndex(indexCoords);
-            cell = board[index];
+            cell = boardCells[index];
             return true;
         }
         cell = null;
@@ -135,7 +111,7 @@ public class GameBoard : MonoBehaviour, IInitializable
         if (grid.IsInsideGridIndex(indexCoords))
         {
             var index = grid.IndexCoordsToArrayIndex(indexCoords);
-            return board[index];
+            return boardCells[index];
         }
 
         Debug.LogWarning("IndexCoords out of grid size");
@@ -151,7 +127,7 @@ public class GameBoard : MonoBehaviour, IInitializable
             if (grid.IsInsideGridIndex(effectedCellIndexCoords))
             {
                 var index = grid.IndexCoordsToArrayIndex(effectedCellIndexCoords);
-                var effectedCell = board[index];
+                var effectedCell = boardCells[index];
                 effectedCell.effects.Add(effect);
             }
         }
@@ -160,7 +136,7 @@ public class GameBoard : MonoBehaviour, IInitializable
     // Call this method after all placements are done for resetting effects values
     private void ResetParameters()
     {
-        foreach (var cell in board)
+        foreach (var cell in boardCells)
         {
             foreach(var card in cell.cards)
             {
@@ -169,10 +145,11 @@ public class GameBoard : MonoBehaviour, IInitializable
         }
     }
 
+
     // Call this methods after all parameters are reset for calculation new values
     private void ApplyEffects()
     {
-        foreach (var cell in board)
+        foreach (var cell in boardCells)
         {
             foreach (var effect in cell.effects)
             {
@@ -184,43 +161,4 @@ public class GameBoard : MonoBehaviour, IInitializable
         }
     }
 
-
-    private void InitializeBoard(IsometricGrid grid)
-    {
-        board = new Cell[grid.GridSize.x * grid.GridSize.y];
-
-        var index = 0;
-        for (int y = 0; y < grid.GridSize.y; y++)
-        {
-            for (int x = 0; x < grid.GridSize.x; x++)
-            {
-                board[index] = new Cell 
-                { 
-                    cards = new(),
-                    effects = new(),
-                    isAvailable = false,
-                    indexCoord = new Vector2Int(x, y)
-                };
-                index++;
-            }
-        }
-    }
-
-
-    private void OnDrawGizmos()
-    {
-        if (board == null) return;
-
-        foreach (var cell in board)
-        {
-            var indexCoord = cell.indexCoord;
-            var position = grid.IndexCoordsToWorldCenter(indexCoord);
-
-            foreach (var card in cell.cards)
-            {
-                var content = new GUIContent(card.GetDescription());
-                Handles.Label(position, content);
-            }
-        }
-    }
 }
