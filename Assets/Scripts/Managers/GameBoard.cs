@@ -13,6 +13,17 @@ public class Cell
 }
 
 
+public class BoardReadySignal
+{
+    public BoardReadySignal(GameBoard board)
+    {
+        Board = board;
+    }
+
+    public GameBoard Board { get; private set; }
+}
+
+
 public class GameBoard
 {
     private IsometricGrid grid;
@@ -24,7 +35,6 @@ public class GameBoard
     public IsometricGrid Grid { get => grid; }
 
 
-    public event Action BoardCellsChange;
     public event Action<Vector2Int, bool> CellAvailabilityChanged;
     public event Action<CardData, Vector2Int> CardPlaced;
     public event Action<CardData, Vector2Int> CardPlacingCanceled;
@@ -46,7 +56,7 @@ public class GameBoard
     public void SetBoardCells(Cell[] newBoard)
     {
         boardCells = newBoard;
-        BoardCellsChange?.Invoke();
+        Debug.Log("SetBoardCells");
     }
 
 

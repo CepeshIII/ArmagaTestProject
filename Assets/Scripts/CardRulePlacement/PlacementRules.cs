@@ -45,7 +45,7 @@
     // Rule 5 – custom card data compatibility
     public class CardCompatibilityRule : IPlacementRule
     {
-        public bool Validate(Cell cell, CardData cardData)
+        public bool Validate(GridCell cell, CardData cardData)
         {
             foreach (var existingCard in cell.cards)
             {

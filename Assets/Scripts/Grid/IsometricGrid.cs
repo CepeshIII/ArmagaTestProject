@@ -26,20 +26,20 @@ public interface ILinearGrid
 }
 
 
-[RequireComponent(typeof(GridBounds))]
-public class IsometricGrid : MonoBehaviour, ILinearGrid
+public struct GridCell
 {
-    public struct Cell
-    {
-        public Vector2Int gridPosition;     // row/col
-        public Vector2 centerRectPosition;  // center in rectangular coords
-        public Vector2 centerIsoPosition;   // center in isometric coords
-        public bool isOccupied;
-    }
+    public Vector2Int gridPosition;     // row/col
+    public Vector2 centerRectPosition;  // center in rectangular coords
+    public Vector2 centerIsoPosition;   // center in isometric coords
+    public bool isOccupied;
+}
 
 
-    [SerializeField] private Vector2 cellSize;
-    [SerializeField] private GridBounds gridBounds;
+public class IsometricGrid: ILinearGrid
+{
+
+    private GridBounds gridBounds;
+    private Vector2 cellSize = new Vector2(4, 4);
 
     private Vector2Int gridOriginOffset;
     private Vector2Int gridSize;
@@ -50,17 +50,30 @@ public class IsometricGrid : MonoBehaviour, ILinearGrid
 
 
 
-    private void Awake()
+    public IsometricGrid()
     {
-        gridBounds = GetComponent<GridBounds>();
-        InitGridArray();
+        cellSize = new Vector2(1, 1);
     }
 
 
-    private void Update()
+    public void BuildFromBounds(GridBounds gridBounds)
     {
-        InitGridArray();
+        this.gridBounds = gridBounds;
+        BuildGrid();
     }
+
+
+    //private void Awake()
+    //{
+    //    gridBounds = GetComponent<GridBounds>();
+    //    InitGridArray();
+    //}
+
+
+    //private void Update()
+    //{
+    //    InitGridArray();
+    //}
 
 
     public void BuildGrid()

@@ -16,6 +16,7 @@ public class GridBoundsInspector : Editor
         cb = (GridBounds)target;
     }
 
+
     public override void OnInspectorGUI()
     {
         if(cb != null)
@@ -24,6 +25,7 @@ public class GridBoundsInspector : Editor
         }
     }
 
+
     private void OnSceneGUI()
     {
         if (cb != null)
@@ -31,6 +33,7 @@ public class GridBoundsInspector : Editor
             DrawBorderHandles();
         }
     }
+
 
     // Draw and edit the rectangle defined by gridBounds points (A, B, C, D).
     // Points are stored in rectangular space but displayed in isometric space.

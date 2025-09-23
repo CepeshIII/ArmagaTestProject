@@ -5,7 +5,7 @@ using UnityEngine;
 using Zenject;
 
 
-public class BoardDisplayer : MonoBehaviour, IInitializable, IDisposable
+public class BoardDisplayer : MonoBehaviour, IDisposable
 {
     [SerializeField] private Material boardMaterial;
     [SerializeField] private Vector2Int textureSize = new Vector2Int(16, 16);
@@ -16,15 +16,17 @@ public class BoardDisplayer : MonoBehaviour, IInitializable, IDisposable
     private readonly List<Tuple<Vector2Int, bool>> dirtCells = new();
 
 
+
     [Inject]
-    public void Construct(GameBoard gameBoard)
+    public void Construct(SignalBus signalBus)
     {
-        this.gameBoard = gameBoard;
+        signalBus.Subscribe<BoardReadySignal>(x => OnBoardReady(x.Board));
     }
 
 
     public void Initialize()
     {
+        Debug.Log("BoardDisplayer Initialize");
         gridShaderController = new GridShaderController();
         gridShaderController.SetMaterial(boardMaterial);
         gridShaderController.CreateAndSetMaskTexture(textureSize);
@@ -35,9 +37,18 @@ public class BoardDisplayer : MonoBehaviour, IInitializable, IDisposable
         {
             gridShaderController.SetGridOffset(gameBoard.Grid.GridOffset);
 
-            gameBoard.BoardCellsChange += HandleBoardCellsChange;
             gameBoard.CellAvailabilityChanged += HandleCellAvailabilityChanged;
+
+            DrawBoard();
         }
+    }
+
+
+    private void OnBoardReady(GameBoard board)
+    {
+        this.gameBoard = board;
+
+        Initialize();
     }
 
 
@@ -59,7 +70,6 @@ public class BoardDisplayer : MonoBehaviour, IInitializable, IDisposable
     {
         if (gameBoard != null)
         {
-            gameBoard.BoardCellsChange -= HandleBoardCellsChange;
             gameBoard.CellAvailabilityChanged -= HandleCellAvailabilityChanged;
 
         }
@@ -69,10 +79,13 @@ public class BoardDisplayer : MonoBehaviour, IInitializable, IDisposable
     private void DrawBoard()
     {
         gridShaderController.ClearMask();
-
-        foreach (var cell in gameBoard.BoardCells)
+        if(gameBoard.BoardCells != null)
         {
-            gridShaderController.SetMaskPixel(cell.indexCoord, cell.isAvailable);
+            foreach (var cell in gameBoard.BoardCells)
+            {
+                gridShaderController.SetMaskPixel(cell.indexCoord, cell.isAvailable);
+            }
+            Debug.Log($"gameBoard.BoardCells: {gameBoard.BoardCells.Length}");
         }
 
         gridShaderController.ApplyMask();
@@ -82,12 +95,6 @@ public class BoardDisplayer : MonoBehaviour, IInitializable, IDisposable
     private void HandleCellAvailabilityChanged(Vector2Int coord, bool isAvailable)
     {
         dirtCells.Add(new (coord, isAvailable));
-    }
-
-
-    private void HandleBoardCellsChange()
-    {
-        DrawBoard();
     }
 
 

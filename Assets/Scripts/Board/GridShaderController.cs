@@ -14,9 +14,13 @@ public class GridShaderController
     private readonly string offsetPropertiesName = "_GridOffset";
 
 
+    public bool HasMaterial { get { return targetMaterial != null; } } 
+    public bool HasTexture { get { return targetMaterial.GetTexture(texturePropertiesName) != null; } } 
+
+
 
     /// <summary>
-    /// Assigns the target material that the mask texture will be applied to.
+    /// Assigns the target gridMaterial that the mask texture will be applied to.
     /// Does NOT automatically apply the mask; call ApplyMask() after changing pixels or creating a texture.
     /// </summary>
     public void SetMaterial(Material newMaterial)
@@ -27,7 +31,7 @@ public class GridShaderController
 
     /// <summary>
     /// Assigns a mask texture to the controller.
-    /// Any pixel changes to this texture must be followed by ApplyMask() to update the material.
+    /// Any pixel changes to this texture must be followed by ApplyMask() to update the gridMaterial.
     /// </summary>
     public void SetMaskTexture(Texture2D newTexture)
     {
@@ -77,7 +81,7 @@ public class GridShaderController
 
 
     /// <summary>
-    /// Uploads all changes from the mask texture to the GPU and applies it to the material.
+    /// Uploads all changes from the mask texture to the GPU and applies it to the gridMaterial.
     /// Must be called after pixel changes for them to appear in the shader.
     /// </summary>
     public void ApplyMask()
@@ -91,7 +95,7 @@ public class GridShaderController
 
     /// <summary>
     /// Fills the entire mask with hidden color.
-    /// Changes are not applied to the material until <see cref="ApplyMask"/> is called.
+    /// Changes are not applied to the gridMaterial until <see cref="ApplyMask"/> is called.
     /// </summary>
     public void ClearMask()
     {
@@ -109,7 +113,7 @@ public class GridShaderController
 
     /// <summary>
     /// Fills the entire mask with visible color.
-    /// Changes are not applied to the material until <see cref="ApplyMask"/> is called.
+    /// Changes are not applied to the gridMaterial until <see cref="ApplyMask"/> is called.
     /// </summary>
     public void FillMask()
     {

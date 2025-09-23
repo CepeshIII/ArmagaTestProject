@@ -18,4 +18,5 @@ public class GridBounds : MonoBehaviour
 
     [SerializeField]
     public Vector3 pointD = new Vector3(0, -1);
+
 }
