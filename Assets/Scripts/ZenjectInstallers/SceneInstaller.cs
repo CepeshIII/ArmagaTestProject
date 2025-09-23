@@ -36,8 +36,10 @@ public class SceneInstaller : MonoInstaller
         // Bind the deck display from the scene
         Container.Bind<CardDeckDisplay>().FromComponentInHierarchy().AsSingle();
 
+
         // Bind the board display and initialize it immediately
         Container.BindInterfacesTo<BoardDisplayer>().FromComponentInHierarchy().AsSingle();
+        Container.Bind<IMaskShaderController>().To<GridShaderController>().FromNew().AsSingle();
 
         // Signals
         Container.DeclareSignal<BoardReadySignal>();

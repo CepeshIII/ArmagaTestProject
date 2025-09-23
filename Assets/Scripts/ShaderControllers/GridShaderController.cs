@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class GridShaderController
+
+public class GridShaderController : IMaskShaderController
 {
     private Material targetMaterial;
     private Texture2D maskTexture;
@@ -14,8 +15,8 @@ public class GridShaderController
     private readonly string offsetPropertiesName = "_GridOffset";
 
 
-    public bool HasMaterial { get { return targetMaterial != null; } } 
-    public bool HasTexture { get { return targetMaterial.GetTexture(texturePropertiesName) != null; } } 
+    public bool HasMaterial { get { return targetMaterial != null; } }
+    public bool HasTexture { get { return targetMaterial.GetTexture(texturePropertiesName) != null; } }
 
 
 
@@ -69,9 +70,9 @@ public class GridShaderController
     /// Sets a single pixel in the mask texture. 
     /// Changes are not visible in the shader until <see cref="ApplyMask"/> is called.
     /// </summary>
-    public void SetMaskPixel(Vector2Int coord, bool isVisible) 
-    { 
-        if(maskTexture != null)
+    public void SetMaskPixel(Vector2Int coord, bool isVisible)
+    {
+        if (maskTexture != null)
         {
             var textCoord = ToTextureCoord(coord);
             maskTexture.SetPixel(textCoord.x, textCoord.y, isVisible ? maskVisibleColor : maskHiddenColor);

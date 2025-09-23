@@ -11,15 +11,16 @@ public class BoardDisplayer : MonoBehaviour, IDisposable
     [SerializeField] private Vector2Int textureSize = new Vector2Int(16, 16);
 
     private GameBoard gameBoard;
-    private GridShaderController gridShaderController;
+    private IMaskShaderController shaderController;
 
     private readonly List<Tuple<Vector2Int, bool>> dirtCells = new();
 
 
 
     [Inject]
-    public void Construct(SignalBus signalBus)
+    public void Construct(IMaskShaderController shaderController, SignalBus signalBus)
     {
+        this.shaderController = shaderController;
         signalBus.Subscribe<BoardReadySignal>(x => OnBoardReady(x.Board));
     }
 
@@ -27,15 +28,14 @@ public class BoardDisplayer : MonoBehaviour, IDisposable
     public void Initialize()
     {
         Debug.Log("BoardDisplayer Initialize");
-        gridShaderController = new GridShaderController();
-        gridShaderController.SetMaterial(boardMaterial);
-        gridShaderController.CreateAndSetMaskTexture(textureSize);
-        gridShaderController.ClearMask();
-        gridShaderController.ApplyMask();
+        shaderController.SetMaterial(boardMaterial);
+        shaderController.CreateAndSetMaskTexture(textureSize);
+        shaderController.ClearMask();
+        shaderController.ApplyMask();
 
         if (gameBoard != null)
         {
-            gridShaderController.SetGridOffset(gameBoard.Grid.GridOffset);
+            shaderController.SetGridOffset(gameBoard.Grid.GridOffset);
 
             gameBoard.CellAvailabilityChanged += HandleCellAvailabilityChanged;
 
@@ -58,9 +58,9 @@ public class BoardDisplayer : MonoBehaviour, IDisposable
         {
             foreach (var cell in dirtCells) 
             { 
-                gridShaderController.SetMaskPixel(cell.Item1, cell.Item2);
+                shaderController.SetMaskPixel(cell.Item1, cell.Item2);
             }
-            gridShaderController.ApplyMask();
+            shaderController.ApplyMask();
             dirtCells.Clear();
         }
     }
@@ -78,17 +78,16 @@ public class BoardDisplayer : MonoBehaviour, IDisposable
 
     private void DrawBoard()
     {
-        gridShaderController.ClearMask();
+        shaderController.ClearMask();
         if(gameBoard.BoardCells != null)
         {
             foreach (var cell in gameBoard.BoardCells)
             {
-                gridShaderController.SetMaskPixel(cell.indexCoord, cell.isAvailable);
+                shaderController.SetMaskPixel(cell.indexCoord, cell.isAvailable);
             }
-            Debug.Log($"gameBoard.BoardCells: {gameBoard.BoardCells.Length}");
         }
 
-        gridShaderController.ApplyMask();
+        shaderController.ApplyMask();
     }
 
 

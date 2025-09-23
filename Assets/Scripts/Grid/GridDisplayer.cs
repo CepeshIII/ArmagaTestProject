@@ -48,8 +48,6 @@ public class GridDisplayer : MonoBehaviour
             return;
         }
 
-        Debug.Log("OnEnable");
-
         gridBounds = GetComponent<GridBounds>();
         grid = new IsometricGrid();
 
