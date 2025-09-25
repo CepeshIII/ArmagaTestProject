@@ -9,6 +9,12 @@ public enum CardType
 }
 
 
+public enum CardFaction
+{
+    Human,
+}
+
+
 public abstract class CardData : ScriptableObject
 {
     public int cardId;

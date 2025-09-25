@@ -18,4 +18,13 @@ MonoBehaviour:
   sprite: {fileID: 2065853741, guid: 21ade160cee9aaf40a69679445223acb, type: 3}
   tile: {fileID: 11400000, guid: 78e21985c7391e04bbaa10820f5373a0, type: 2}
   buildingPrefab: {fileID: 0}
-  effect: {fileID: 11400000, guid: aa5aec215c152944c8e69440309be080, type: 2}
+  effects:
+  - effectsId: 0
+    effectsName: 
+    effectArea:
+      areaType: 1
+      range: 1
+    effectTarget: 1
+    unitEffectType: 0
+    buildingEffectType: 0
+    effectValue: 2

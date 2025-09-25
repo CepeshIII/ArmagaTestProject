@@ -28,6 +28,7 @@ public class GameBoard
 {
     private IsometricGrid grid;
     private PlacementValidator placementValidator;
+    private EffectFactory effectFactory;
 
     private Cell[] boardCells;
 
@@ -41,9 +42,10 @@ public class GameBoard
 
 
 
-    public GameBoard(IsometricGrid grid)
+    public GameBoard(IsometricGrid grid, EffectFactory effectFactory)
     {
         this.grid = grid;
+        this.effectFactory = effectFactory;
     }
 
 
@@ -75,6 +77,8 @@ public class GameBoard
         {
             CreateCardInstance(card, indexCoords, cell);
             CardPlaced?.Invoke(card, gridPosition);
+
+            ApplyEffects();
         }
         else
         {
@@ -91,12 +95,17 @@ public class GameBoard
             var cardInstance = creator(card, indexCoords);
             cell.cards.Add(cardInstance);
 
-            // Get and apply effects if the card is an effect source
+            // Get and apply effects if the card is an effectData source
             if (card is IEffectSourceCard effectSourceCard)
             {
-                if (effectSourceCard.GetEffect() != null)
+                var effects = effectSourceCard.GetEffects();
+                if (effects != null)
                 {
-                    SetEffects(effectSourceCard.GetEffect(), indexCoords);
+                    foreach (var effect in effects)
+                    {
+                        if(effect != null)
+                            SetEffects(effect, indexCoords);
+                    }
                 }
             }
         }
@@ -132,7 +141,7 @@ public class GameBoard
 
     private void SetEffects(EffectData effect, Vector2Int indexCoords)
     {
-        foreach (var effectedCellIndexCoords in EffectsAreaParser.ParseEffectArea(effect.area, indexCoords, grid.GridSize))
+        foreach (var effectedCellIndexCoords in EffectAreaCalculator.GetPositions(effect.effectArea, indexCoords, grid.GridSize))
         {
             if (grid.IsInsideGridIndex(effectedCellIndexCoords))
             {
@@ -159,13 +168,19 @@ public class GameBoard
     // Call this methods after all parameters are reset for calculation new values
     private void ApplyEffects()
     {
+        // Get all cell from board
         foreach (var cell in boardCells)
         {
-            foreach (var effect in cell.effects)
+            // Get all effects from cell
+            foreach (var effectData in cell.effects)
             {
-                foreach(var card in cell.cards)
+                var effect = effectFactory.GetEffect(effectData);
+                if (effect == null) continue;
+
+                // Apply effect to every card on cell
+                foreach (var card in cell.cards)
                 {
-                    effect.ApplyEffect(card);
+                    effect.Apply(card, effectData.effectValue);
                 }
             }
         }

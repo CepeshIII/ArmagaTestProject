@@ -32,7 +32,7 @@ public abstract class CardInstance
 public class UnitCardInstance : CardInstance
 {
     public int CurrentUnitCount { get; set; }
-    public int CurrentStrength { get; set; }
+    public float CurrentStrength { get; set; }
 
     public UnitCardInstance(UnitCard data, Vector2Int indexCoords) : base(data, indexCoords)
     {

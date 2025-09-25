@@ -1,14 +1,16 @@
+using System.Collections.Generic;
 using UnityEngine;
+
 
 [CreateAssetMenu(menuName = "Scriptable Objects/Cards/Spell")]
 public class SpellCard : CardData, IEffectSourceCard
 {
-    public EffectData effect;
+    public List<EffectData> effects;
 
     public override CardType CardType { get { return CardType.Spell; } }
 
-    public EffectData GetEffect()
+    public List<EffectData> GetEffects()
     {
-        return effect;
+        return effects;
     }
 }

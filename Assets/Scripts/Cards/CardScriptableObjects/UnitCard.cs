@@ -4,7 +4,7 @@ using UnityEngine;
 public class UnitCard : CardData
 {
     public int baseCount;
-    public int baseStrength;
+    public float baseStrength;
     public GameObject unitPrefab;
 
     public override CardType CardType { get { return CardType.Unit; } }

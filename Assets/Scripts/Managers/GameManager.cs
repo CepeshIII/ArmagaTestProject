@@ -3,34 +3,28 @@ using UnityEngine;
 using Zenject;
 
 
-public class GameManager : Singleton<GameManager>, IInitializable
+public class GameManager : MonoBehaviour, IInitializable
 {
     private readonly RoundManager roundManager;
 
 
 
-    [Inject]
-    public GameManager(RoundManager roundManager)
-    {
-        this.roundManager = roundManager;
-    }
+    //[Inject]
+    //public GameManager(RoundManager roundManager)
+    //{
+    //    this.roundManager = roundManager;
+    //}
 
 
     public void Initialize()
     {
-        roundManager.StartNewRound(); // start immediately
+        //roundManager.StartNewRound(); // start immediately
     }
 
 
     public void RestartRound()
     {
-        roundManager.StartNewRound(); // replaces old deck with a new one
-    }
-
-
-    new private void Awake()
-    {
-        base.Awake();
+        //roundManager.StartNewRound(); // replaces old deck with a new one
     }
 
 

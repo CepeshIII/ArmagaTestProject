@@ -9,6 +9,9 @@ public class SceneInstaller : MonoInstaller
         // Bind the signal bus first
         SignalBusInstaller.Install(Container);
 
+        // Bind EffectFactory as a single instance
+        Container.Bind<EffectFactory>().AsSingle();
+
         // Bind the grid component from the scene
         Container.Bind<GridBounds>().FromComponentInHierarchy().AsSingle();
 
