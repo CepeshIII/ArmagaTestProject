@@ -11,7 +11,8 @@ public class IncreaseUnitEffect : IUnitEffect
 
     public string GetDescription()
     {
-        throw new NotImplementedException();
+        return "Increase count of Unit";
+        
     }
 }
 

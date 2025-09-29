@@ -1,18 +1,20 @@
 using UnityEngine;
 using Zenject;
 
+
 public class BoardService : IBoardService
 {
     private readonly BoardCellsBuilder cellsBuilder;
     private readonly GameBoard gameBoard;
     private readonly SignalBus signalBus;
+    private readonly BoardDisplayer boardDisplayer;
 
-
-    public BoardService(BoardCellsBuilder cellsBuilder, GameBoard gameBoard, SignalBus signalBus)
+    public BoardService(BoardCellsBuilder cellsBuilder, GameBoard gameBoard, SignalBus signalBus, BoardDisplayer boardDisplayer)
     {
         this.cellsBuilder = cellsBuilder;
         this.gameBoard = gameBoard;
         this.signalBus = signalBus;
+        this.boardDisplayer = boardDisplayer;
     }
 
 

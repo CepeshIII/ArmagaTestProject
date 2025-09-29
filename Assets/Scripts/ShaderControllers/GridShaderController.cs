@@ -1,22 +1,39 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 
 public class GridShaderController : IMaskShaderController
 {
-    private Material targetMaterial;
-    private Texture2D maskTexture;
+    protected Material targetMaterial;
+    protected Texture2D maskTexture;
 
-    // Color when cell should be visible
-    private readonly Color maskVisibleColor = new Color(1, 1, 1, 1);
-    // Color when cell should be hidden
-    private readonly Color maskHiddenColor = new Color(0, 0, 0, 1);
+    protected static readonly int ControlMapID = Shader.PropertyToID("_Mask");
+    protected static readonly int GridOffsetID = Shader.PropertyToID("_GridOffset");
 
-    private readonly string texturePropertiesName = "_Mask";
-    private readonly string offsetPropertiesName = "_GridOffset";
+    // Value used in the border channel (Red) when the cell border is visible
+    public float BorderVisibleValue = 1f;
 
+    // Value used in the border channel (Red) when the cell is invisible
+    public float BorderHiddenValue = 0f;
+
+    // Value used in the fill channel (Green) when the cell is filled
+    public float FillFilledValue = 1f;
+
+    // Value used in the fill channel (Green) when the cell is empty
+    public float FillEmptyValue = 0f;
+
+    /// <summary>
+    /// Color when cell should be visible
+    /// </summary>
+    public Color MaskVisibleColor { get { return Color.white; } }
+
+    /// <summary>
+    /// Color when cell should be hidden
+    /// </summary>
+    public Color MaskHiddenColor { get { return Color.black; } }
 
     public bool HasMaterial { get { return targetMaterial != null; } }
-    public bool HasTexture { get { return targetMaterial.GetTexture(texturePropertiesName) != null; } }
+    public bool HasTexture { get { return targetMaterial.GetTexture(ControlMapID) != null; } }
 
 
 
@@ -47,7 +64,7 @@ public class GridShaderController : IMaskShaderController
     public void SetGridOffset(Vector2Int offset)
     {
         var pixelOffset = new Vector2(offset.y + 1, -offset.x); // I do not know why I need to add 1 to x
-        targetMaterial.SetVector(offsetPropertiesName, pixelOffset);
+        targetMaterial.SetVector(GridOffsetID, pixelOffset);
     }
 
 
@@ -67,21 +84,6 @@ public class GridShaderController : IMaskShaderController
 
 
     /// <summary>
-    /// Sets a single pixel in the mask texture. 
-    /// Changes are not visible in the shader until <see cref="ApplyMask"/> is called.
-    /// </summary>
-    public void SetMaskPixel(Vector2Int coord, bool isVisible)
-    {
-        if (maskTexture != null)
-        {
-            var textCoord = ToTextureCoord(coord);
-            maskTexture.SetPixel(textCoord.x, textCoord.y, isVisible ? maskVisibleColor : maskHiddenColor);
-        }
-    }
-
-
-
-    /// <summary>
     /// Uploads all changes from the mask texture to the GPU and applies it to the gridMaterial.
     /// Must be called after pixel changes for them to appear in the shader.
     /// </summary>
@@ -90,12 +92,12 @@ public class GridShaderController : IMaskShaderController
         if (maskTexture == null || targetMaterial == null) return;
 
         maskTexture.Apply();
-        targetMaterial.SetTexture(texturePropertiesName, maskTexture);
+        targetMaterial.SetTexture(ControlMapID, maskTexture);
     }
 
 
     /// <summary>
-    /// Fills the entire mask with hidden color.
+    /// Fills the entire mask with hidden newColor.
     /// Changes are not applied to the gridMaterial until <see cref="ApplyMask"/> is called.
     /// </summary>
     public void ClearMask()
@@ -106,14 +108,14 @@ public class GridShaderController : IMaskShaderController
         {
             for (int y = 0; y < maskTexture.height; y++)
             {
-                maskTexture.SetPixel(x, y, maskHiddenColor);
+                maskTexture.SetPixel(x, y, MaskHiddenColor);
             }
         }
     }
 
 
     /// <summary>
-    /// Fills the entire mask with visible color.
+    /// Fills the entire mask with visible newColor.
     /// Changes are not applied to the gridMaterial until <see cref="ApplyMask"/> is called.
     /// </summary>
     public void FillMask()
@@ -124,16 +126,62 @@ public class GridShaderController : IMaskShaderController
         {
             for (int y = 0; y < maskTexture.height; y++)
             {
-                maskTexture.SetPixel(x, y, maskVisibleColor);
+                maskTexture.SetPixel(x, y, MaskVisibleColor);
             }
         }
     }
 
 
+    /// <summary>
+    /// Sets a single pixel in mask texture. 
+    /// Changes are not visible in the shader until <see cref="ApplyMask"/> is called.
+    /// </summary>
+    public void SetPixelColor(Vector2Int coord, Color color)
+    {
+        var pixelCoord = ToTextureCoord(coord);
+        maskTexture.SetPixel(pixelCoord.x, pixelCoord.y, color);
+    }
+
+
+    /// <summary>
+    /// Sets a single pixel in Border channel of the mask texture. 
+    /// Changes are not visible in the shader until <see cref="ApplyMask"/> is called.
+    /// </summary>
+    public void SetBorderPixel(Vector2Int coord, bool isVisible)
+    {
+        var currentColor = GetPixelColor(coord);
+        currentColor.r = isVisible ? BorderVisibleValue : BorderHiddenValue;
+        SetPixelColor(coord, currentColor);
+    }
+
+
+    /// <summary>
+    /// Updates the fill channel (green) of the mask at the specified coordinate.  
+    /// Changes will not be visible in the shader until <see cref="ApplyMask"/> is called.
+    /// </summary>
+    public void SetFillPixel(Vector2Int coord, bool isFilled)
+    {
+        var currentColor = GetPixelColor(coord);
+        currentColor.g = isFilled ? FillFilledValue : FillEmptyValue;
+        SetPixelColor(coord, currentColor);
+    }
+
+
+    /// <summary>
+    /// Get color of pixel in mask texture
+    /// </summary>
+    public Color GetPixelColor(Vector2Int coord)
+    {
+        var pixelCoord = ToTextureCoord(coord);
+        return maskTexture.GetPixel(pixelCoord.x, pixelCoord.y);
+    }
+
+
     // Convert grid coordinates to maskTexture coordinates.
     // ShaderGraph UVs are rotated 90°, so we swap x and y.
-    private Vector2Int ToTextureCoord(Vector2Int coord)
+    protected Vector2Int ToTextureCoord(Vector2Int coord)
     {
         return new Vector2Int(coord.y, coord.x);
     }
 }
+

@@ -74,7 +74,7 @@ public class EffectDataPropertyDrawer : PropertyDrawer
     private void DrawLineWithHeaders(SerializedProperty property1, string name1,
         SerializedProperty property2, string name2, Rect rect, Vector2 spacing = default)
     {
-        // calculating half size for calculating position and size of 2 Props
+        // calculating half size for calculating coord and size of 2 Props
         var rectHalfSize = rect.size / 2f;
 
         // apply spacing
@@ -98,7 +98,7 @@ public class EffectDataPropertyDrawer : PropertyDrawer
         prop2Header.height = rectHalfSize.y;
         prop2.height = rectHalfSize.y;
 
-        // Set position
+        // Set coord
         prop2Header.x += rectHalfSize.x + spacing.x;
         prop1.y += rectHalfSize.y + spacing.y;
 

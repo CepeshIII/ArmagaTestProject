@@ -24,10 +24,10 @@ public class EditorBoardDisplayer : MonoBehaviour
         grid = new IsometricGrid();
         grid.BuildFromBounds(gridBounds);
 
-        shaderController = new GridShaderController();
-        shaderController.SetMaterial(boardMaterial);
-        shaderController.CreateAndSetMaskTexture(textureSize);
-        shaderController.SetGridOffset(grid.GridOffset);
+        maskController = new GridShaderController();
+        maskController.SetMaterial(boardMaterial);
+        maskController.CreateAndSetMaskTexture(textureSize);
+        maskController.SetGridOffset(grid.GridOffset);
 
         DrawGrid();
 
@@ -42,7 +42,7 @@ public class EditorBoardDisplayer : MonoBehaviour
             if (!cachedBounds.IsEqual(gridBounds))
             {
                 grid.BuildFromBounds(gridBounds);
-                shaderController.SetGridOffset(grid.GridOffset);
+                maskController.SetGridOffset(grid.GridOffset);
                 DrawGrid();
             }
         }
@@ -51,19 +51,19 @@ public class EditorBoardDisplayer : MonoBehaviour
 
     private void DrawGrid()
     {
-        if (grid == null || shaderController == null) return;
-        shaderController.ClearMask();
+        if (grid == null || maskController == null) return;
+        maskController.ClearMask();
 
         for (int x = 0; x < grid.GridSize.x; x++) 
         { 
             for(int y = 0; y < grid.GridSize.y; y++)
             {
-                shaderController.SetMaskPixel(new Vector2Int(x, y), true);
+                maskController.SetMaskPixel(new Vector2Int(x, y), true);
             }
         
         }
 
-        shaderController.ApplyMask();
+        maskController.ApplyMask();
 
     }*/
 }

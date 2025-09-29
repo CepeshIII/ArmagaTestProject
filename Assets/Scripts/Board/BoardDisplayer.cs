@@ -1,8 +1,23 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEditor;
 using UnityEngine;
 using Zenject;
+
+
+public enum QueueElementType
+{
+    Border,
+    Fill
+}
+
+public struct QueueElement
+{
+    public QueueElementType queueElementType;
+    public Vector2Int coord;
+    public bool value;
+}
 
 
 public class BoardDisplayer : MonoBehaviour, IDisposable
@@ -11,16 +26,17 @@ public class BoardDisplayer : MonoBehaviour, IDisposable
     [SerializeField] private Vector2Int textureSize = new Vector2Int(16, 16);
 
     private GameBoard gameBoard;
-    private IMaskShaderController shaderController;
 
-    private readonly List<Tuple<Vector2Int, bool>> dirtCells = new();
+    private IMaskShaderController maskController;
+
+    private readonly List<QueueElement> dirtyCellsQueue = new();
 
 
 
     [Inject]
     public void Construct(IMaskShaderController shaderController, SignalBus signalBus)
     {
-        this.shaderController = shaderController;
+        this.maskController = shaderController;
         signalBus.Subscribe<BoardReadySignal>(x => OnBoardReady(x.Board));
     }
 
@@ -28,18 +44,18 @@ public class BoardDisplayer : MonoBehaviour, IDisposable
     public void Initialize()
     {
         Debug.Log("BoardDisplayer Initialize");
-        shaderController.SetMaterial(boardMaterial);
-        shaderController.CreateAndSetMaskTexture(textureSize);
-        shaderController.ClearMask();
-        shaderController.ApplyMask();
+        maskController.SetMaterial(boardMaterial);
+        maskController.CreateAndSetMaskTexture(textureSize);
+        maskController.ClearMask();
+        maskController.ApplyMask();
 
         if (gameBoard != null)
         {
-            shaderController.SetGridOffset(gameBoard.Grid.GridOffset);
+            maskController.SetGridOffset(gameBoard.Grid.GridOffset);
 
             gameBoard.CellAvailabilityChanged += HandleCellAvailabilityChanged;
 
-            DrawBoard();
+            DrawBoardBorder();
         }
     }
 
@@ -54,15 +70,23 @@ public class BoardDisplayer : MonoBehaviour, IDisposable
 
     private void LateUpdate()
     {
-        if (dirtCells.Count > 0)
+        if (dirtyCellsQueue.Count <= 0) return;
+        
+        foreach(var cell in dirtyCellsQueue)
         {
-            foreach (var cell in dirtCells) 
+            switch (cell.queueElementType) 
             { 
-                shaderController.SetMaskPixel(cell.Item1, cell.Item2);
+                case QueueElementType.Border:
+                    maskController.SetBorderPixel(cell.coord, cell.value);
+                    break;
+                case QueueElementType.Fill:
+                    maskController.SetFillPixel(cell.coord, cell.value);
+                    break;
             }
-            shaderController.ApplyMask();
-            dirtCells.Clear();
         }
+
+        maskController.ApplyMask();
+        dirtyCellsQueue.Clear();
     }
 
 
@@ -76,24 +100,46 @@ public class BoardDisplayer : MonoBehaviour, IDisposable
     }
 
 
-    private void DrawBoard()
+    public void SetCellFill(Vector2Int coord, bool isFilled)
     {
-        shaderController.ClearMask();
+        dirtyCellsQueue.Add(new QueueElement
+        {
+            coord = coord,
+            value = isFilled,
+            queueElementType = QueueElementType.Fill,
+        });
+    }
+
+
+    public void SetCellBorder(Vector2Int coord, bool visible)
+    {
+        dirtyCellsQueue.Add(new QueueElement
+        {
+            coord = coord,
+            value = visible,
+            queueElementType = QueueElementType.Border,
+        });
+    }
+
+
+    private void DrawBoardBorder()
+    {
+        maskController.ClearMask();
         if(gameBoard.BoardCells != null)
         {
             foreach (var cell in gameBoard.BoardCells)
             {
-                shaderController.SetMaskPixel(cell.indexCoord, cell.isAvailable);
+                maskController.SetBorderPixel(cell.indexCoord, cell.isAvailable);
             }
         }
 
-        shaderController.ApplyMask();
+        maskController.ApplyMask();
     }
 
 
     private void HandleCellAvailabilityChanged(Vector2Int coord, bool isAvailable)
     {
-        dirtCells.Add(new (coord, isAvailable));
+        SetCellBorder(coord, isAvailable);
     }
 
 

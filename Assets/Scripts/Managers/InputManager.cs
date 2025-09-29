@@ -8,20 +8,21 @@ public class InputManager : Singleton<InputManager>
     public static InputSystem_Actions actions;
 
     // BoardCells events
-    public event Action<Vector3> OnBoardClicked_Start;
-    public event Action<Vector3> OnBoardClicked_End;
-    public event Action<Vector3> OnBoardClicked_Performed;
+    public event Action<Vector3> BoardClicked_Started;
+    public event Action<Vector3> BoardClicked_Ended;
+    public event Action<Vector3> BoardClicked_Performed;
 
-    public event Action<Vector2> OnBoardMouseMove;
+    public event Action<Vector2> BoardMouseMoved;
 
-    public static event Action<InputActionMap> OnActionMapChanged;
+    public static event Action<InputActionMap> ActionMapChanged;
 
     // Gameplay events
-    public event Action<Vector3> OnGameplayClicked;
-    public event Action<Vector2> OnGameplayMouseMove;
+    public event Action<Vector3> GameplayClicked;
+    public event Action<Vector2> GameplayMouseMoved;
 
 
     public Vector2 GetMousePosition() => actions.GlobalActions.MousePosition.ReadValue<Vector2>();
+
 
     new public void Awake()
     {
@@ -42,7 +43,7 @@ public class InputManager : Singleton<InputManager>
 
     private void Start()
     {
-        // Enable the default action map for data which shared between modes, for example mouse position
+        // Enable the default action map for data which shared between modes, for example mouse coord
         actions.GlobalActions.Enable();
         ToggleActionMap(actions.BoardManageMode);
     }
@@ -50,34 +51,34 @@ public class InputManager : Singleton<InputManager>
 
     private void LeftMouseClick_Start(InputAction.CallbackContext ctx)
     {
-        OnBoardClicked_Start?.Invoke(GetWorldMousePosition());
+        BoardClicked_Started?.Invoke(GetWorldMousePosition());
     }
 
 
     private void LeftMouseClick_Performed(InputAction.CallbackContext ctx)
     {
-        OnBoardClicked_Performed?.Invoke(GetWorldMousePosition());
+        BoardClicked_Performed?.Invoke(GetWorldMousePosition());
 
     }
 
 
     private void LeftMouseClick_End(InputAction.CallbackContext ctx)
     {
-        OnBoardClicked_End?.Invoke(GetWorldMousePosition());
+        BoardClicked_Ended?.Invoke(GetWorldMousePosition());
 
     }
 
 
     private void MouseMove(InputAction.CallbackContext ctx)
     {
-        OnBoardMouseMove?.Invoke(ctx.ReadValue<Vector2>());
+        BoardMouseMoved?.Invoke(ctx.ReadValue<Vector2>());
     }
 
 
     private void HandleGameplayClick(InputAction.CallbackContext ctx)
     {
         Vector3 worldPos = GetWorldMousePosition();
-        OnGameplayClicked?.Invoke(worldPos);
+        GameplayClicked?.Invoke(worldPos);
     }
 
 
@@ -88,16 +89,16 @@ public class InputManager : Singleton<InputManager>
     }
 
 
-    public static void ToggleActionMap(InputActionMap newActionMap)
+    private static void ToggleActionMap(InputActionMap newActionMap)
     {
         if(newActionMap.enabled)
             return;
 
         actions.Disable();
-        OnActionMapChanged?.Invoke(newActionMap);
+        ActionMapChanged?.Invoke(newActionMap);
         newActionMap.Enable();
         
-        // Enable the default action map for data which shared between modes, for example mouse position
+        // Enable the default action map for data which shared between modes, for example mouse coord
         actions.GlobalActions.Enable();
 
     }

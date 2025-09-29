@@ -99,7 +99,7 @@ public class GridDisplayer : MonoBehaviour
             for (int x = 0; x < grid.GridSize.x; x++) 
             {
                 var cellIndex = new Vector2Int(x, y);
-                gridShaderController.SetMaskPixel(cellIndex, true);
+                gridShaderController.SetBorderPixel(cellIndex, true);
             }
 
         }

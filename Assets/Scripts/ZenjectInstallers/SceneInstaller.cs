@@ -12,6 +12,8 @@ public class SceneInstaller : MonoInstaller
         // Bind EffectFactory as a single instance
         Container.Bind<EffectFactory>().AsSingle();
 
+        Container.Bind<InputManager>().FromComponentInHierarchy().AsSingle();
+
         // Bind the grid component from the scene
         Container.Bind<GridBounds>().FromComponentInHierarchy().AsSingle();
 
@@ -39,10 +41,11 @@ public class SceneInstaller : MonoInstaller
         // Bind the deck display from the scene
         Container.Bind<CardDeckDisplay>().FromComponentInHierarchy().AsSingle();
 
-
+        Container.Bind<IMaskShaderController>().To<GridShaderController>().AsCached();
         // Bind the board display and initialize it immediately
-        Container.BindInterfacesTo<BoardDisplayer>().FromComponentInHierarchy().AsSingle();
-        Container.Bind<IMaskShaderController>().To<GridShaderController>().FromNew().AsSingle();
+        Container.BindInterfacesAndSelfTo<BoardDisplayer>().FromComponentInHierarchy().AsSingle();
+        Container.BindInterfacesTo<BoardPointerChecker>();
+
 
         // Signals
         Container.DeclareSignal<BoardReadySignal>();

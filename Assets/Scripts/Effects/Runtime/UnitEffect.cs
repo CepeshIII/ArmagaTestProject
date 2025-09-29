@@ -1,12 +1,8 @@
 using System;
 
-public interface IEffectContext
-{
-    public float Value { get; }
-}
 
 [Serializable]
-public class UnitEffect: IEffectContext
+public class UnitEffect
 {
     public UnitEffectType effectType;
     public float value;

@@ -1,13 +1,17 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 
-public class CellInformationWindow : MonoBehaviour
+public class CellInformationWindow : Singleton<CellInformationWindow>
 {
     [SerializeField] private TextMeshProUGUI m_TextMeshProUGUI;
     [SerializeField] private CardData cardData;
     [SerializeField] private EffectData effectData;
 
+    private EffectFactory effectFactory;
 
     public string Bold(string text)
     {
@@ -35,6 +39,17 @@ public class CellInformationWindow : MonoBehaviour
         return $"<color=\"blue\">{text}</color>";
     }
 
+    public string Yellow(string text)
+    {
+        return $"<color=\"yellow\">{text}</color>";
+    }
+
+    [Inject]
+    public void Construct(EffectFactory effectFactory)
+    {
+        this.effectFactory = effectFactory;
+    }
+
 
     public void Start()
     {
@@ -44,6 +59,46 @@ public class CellInformationWindow : MonoBehaviour
         text = ParseEffectsPart(text, cardData, effectData);
 
         m_TextMeshProUGUI.text = text;
+    }
+
+
+    public void Display(Cell cell)
+    {
+        var content = "";
+        content += BuildCardsDescription(cell.cards);
+        content += '\n';
+        content += BuildEffectsDescription(cell.effects);
+        m_TextMeshProUGUI.text = content;
+    }
+
+
+    private string BuildCardsDescription(List<CardInstance> cards)
+    {
+        string cardsDescription = "Cards:\n";
+
+        foreach(var card in cards)
+        {
+            cardsDescription += Red(Bold(card.Data.name));
+            cardsDescription += "\n";
+        }
+        return cardsDescription;
+    }
+
+
+    private string BuildEffectsDescription(List<EffectData> effectsData)
+    {
+        string cardsDescription = "Effects:\n";
+
+        foreach (var effectData in effectsData)
+        {
+            var effect = effectFactory.GetEffect(effectData);
+
+            cardsDescription += $"-{Blue(effect.GetDescription())}: {Yellow(effectData.effectValue.ToString())}";
+            cardsDescription += "\n";
+            cardsDescription += $"\t+Target: {Green(effectData.effectTarget.ToString())}";
+            cardsDescription += "\n";
+        }
+        return cardsDescription;
     }
 
 
@@ -85,8 +140,8 @@ public class CellInformationWindow : MonoBehaviour
 
     private string ParseEffectParameters(EffectData effectData) 
     {
-        return ParseEffectParameter("effect Area", effectData.effectArea.ToString()) +
-        ParseEffectParameter("target1", effectData.effectTarget.ToString());
+        return ParseEffectParameter("Value", effectData.effectValue.ToString()) +
+        ParseEffectParameter("Target", effectData.effectTarget.ToString());
     }
 
     private string ParseEffectParameter(string name, string value)

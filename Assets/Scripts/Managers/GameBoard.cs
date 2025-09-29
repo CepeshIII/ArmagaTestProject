@@ -78,7 +78,7 @@ public class GameBoard
             CreateCardInstance(card, indexCoords, cell);
             CardPlaced?.Invoke(card, gridPosition);
 
-            ApplyEffects();
+            CellInformationWindow.Instance.Display(cell);
         }
         else
         {
