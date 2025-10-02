@@ -11,7 +11,6 @@ public class InputManager : Singleton<InputManager>
     public event Action<Vector3> BoardClicked_Started;
     public event Action<Vector3> BoardClicked_Ended;
     public event Action<Vector3> BoardClicked_Performed;
-
     public event Action<Vector2> BoardMouseMoved;
 
     public static event Action<InputActionMap> ActionMapChanged;
@@ -43,7 +42,7 @@ public class InputManager : Singleton<InputManager>
 
     private void Start()
     {
-        // Enable the default action map for data which shared between modes, for example mouse coord
+        // Enable the default action map for data which shared between modes, for example mouse coordinate
         actions.GlobalActions.Enable();
         ToggleActionMap(actions.BoardManageMode);
     }
@@ -98,7 +97,7 @@ public class InputManager : Singleton<InputManager>
         ActionMapChanged?.Invoke(newActionMap);
         newActionMap.Enable();
         
-        // Enable the default action map for data which shared between modes, for example mouse coord
+        // Enable the default action map for data which shared between modes, for example mouse coordinate
         actions.GlobalActions.Enable();
 
     }
@@ -106,6 +105,10 @@ public class InputManager : Singleton<InputManager>
 
     private void OnDisable()
     {
+        if (actions == null) return;
+
+        actions.Disable();
+
         actions.BoardManageMode.LeftMouseClick.started -= LeftMouseClick_Start;
         actions.BoardManageMode.LeftMouseClick.performed -= LeftMouseClick_Performed;
         actions.BoardManageMode.LeftMouseClick.canceled -= LeftMouseClick_End;

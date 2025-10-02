@@ -157,7 +157,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.7529412, g: 0.60784316, b: 0.34117648, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -188,7 +188,8 @@ MonoBehaviour:
   cardNameTextField: {fileID: 5909812913395701240}
   cardDescriptionTextField: {fileID: 803296265780617239}
   cardImage: {fileID: 4849663864426421306}
-  selectedImage: {fileID: 3583895957309691060}
+  dragScale: {x: 0.5, y: 0.5, z: 0.5}
+  normalScale: {x: 1, y: 1, z: 1}
 --- !u!114 &7263758274595860202
 MonoBehaviour:
   m_ObjectHideFlags: 0

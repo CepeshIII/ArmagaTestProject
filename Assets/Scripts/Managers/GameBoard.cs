@@ -77,8 +77,6 @@ public class GameBoard
         {
             CreateCardInstance(card, indexCoords, cell);
             CardPlaced?.Invoke(card, gridPosition);
-
-            CellInformationWindow.Instance.Display(cell);
         }
         else
         {
@@ -103,7 +101,7 @@ public class GameBoard
                 {
                     foreach (var effect in effects)
                     {
-                        if(effect != null)
+                        if (effect != null)
                             SetEffects(effect, indexCoords);
                     }
                 }
@@ -121,6 +119,17 @@ public class GameBoard
             return true;
         }
         cell = null;
+        return false;
+    }
+
+
+    public bool CellIsAvailable(Vector2Int indexCoords)
+    {
+        var cell = GetCell(indexCoords);
+        if (cell != null)
+        {
+            return cell.isAvailable;
+        }
         return false;
     }
 

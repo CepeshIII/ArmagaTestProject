@@ -9,6 +9,8 @@ public class SceneInstaller : MonoInstaller
         // Bind the signal bus first
         SignalBusInstaller.Install(Container);
 
+        Container.Bind<Camera>().FromComponentOn(Camera.main.gameObject).AsSingle();
+
         // Bind EffectFactory as a single instance
         Container.Bind<EffectFactory>().AsSingle();
 
@@ -44,7 +46,11 @@ public class SceneInstaller : MonoInstaller
         Container.Bind<IMaskShaderController>().To<GridShaderController>().AsCached();
         // Bind the board display and initialize it immediately
         Container.BindInterfacesAndSelfTo<BoardDisplayer>().FromComponentInHierarchy().AsSingle();
-        Container.BindInterfacesTo<BoardPointerChecker>();
+        Container.BindInterfacesAndSelfTo<BoardPointerTracker>().FromComponentInHierarchy().AsSingle();
+        Container.Bind<ICellInfoWindow>().To<CellInfoWindow>().FromComponentInHierarchy().AsSingle();
+
+        Container.BindInterfacesAndSelfTo<BoardHighlighter>().FromNew().AsSingle();
+        Container.BindInterfacesAndSelfTo<CellHoverInfoSystem>().FromNew().AsSingle();
 
 
         // Signals
