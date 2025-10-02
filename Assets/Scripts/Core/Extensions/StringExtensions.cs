@@ -5,15 +5,15 @@
 public static class StringExtensions
 {
     /// <summary>
-    /// Wraps the string in a <b> tag to display it in bold.
+    /// Wraps the string in a &lt;b&gt; tag to display it in bold
     /// </summary>
     public static string Bold(this string str)
     {
         return $"<b>{str}</b>";
     }
-    
+
     /// <summary>
-    /// Wraps the string in an <i> tag to display it in italic.
+    /// Wraps the string in an &lt;i&gt; tag to display it in italic.
     /// </summary>
     public static string Italic(this string str)
     {
@@ -21,8 +21,7 @@ public static class StringExtensions
     }
 
     /// <summary>
-    /// Wraps the string in a <size> tag to change its font size.
-    /// Example: "text".Size(24) → "<size=24>text</size>"
+    /// Wraps the string in a &lt;size&gt; tag to change its font size.
     /// </summary>
     public static string Size(this string str, int size)
     {
@@ -38,7 +37,7 @@ public static class StringExtensions
     }
 
     /// <summary>
-    /// Wraps the string in a <color> tag with the given color name or hex code.
+    /// Wraps the string in a &lt;color&gt; tag with the given color name or hex code.
     /// Example: "text".Color("red"), "text".Color("#FF0000")
     /// </summary>
     public static string Color(this string str, string color)
@@ -47,7 +46,7 @@ public static class StringExtensions
     }
 
     /// <summary>
-    /// Shorthand for applying red color (<color=red>).
+    /// Shorthand for applying red color 
     /// </summary>
     public static string Red(this string str)
     {
@@ -55,7 +54,7 @@ public static class StringExtensions
     }
 
     /// <summary>
-    /// Shorthand for applying blue color (<color=blue>).
+    /// Shorthand for applying blue color
     /// </summary>
     public static string Blue(this string str)
     {
@@ -63,7 +62,7 @@ public static class StringExtensions
     }
 
     /// <summary>
-    /// Shorthand for applying green color (<color=green>).
+    /// Shorthand for applying green color
     /// </summary>
     public static string Green(this string str)
     {
@@ -71,7 +70,7 @@ public static class StringExtensions
     }
 
     /// <summary>
-    /// Shorthand for applying yellow color (<color=yellow>).
+    /// Shorthand for applying yellow color
     /// </summary>
     public static string Yellow(this string str)
     {
