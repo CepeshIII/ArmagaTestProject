@@ -59,6 +59,7 @@ public class EffectFactory
         }
     }
 
+
     /// <summary>
     /// Create effect instance for given EffectData
     /// </summary>

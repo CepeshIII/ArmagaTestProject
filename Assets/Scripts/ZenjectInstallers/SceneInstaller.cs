@@ -11,8 +11,9 @@ public class SceneInstaller : MonoInstaller
 
         Container.Bind<Camera>().FromComponentOn(Camera.main.gameObject).AsSingle();
 
-        // Bind EffectFactory as a single instance
+        // Bind EffectFactory and CardInstanceFactory as a single instances
         Container.Bind<EffectFactory>().AsSingle();
+        Container.Bind<CardInstanceFactory>().AsSingle();
 
         Container.Bind<InputManager>().FromComponentInHierarchy().AsSingle();
 
