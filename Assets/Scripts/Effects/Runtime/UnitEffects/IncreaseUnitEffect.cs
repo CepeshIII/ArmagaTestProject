@@ -5,8 +5,8 @@ public class IncreaseUnitEffect : IUnitEffect
 {
     public void Apply(CardInstance target, float effectValue)
     {
-        var unitCardInstance = target as UnitCardInstance;
-        unitCardInstance.CurrentUnitCount += (int)effectValue;
+        if(target is UnitCardInstance unitCardInstance)
+            unitCardInstance.CurrentUnitCount += (int)effectValue;
     }
 
     public string GetDescription()

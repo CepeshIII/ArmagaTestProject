@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Text;
 using UnityEditor;
 using UnityEngine;
 using Zenject;
@@ -154,7 +155,12 @@ public class BoardDisplayer : MonoBehaviour, IDisposable
 
             foreach (var card in cell.cards)
             {
-                var content = new GUIContent(card.GetDescription());
+                var strBuilder = new StringBuilder();
+                foreach (var description in card.GetDescription())
+                {
+                    strBuilder.AppendLine(description);
+                }
+                var content = new GUIContent(strBuilder.ToString());
                 Handles.Label(position, content);
             }
         }

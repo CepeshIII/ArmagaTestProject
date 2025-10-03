@@ -49,7 +49,13 @@ public class CellInfoWindow : MonoBehaviour, ICellInfoWindow
         foreach (var card in cards)
         {
             sb.AppendLine(card.Data.name.Bold().Color("red"));
+
+            foreach(var description in card.GetDescription())
+            {
+                sb.AppendLine("\t" + description);
+            }
         }
+
         return sb.ToString();
     }
 

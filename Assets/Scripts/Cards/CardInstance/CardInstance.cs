@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -22,5 +23,5 @@ public abstract class CardInstance
     
     
     public abstract void ResetParam();
-    public abstract string GetDescription();
+    public abstract IEnumerable<string> GetDescription();
 }

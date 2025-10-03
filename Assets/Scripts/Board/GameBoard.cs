@@ -84,6 +84,7 @@ public class GameBoard
         {
             CreateCardInstance(card, indexCoords, cell);
             CardPlaced?.Invoke(card, gridPosition);
+            RecalculateEffects();
         }
         else
         {
@@ -214,6 +215,14 @@ public class GameBoard
     }
 
 
+    private void RecalculateEffects()
+    {
+        EffectCollector();
+        ResetParameters();
+        ApplyEffects();
+    }
+
+
     /// <summary>
     /// Cleans up all effects on the board by removing those
     /// whose source is no longer valid (i.e., null).
@@ -270,6 +279,5 @@ public class GameBoard
             }
         }
     }
-
 
 }

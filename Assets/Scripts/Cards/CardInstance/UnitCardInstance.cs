@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public class UnitCardInstance : CardInstance
@@ -19,10 +21,11 @@ public class UnitCardInstance : CardInstance
         CurrentStrength = ((UnitCard)Data).baseStrength;
     }
 
-
-    public override string GetDescription()
+    public override IEnumerable<string> GetDescription()
     {
-        return $"Name: {Data.name}\n{Data.description}\nCount: {CurrentUnitCount}\nStrength: {CurrentStrength}";
+        yield return $"Count: {CurrentUnitCount}";
+        yield return $"Strength: {CurrentStrength}";
+        yield return $"Description: {Data.description}";
     }
 }
 

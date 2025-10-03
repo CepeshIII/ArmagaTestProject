@@ -4,8 +4,8 @@ public class StrengthMultiplierEffect : IUnitEffect
 
     public void Apply(CardInstance target, float value)
     {
-        var unitCardInstance = (UnitCardInstance)target;
-        unitCardInstance.CurrentStrength *= value;
+        if (target is UnitCardInstance unitCardInstance)
+            unitCardInstance.CurrentStrength *= value;
     }
 
 

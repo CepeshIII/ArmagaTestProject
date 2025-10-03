@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BuildingCardInstance : CardInstance
@@ -14,9 +15,10 @@ public class BuildingCardInstance : CardInstance
 
     }
 
-    public override string GetDescription()
+    public override IEnumerable<string> GetDescription()
     {
-        return $"Name: {Data.name}\n{Data.description}";
+        yield return $"Name: {Data.name}";
+        yield return $"{Data.description}";
     }
 }
 
