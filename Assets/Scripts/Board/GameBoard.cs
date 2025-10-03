@@ -8,7 +8,7 @@ using Zenject;
 public class Cell
 {
     public List<CardInstance> cards;      // Cards currently on this cell
-    public List<EffectData> effects;      // Effects applied to this cell
+    public List<EffectInstance> effects;      // Effects applied to this cell
     public Vector2Int indexCoord;         // Position of the cell on the board (x, y)
     public bool isAvailable;              // Whether the cell can be occupied or used
 }
@@ -170,7 +170,10 @@ public class GameBoard
         foreach (var effect in effects)
         {
             if (effect != null)
-                SetEffects(effect, indexCoords);
+            {
+                var effectInstance = new EffectInstance(effect, sourceCard);
+                SetEffectInstances(effectInstance, indexCoords);
+            }
         }
     }
 
@@ -180,13 +183,13 @@ public class GameBoard
     /// </summary>
     /// <param name="effect">The effect data to be applied.</param>
     /// <param name="originCoords">The origin coordinates from which the effect area is calculated.</param>
-    private void SetEffects(EffectData effect, Vector2Int originCoords)
+    private void SetEffectInstances(EffectInstance instance, Vector2Int originCoords)
     {
         // Get all cell coordinates affected by this effect, based on its effect area and board size
         foreach (var effectedCellCoords in
-            EffectAreaCalculator.GetPositions(effect.effectArea, originCoords, grid.GridSize))
+            EffectAreaCalculator.GetPositions(instance.Data.effectArea, originCoords, grid.GridSize))
         {
-            SetEffect(effect, effectedCellCoords);
+            SetEffect(instance, effectedCellCoords);
         }
     }
 
@@ -194,7 +197,7 @@ public class GameBoard
     /// <summary>
     /// Adds the specified effect to cell
     /// </summary>
-    private void SetEffect(EffectData effect, Vector2Int indexCoords)
+    private void SetEffect(EffectInstance instance, Vector2Int indexCoords)
     {
         // Check if the cell coordinates are inside the board grid
         if (grid.IsInsideGridIndex(indexCoords))
@@ -206,7 +209,20 @@ public class GameBoard
             var effectedCell = boardCells[index];
 
             // Register the effect to the cell for future application
-            effectedCell.effects.Add(effect);
+            effectedCell.effects.Add(instance);
+        }
+    }
+
+
+    /// <summary>
+    /// Cleans up all effects on the board by removing those
+    /// whose source is no longer valid (i.e., null).
+    /// </summary>
+    private void EffectCollector()
+    {
+        foreach (var cell in boardCells)
+        {
+            cell.effects.RemoveAll(effectInstance => effectInstance.Source == null);
         }
     }
 
@@ -239,17 +255,17 @@ public class GameBoard
         foreach (var cell in boardCells)
         {
             // Iterate over all effects registered in this cell
-            foreach (var effectData in cell.effects)
+            foreach (var effectInstance in cell.effects)
             {
                 // Get the concrete effect implementation from the factory
-                var effect = effectFactory.GetEffect(effectData);
+                var effect = effectFactory.GetEffect(effectInstance.Data);
                 if (effect == null)
                     continue;
 
                 // Apply the effect to each card present in the cell
                 foreach (var card in cell.cards)
                 {
-                    effect.Apply(card, effectData.effectValue);
+                    effect.Apply(card, effectInstance.Data.effectValue);
                 }
             }
         }

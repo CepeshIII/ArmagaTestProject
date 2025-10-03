@@ -54,23 +54,23 @@ public class CellInfoWindow : MonoBehaviour, ICellInfoWindow
     }
 
 
-    private string BuildEffectsDescription(List<EffectData> effectsData)
+    private string BuildEffectsDescription(List<EffectInstance> effectInstances)
     {
         var sb = new StringBuilder("Effects:\n");
 
-        if (effectsData == null || effectsData.Count == 0)
+        if (effectInstances == null || effectInstances.Count == 0)
         {
             return sb.Append("none".Red()).ToString();
         }
 
-        foreach (var effectData in effectsData)
+        foreach (var effectInstance in effectInstances)
         {
-            var effect = effectFactory.GetEffect(effectData);
+            var effect = effectFactory.GetEffect(effectInstance.Data);
             var description = effect.GetDescription();
-            var value = effectData.effectValue.ToString();
-            var target = effectData.effectTarget.ToString();
+            var value = effectInstance.Data.effectValue.ToString();
+            var target = effectInstance.Data.effectTarget.ToString();
 
-            sb.AppendLine($"-{description.Blue()}: {value.Yellow()}");
+            sb.AppendLine($"-({(effectInstance.Source as CardData).name.ToString().Green()}){description.Blue()}: {value.Yellow()}");
             sb.AppendLine($"\t+Target: {target.Green()}");
         }
         return sb.ToString();

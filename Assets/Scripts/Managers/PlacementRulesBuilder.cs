@@ -11,6 +11,8 @@
 
         placementValidator.AddOptionalRule(new PlacementRules.CellEmptyRule());
         placementValidator.AddOptionalRule(new PlacementRules.SameCardRule());
+        placementValidator.AddOptionalRule(new PlacementRules.SpellAlwaysPlaceCardRule());
+
 
         return placementValidator;
     }

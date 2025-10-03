@@ -39,6 +39,16 @@
         }
     }
 
+
+    public class SpellAlwaysPlaceCardRule : IPlacementRule
+    {
+        public bool Validate(Cell cell, CardData cardData)
+        {
+            return cardData is SpellCard card;
+        }
+    }
+
+
     /* This rule checks if the new card can be placed with existing cards based on custom compatibility logic defined in CardData.
        You would need to implement the CanBePlacedWith method in your CardData class to define specific compatibility rules.
     
