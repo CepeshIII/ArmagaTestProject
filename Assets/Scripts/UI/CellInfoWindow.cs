@@ -1,23 +1,34 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Zenject;
 
 
 
 public class CellInfoWindow : MonoBehaviour, ICellInfoWindow
 {
-    [SerializeField] private TextMeshProUGUI m_TextMeshProUGUI;
+    [SerializeField] private TextMeshProUGUI textMeshProUGUI;
+    [SerializeField] private RectTransform rectTransform;
+    [SerializeField] private Vector2 pointerOffset;
 
     private EffectFactory effectFactory;
+    private new Camera camera;
 
 
 
     [Inject]
-    public void Construct(EffectFactory effectFactory)
+    public void Construct(EffectFactory effectFactory, Camera camera)
     {
         this.effectFactory = effectFactory;
+        this.camera = camera;
+    }
+
+
+    private void Update()
+    {
+        MoveWindow((Vector2)Mouse.current.position.value);
     }
 
 
@@ -26,7 +37,7 @@ public class CellInfoWindow : MonoBehaviour, ICellInfoWindow
         var sb = new StringBuilder();
         sb.AppendLine(BuildCardsDescription(cell.cards));
         sb.AppendLine(BuildEffectsDescription(cell.effects));
-        m_TextMeshProUGUI.text = sb.ToString();
+        textMeshProUGUI.text = sb.ToString();
         gameObject.SetActive(true);
     }
 
@@ -35,6 +46,54 @@ public class CellInfoWindow : MonoBehaviour, ICellInfoWindow
     {
         gameObject.SetActive(false);
     }
+
+
+    private void MoveWindow(Vector2 screenPoint)
+    {
+        RectTransform parent = rectTransform.parent as RectTransform;
+        Rect parentRect = parent.rect;
+
+        Vector2 size = rectTransform.rect.size;
+
+        // Start with pivot at top-left (mouse on that corner)
+        Vector2 pivot = new Vector2(0f, 1f);
+
+        // Convert screen point to local space of parent
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(parent, screenPoint, camera, out Vector2 localPoint);
+
+        // Default offset (applied away from cursor)
+        Vector2 offset = pointerOffset;
+
+        // If window goes off the right side → flip horizontally
+        if (localPoint.x + size.x + offset.x > parentRect.xMax)
+        {
+            pivot.x = 1f;              // place mouse on right corner
+            offset.x = -Mathf.Abs(offset.x); // push window left instead of right
+        }
+        else
+        {
+            pivot.x = 0f;
+            offset.x = Mathf.Abs(offset.x);
+        }
+
+        // If window goes off the top side → flip vertically
+        if (localPoint.y - size.y - offset.y < parentRect.yMin)
+        {
+            pivot.y = 0f;              // place mouse on bottom corner
+            offset.y = Mathf.Abs(offset.y); // push window upward
+        }
+        else
+        {
+            pivot.y = 1f;
+            offset.y = -Mathf.Abs(offset.y); // push window downward
+        }
+
+        // Apply pivot and position with offset
+        rectTransform.pivot = pivot;
+        rectTransform.localPosition = localPoint + offset;
+    }
+
+
 
 
     private string BuildCardsDescription(List<CardInstance> cards)
