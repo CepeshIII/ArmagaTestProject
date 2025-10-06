@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 using Zenject;
+using static UnityEngine.Rendering.GPUSort;
 
 public class CardDeckBuilder
 {
@@ -34,6 +36,19 @@ public class CardDeckBuilder
         {
             var randomId = Random.Range(0, db.CardCount); // example range
             cards.Add(db.GetCardDataById(randomId));
+        }
+        return new CardDeck(cards);
+    }
+
+
+    public CardDeck CreateDeckWithAllCards()
+    {
+        var cards = new List<CardData>();
+        for (int i = 0; i < db.CardCount; i++)
+        {
+            var card = db.GetCardDataById(i);
+            if (card != null)
+                cards.Add(card);
         }
         return new CardDeck(cards);
     }

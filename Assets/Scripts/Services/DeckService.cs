@@ -19,7 +19,8 @@ public class DeckService : IDeckService
     public void CreateAndAssignDeck()
     {
         //Create a fresh deck
-        var deck = deckBuilder.CreateRandomDeck(5);
+        var deck = deckBuilder.CreateDeckWithAllCards();
+        //var deck = deckBuilder.CreateRandomDeck(5);
 
         //Bind it for this round
         RoundInstaller.Install(container, deck);

@@ -36,8 +36,7 @@ public class BoardPointerTracker : MonoBehaviour, IInitializable, IDisposable
         public Vector2Int coordinate;   // Board cell coordinates
     }
 
-    [SerializeField] private GraphicRaycaster graphicRaycaster;
-
+    private MainUIGraphicRaycaster graphicRaycaster;
     private InputManager inputManager;
     private IsometricGrid isometricGrid;
     private GameBoard gameBoard;
@@ -74,12 +73,13 @@ public class BoardPointerTracker : MonoBehaviour, IInitializable, IDisposable
     /// </summary>
     [Inject]
     public void Construct(InputManager inputManager, IsometricGrid isometricGrid,
-        GameBoard gameBoard, Camera camera)
+        GameBoard gameBoard, Camera camera, MainUIGraphicRaycaster graphicRaycaster)
     {
         this.inputManager = inputManager;
         this.isometricGrid = isometricGrid;
         this.gameBoard = gameBoard;
         this.camera = camera;
+        this.graphicRaycaster = graphicRaycaster;
     }
 
 
@@ -144,7 +144,7 @@ public class BoardPointerTracker : MonoBehaviour, IInitializable, IDisposable
         var nextState = currentState;
 
         // If pointer is not valid for board interaction, treat as exit
-        if (IsPointerOverUI(pointerData.displayPosition) ||
+        if (graphicRaycaster.IsPointerOverUI(pointerData.displayPosition) ||
             !IsOverBoardOnly(pointerData.worldPosition) ||
             !isometricGrid.IsInsideGridIndex(pointerData.coordinate) ||
             !gameBoard.CellIsAvailable(pointerData.coordinate))
@@ -207,20 +207,4 @@ public class BoardPointerTracker : MonoBehaviour, IInitializable, IDisposable
         return collider.gameObject.CompareTag(boardTag);
     }
 
-
-    /// <summary>
-    /// Checks if the pointer is currently over any UI elements.
-    /// </summary>
-    private bool IsPointerOverUI(Vector2 mousePosition)
-    {
-        var resultList = new List<RaycastResult>();
-        var eventData = new PointerEventData(EventSystem.current)
-        {
-            position = mousePosition
-        };
-
-        graphicRaycaster.Raycast(eventData, resultList);
-
-        return resultList.Count > 0;
-    }
 }

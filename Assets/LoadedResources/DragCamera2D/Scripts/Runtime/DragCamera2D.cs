@@ -282,11 +282,18 @@ public class DragCamera2D : MonoBehaviour
 
     public void addCameraBounds() {
         if (bounds == null) {
-            GameObject go = new GameObject("CameraBounds");
-            CameraBounds cb = go.AddComponent<CameraBounds>();
-            cb.guiColour = new Color(0,0,1f,0.1f);
-            cb.pointa = new Vector3(20,20,0);
-            this.bounds = cb;
+
+            bounds = GameObject.FindAnyObjectByType<CameraBounds>();
+
+            if(bounds == null)
+            {
+                GameObject go = new GameObject("CameraBounds");
+                CameraBounds cb = go.AddComponent<CameraBounds>();
+                cb.guiColour = new Color(0,0,1f,0.1f);
+                cb.pointa = new Vector3(20,20,0);
+                this.bounds = cb;
+            }
+
 #if UNITY_EDITOR
             EditorUtility.SetDirty(this);
 #endif
