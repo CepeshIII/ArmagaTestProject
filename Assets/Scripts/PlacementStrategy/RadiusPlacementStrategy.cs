@@ -1,70 +1,95 @@
+using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// Places objects around a central point in concentric circles.
+/// </summary>
 public class RadiusPlacementStrategy : ICellPlacementStrategy
 {
     private readonly ILinearGrid grid;
 
+    // Distance between consecutive circles
+    private readonly float circleSpacing;
+
+    // Number of objects in the first circle
+    private readonly int initialObjectsPerCircle;
+
+    // The maximum distance from the center at which objects will be placed.
+    private readonly float maxRadius;
 
 
-    public RadiusPlacementStrategy(ILinearGrid grid)
+    public RadiusPlacementStrategy(ILinearGrid grid, float circleSpacing = 0.15f, 
+        int initialObjectsPerCircle = 8, float maxRadius = 0.9f)
     {
         this.grid = grid;
+        this.circleSpacing = circleSpacing;
+        this.initialObjectsPerCircle = initialObjectsPerCircle;
+        this.maxRadius = maxRadius;
     }
 
 
+    /// <summary>
+    /// Calculates world positions for a given number of objects at the specified cell coordinates.
+    /// </summary>
     public Vector3[] GetPositions(Vector2Int cellCoords, int objectCount)
     {
-        var array = new Vector3[objectCount];
-        Vector2 gridPosition = grid.IndexCoordsToGridPosition(cellCoords);
+        var positions = new Vector3[objectCount];
 
-        var points = GenerateMovePositionArray(gridPosition + new Vector2(0.5f, 0.5f), objectCount);
+        // Convert cell coordinates to local grid position
+        Vector2 gridCenter = grid.IndexCoordsToGridPosition(cellCoords);
 
-        for(var i = 0; i < points.Length; i++) 
+        // Generate positions in concentric circles around the cell center
+        var circlePositions = GenerateCircularPositions(gridCenter + new Vector2(0.5f, 0.5f), objectCount);
+
+        // Convert grid positions to world positions
+        for (int i = 0; i < circlePositions.Length; i++)
         {
-            array[i] = grid.GridPositionToWorld(points[i]);
+            positions[i] = grid.GridPositionToWorld(circlePositions[i]);
         }
 
-        return array;
+        return positions;
     }
 
-    public Vector2[] GenerateMovePositionArray(Vector2 targetPosition, int positionCount)
+
+    /// <summary>
+    /// Generates positions in concentric circles around a target position.
+    /// </summary>
+    private Vector2[] GenerateCircularPositions(Vector2 center, int totalPositions)
     {
-        Vector2[] movePositionArray = new Vector2[positionCount];
-        if (positionCount == 0) return movePositionArray;
+        var positions = new List<Vector2>();
 
-        movePositionArray[0] = targetPosition;
-        if (positionCount == 1) return movePositionArray;
+        int objectsInCurrentCircle = 3;
+        float currentRadius = circleSpacing;
+        int remainingObjects = totalPositions;
 
-        var ringSize = 0.1f;
-        var currentIndex = 1;
-        var ringNumber = 0;
-
-        while (currentIndex < positionCount)
+        while (remainingObjects > 0 && currentRadius <= maxRadius)
         {
-            var countOfPositionInRing = 1 + 2 * ringNumber;
-            var angleStep = 360f / countOfPositionInRing;
-            var radius = ringSize + ringSize * Mathf.Log(ringNumber + 1);
-            var angleOffset = UnityEngine.Random.Range(0f, 360f);
+            // Reduce the number of objects left to place
+            remainingObjects = Mathf.Max(remainingObjects - objectsInCurrentCircle, 0);
 
-            for (int j = 0; j < countOfPositionInRing; j++)
+            float angleStep = 360f / objectsInCurrentCircle;
+            float currentAngle = 0f;
+
+            for (int i = 0; i < objectsInCurrentCircle; i++)
             {
-                var angle = j * angleStep + angleOffset;
-                var direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
-                var positionOnRing = targetPosition + direction * radius;
-                movePositionArray[currentIndex] = positionOnRing;
-                currentIndex++;
-
-                if (currentIndex >= positionCount - 1)
-                {
+                if (positions.Count == totalPositions)
                     break;
-                }
+
+                // Calculate position based on angle and radius
+                Vector2 direction = new Vector2(Mathf.Cos(currentAngle * Mathf.Deg2Rad), Mathf.Sin(currentAngle * Mathf.Deg2Rad));
+                positions.Add(center + direction * currentRadius);
+
+                currentAngle += angleStep;
             }
-            ringNumber++;
+
+            // Move to the next circle
+            currentRadius += circleSpacing;
+
+            // Increase objects per circle for the next layer
+            objectsInCurrentCircle += initialObjectsPerCircle;
         }
 
-        return movePositionArray;
+        return positions.ToArray();
     }
 }
-
-
-//Rows

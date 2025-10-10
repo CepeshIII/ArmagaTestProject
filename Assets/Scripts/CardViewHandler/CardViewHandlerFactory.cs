@@ -5,7 +5,7 @@ public class CardViewHandlerFactory
         switch (cardType) 
         {
             case CardType.Unit:
-                return new UnitCardViewHandler(cardPrefabFactory, new RowsPlacementStrategy(grid));
+                return new UnitCardViewHandler(cardPrefabFactory, new RadiusPlacementStrategy(grid));
             case CardType.Building:
                 return new BuildingCardViewHandler(cardPrefabFactory, new CenterPlacementStrategy(grid));
         }
