@@ -32,6 +32,12 @@ public static class EffectAreaCalculator
                     }
                 }
                 break;
+            case EffectAreaType.Cross:
+                yield return origin + new Vector2Int(0, 1);
+                yield return origin + new Vector2Int(1, 0);
+                yield return origin + new Vector2Int(0, -1);
+                yield return origin + new Vector2Int(-1, 0);
+                break;
         }
     }
 }

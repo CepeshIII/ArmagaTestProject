@@ -22,7 +22,7 @@ MonoBehaviour:
   - effectsId: 0
     effectsName: 
     effectArea:
-      areaType: 1
+      areaType: 3
       range: 1
     effectTarget: 1
     unitEffectType: 0
