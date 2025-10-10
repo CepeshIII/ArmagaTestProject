@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 using Zenject;
 
 
@@ -38,7 +35,7 @@ public class BoardPointerTracker : MonoBehaviour, IInitializable, IDisposable
 
     private MainUIGraphicRaycaster graphicRaycaster;
     private InputManager inputManager;
-    private IsometricGrid isometricGrid;
+    private ILinearGrid grid;
     private GameBoard gameBoard;
     private new Camera camera;
 
@@ -72,11 +69,11 @@ public class BoardPointerTracker : MonoBehaviour, IInitializable, IDisposable
     /// Injects required dependencies.
     /// </summary>
     [Inject]
-    public void Construct(InputManager inputManager, IsometricGrid isometricGrid,
+    public void Construct(InputManager inputManager, ILinearGrid grid,
         GameBoard gameBoard, Camera camera, MainUIGraphicRaycaster graphicRaycaster)
     {
         this.inputManager = inputManager;
-        this.isometricGrid = isometricGrid;
+        this.grid = grid;
         this.gameBoard = gameBoard;
         this.camera = camera;
         this.graphicRaycaster = graphicRaycaster;
@@ -125,7 +122,7 @@ public class BoardPointerTracker : MonoBehaviour, IInitializable, IDisposable
     private PointerData CalculatePointerData(Vector2 pointerDisplayPosition)
     {
         Vector2 worldPoint = camera.ScreenToWorldPoint(pointerDisplayPosition);
-        var coordinate = isometricGrid.WorldToIndexCoords(worldPoint);
+        var coordinate = grid.WorldToIndexCoords(worldPoint);
 
         return new PointerData
         {
@@ -146,7 +143,7 @@ public class BoardPointerTracker : MonoBehaviour, IInitializable, IDisposable
         // If pointer is not valid for board interaction, treat as exit
         if (graphicRaycaster.IsPointerOverUI(pointerData.displayPosition) ||
             !IsOverBoardOnly(pointerData.worldPosition) ||
-            !isometricGrid.IsInsideGridIndex(pointerData.coordinate) ||
+            !grid.IsInsideGridIndex(pointerData.coordinate) ||
             !gameBoard.CellIsAvailable(pointerData.coordinate))
         {
             nextState = BoardPointerStates.ExitBoard;

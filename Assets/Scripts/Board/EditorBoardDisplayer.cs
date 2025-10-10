@@ -8,8 +8,8 @@ public class EditorBoardDisplayer : MonoBehaviour
     [SerializeField] private Vector2Int textureSize = new Vector2Int(16, 16);
 
     private GridShaderController gridShaderController;
-    private GridBounds gridBounds;
-    private IsometricGrid grid;
+    private GridBoundsBehaviour gridBounds;
+    private ILinearGrid grid;
 
     private CachedGridBounds cachedBounds;
 
@@ -18,11 +18,11 @@ public class EditorBoardDisplayer : MonoBehaviour
 /*    private void Awake()
     {
 
-        gridBounds  = GameObject.FindAnyObjectByType<GridBounds>();
-        cachedBounds = new CachedGridBounds(gridBounds);
+        bounds  = GameObject.FindAnyObjectByType<GridBoundsBehaviour>();
+        cachedBounds = new CachedGridBounds(bounds);
 
         grid = new IsometricGrid();
-        grid.BuildFromBounds(gridBounds);
+        grid.BuildFromBoundsBehaviour(bounds);
 
         maskController = new GridShaderController();
         maskController.SetMaterial(boardMaterial);
@@ -37,11 +37,11 @@ public class EditorBoardDisplayer : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (gridBounds != null && grid != null) 
+        if (bounds != null && grid != null) 
         {
-            if (!cachedBounds.IsEqual(gridBounds))
+            if (!cachedBounds.IsEqual(bounds))
             {
-                grid.BuildFromBounds(gridBounds);
+                grid.BuildFromBoundsBehaviour(bounds);
                 maskController.SetGridOffset(grid.GridOffset);
                 DrawGrid();
             }

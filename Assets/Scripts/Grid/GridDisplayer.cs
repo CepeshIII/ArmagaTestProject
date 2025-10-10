@@ -2,14 +2,14 @@ using UnityEngine;
 
 
 [ExecuteAlways]
-[RequireComponent(typeof(GridBounds))]
+[RequireComponent(typeof(GridBoundsBehaviour))]
 public class GridDisplayer : MonoBehaviour
 {
     [SerializeField] private Material gridMaterial;
     [SerializeField] private Vector2Int textureSize = new Vector2Int(16, 16);
 
-    private IsometricGrid grid;
-    private GridBounds gridBounds;
+    private ILinearGrid grid;
+    private GridBoundsBehaviour gridBounds;
     private CachedGridBounds cachedGridBounds;
     private GridShaderController gridShaderController;
 
@@ -24,10 +24,10 @@ public class GridDisplayer : MonoBehaviour
             return;
         }
 
-        gridBounds = GetComponent<GridBounds>();
-        grid = new IsometricGrid();
-
-        grid.BuildFromBounds(gridBounds);
+        gridBounds = GetComponent<GridBoundsBehaviour>();
+        grid = new LinearGrid(Vector2.one, 
+            new IsometricToWorldCoordinateConverter());
+        grid.BuildGrid(gridBounds.bounds);
         cachedGridBounds = new CachedGridBounds(gridBounds);
 
         gridShaderController = new GridShaderController();
@@ -53,7 +53,7 @@ public class GridDisplayer : MonoBehaviour
             if (!cachedGridBounds.IsEqual(gridBounds) || !gridShaderController.HasTexture)
             {
                 cachedGridBounds = new CachedGridBounds(gridBounds);
-                grid.BuildFromBounds(gridBounds);
+                grid.BuildGrid(gridBounds.bounds);
                 gridShaderController.SetGridOffset(grid.GridOffset);
 
                 DrawGrid();

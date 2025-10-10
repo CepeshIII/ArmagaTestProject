@@ -22,8 +22,13 @@ public class SceneInstaller : MonoInstaller
         Container.Install<CardDeckInstaller>();
         Container.Install<BoardDisplayerInstaller>();
 
+
         // Bind game managers
         Container.BindInterfacesAndSelfTo<RoundManager>().FromNew().AsSingle().NonLazy();
+
+        Container.Bind<CardViewHandlerFactory>().FromNew().AsSingle();
+        Container.BindInterfacesAndSelfTo<CardPrefabFactory>().FromNew().AsSingle();
+        Container.BindInterfacesAndSelfTo<CardPrefabController>().FromNew().AsSingle();
     }
 }
 
@@ -32,7 +37,7 @@ public class CardInstaller : Installer
 {
     public override void InstallBindings()
     {
-        // Bind EffectFactory and CardInstanceFactory as a single instances
+        // Bind EffectFactory and CardInstanceFactory as a single viewObjects
         Container.Bind<EffectFactory>().AsSingle();
         Container.Bind<CardInstanceFactory>().AsSingle();
     }
@@ -68,10 +73,11 @@ public class GridInstaller : Installer
     public override void InstallBindings()
     {
         // Bind the grid component from the scene
-        Container.Bind<GridBounds>().FromComponentInHierarchy().AsSingle();
+        Container.Bind<GridBoundsBehaviour>().FromComponentInHierarchy().AsSingle();
 
         // Bind the grid component from the scene
-        Container.Bind<IsometricGrid>().FromNew().AsSingle();
+        Container.Bind<ILinearGrid>().To<LinearGrid>().FromNew().AsSingle().
+            WithArguments(Vector2.one, new IsometricToWorldCoordinateConverter());
 
         Container.Bind<IMaskShaderController>().To<GridShaderController>().AsCached();
 

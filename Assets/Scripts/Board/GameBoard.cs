@@ -28,9 +28,24 @@ public class BoardReadySignal
 }
 
 
+public struct BoardCellPosition
+{
+    public readonly Vector3 WorldPosition;
+    public readonly Vector2Int GridPosition;
+    public readonly Vector2Int CoordIndex;
+
+    public BoardCellPosition(Vector3 world, Vector2Int grid, Vector2Int index)
+    {
+        WorldPosition = world;
+        GridPosition = grid;
+        CoordIndex = index;
+    }
+}
+
+
 public class GameBoard
 {
-    private IsometricGrid grid;
+    private ILinearGrid grid;
     private PlacementValidator placementValidator;
 
     private EffectFactory effectFactory;
@@ -39,16 +54,18 @@ public class GameBoard
     private Cell[] boardCells;
 
     public Cell[] BoardCells { get => boardCells; }
-    public IsometricGrid Grid { get => grid; }
+    public ILinearGrid Grid { get => grid; }
 
 
-    public event Action<Vector2Int, bool> CellAvailabilityChanged;
-    public event Action<CardData, Vector2Int> CardPlaced;
-    public event Action<CardData, Vector2Int> CardPlacingCanceled;
+    public event Action<BoardCellPosition, bool> CellAvailabilityChanged;
+    public event Action<CardInstance, BoardCellPosition> CardPlaced;
+    public event Action<CardData, BoardCellPosition> CardPlacingCanceled;
+    public event Action BoardUpdated;
 
 
 
-    public GameBoard(IsometricGrid grid, EffectFactory effectFactory, CardInstanceFactory cardFactory)
+
+    public GameBoard(ILinearGrid grid, EffectFactory effectFactory, CardInstanceFactory cardFactory)
     {
         this.grid = grid;
         this.effectFactory = effectFactory;
@@ -79,16 +96,20 @@ public class GameBoard
 
     public void TryPlaceCard(CardData card, Vector2Int indexCoords)
     {
+        var worldPosition = grid.IndexCoordsToWorldCorner(indexCoords);
         var gridPosition = grid.IndexCoordsToGridPosition(indexCoords);
+        var boardCellPosition = new BoardCellPosition(worldPosition, gridPosition, indexCoords);
+
         if (TryGetCell(indexCoords, out var cell) && placementValidator.CanPlace(cell, card))
         {
-            CreateCardInstance(card, indexCoords, cell);
-            CardPlaced?.Invoke(card, gridPosition);
+            var cardInstance = CreateCardInstance(card, indexCoords, cell);
+            CardPlaced?.Invoke(cardInstance, boardCellPosition);
             RecalculateEffects();
+            BoardUpdated.Invoke();
         }
         else
         {
-            CardPlacingCanceled?.Invoke(card, gridPosition);
+            CardPlacingCanceled?.Invoke(card, boardCellPosition);
         }
     }
 
@@ -136,7 +157,7 @@ public class GameBoard
     /// <param name="cardData">The sourceCard data to instantiate.</param>
     /// <param name="indexCoords">The coordinates of the target cell on the board.</param>
     /// <param name="cell">The cell where the CardInstance will be placed.</param>
-    private void CreateCardInstance(CardData cardData, Vector2Int indexCoords, Cell cell)
+    private CardInstance CreateCardInstance(CardData cardData, Vector2Int indexCoords, Cell cell)
     {
         // Create a new card instance from the factory
         if (cardFactory.TryGetInstance(cardData, out var cardInstance))
@@ -152,8 +173,11 @@ public class GameBoard
             {
                 RegisterEffectsFromCard(effectSourceCard, indexCoords);
             }
+
+            return cardInstance;
         }
 
+        return null;
     }
 
 
@@ -203,7 +227,7 @@ public class GameBoard
         // Check if the cell coordinates are inside the board grid
         if (grid.IsInsideGridIndex(indexCoords))
         {
-            // Convert 2D cell coordinates to 1D array index
+            // ConvertIn 2D cell coordinates to 1D array index
             var index = grid.IndexCoordsToArrayIndex(indexCoords);
 
             // Get the cell from the board array

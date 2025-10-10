@@ -2,21 +2,11 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class GridBounds : MonoBehaviour
+public struct GridBounds
 {
-    [SerializeField]
-    public Color guiColour;
-
-    [SerializeField]
-    public Vector3 pointA = Vector3.zero;
-
-    [SerializeField]
-    public Vector3 pointB = new Vector3(1, 0);
-
-    [SerializeField]
-    public Vector3 pointC = new Vector3(1, -1);
-
-    [SerializeField]
-    public Vector3 pointD = new Vector3(0, -1);
+    public Vector3 pointA;
+    public Vector3 pointB;
+    public Vector3 pointC;
+    public Vector3 pointD;
 
 }

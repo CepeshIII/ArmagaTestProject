@@ -16,7 +16,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
 /// <summary>
-/// Provides programmatic access to <see cref="InputActionAsset" />, <see cref="InputActionMap" />, <see cref="InputAction" /> and <see cref="InputControlScheme" /> instances defined in asset "Assets/InputSystem_Actions.inputactions".
+/// Provides programmatic access to <see cref="InputActionAsset" />, <see cref="InputActionMap" />, <see cref="InputAction" /> and <see cref="InputControlScheme" /> viewObjects defined in asset "Assets/InputSystem_Actions.inputactions".
 /// </summary>
 /// <remarks>
 /// This class is source generated and any manual edits will be discarded if the associated asset is reimported or modified.
@@ -1616,7 +1616,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     }
 
     /// <summary>
-    /// Destroys this asset and all associated <see cref="InputAction"/> instances.
+    /// Destroys this asset and all associated <see cref="InputAction"/> viewObjects.
     /// </summary>
     public void Dispose()
     {
@@ -1870,7 +1870,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         }
 
         /// <summary>
-        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// Replaces all existing callback viewObjects and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
         /// </summary>
         /// <remarks>
         /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
@@ -2010,7 +2010,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         }
 
         /// <summary>
-        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// Replaces all existing callback viewObjects and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
         /// </summary>
         /// <remarks>
         /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
@@ -2205,7 +2205,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         }
 
         /// <summary>
-        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// Replaces all existing callback viewObjects and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
         /// </summary>
         /// <remarks>
         /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
@@ -2301,7 +2301,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         }
 
         /// <summary>
-        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// Replaces all existing callback viewObjects and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
         /// </summary>
         /// <remarks>
         /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.

@@ -2,10 +2,10 @@
 
 public class BoardCellsBuilder
 {
-    private readonly IsometricGrid grid;
+    private readonly ILinearGrid grid;
 
 
-    public BoardCellsBuilder(IsometricGrid grid)
+    public BoardCellsBuilder(ILinearGrid grid)
     {
         this.grid = grid;
     }

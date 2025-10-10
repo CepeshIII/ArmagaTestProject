@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
@@ -12,6 +11,7 @@ public enum QueueElementType
     Border,
     Fill
 }
+
 
 public struct QueueElement
 {
@@ -138,9 +138,9 @@ public class BoardDisplayer : MonoBehaviour, IDisposable
     }
 
 
-    private void HandleCellAvailabilityChanged(Vector2Int coord, bool isAvailable)
+    private void HandleCellAvailabilityChanged(BoardCellPosition cellPosition, bool isAvailable)
     {
-        SetCellBorder(coord, isAvailable);
+        SetCellBorder(cellPosition.CoordIndex, isAvailable);
     }
 
 

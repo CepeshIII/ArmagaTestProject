@@ -51,13 +51,13 @@ public class CardPlacer : MonoBehaviour, IInitializable, IDisposable
     }
 
 
-    private void HandleCardPlaced(CardData card, Vector2Int gridPosition)
+    private void HandleCardPlaced(CardInstance cardInstance, BoardCellPosition cellPosition)
     {
-        CardPlacementConfirmed.Invoke(card);
+        CardPlacementConfirmed.Invoke(cardInstance.Data);
     }
 
 
-    private void HandleCardPlacingCanceled(CardData card, Vector2Int gridPosition)
+    private void HandleCardPlacingCanceled(CardData card, BoardCellPosition cellPosition)
     {
         CardPlacementCanceled.Invoke(card);
     }

@@ -39,8 +39,8 @@ public class TileMapManager : MonoBehaviour
     }
 
 
-    private void HandleCardPlaced(CardData data, Vector2Int position)
+    private void HandleCardPlaced(CardInstance cardInstance, BoardCellPosition cellPosition)
     {
-        SetTile(position, data.tile);
+        SetTile(cellPosition.GridPosition, cardInstance.Data.tile);
     }
 }

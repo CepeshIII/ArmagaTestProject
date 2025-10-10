@@ -16,9 +16,7 @@ public static class EffectValidator
     [MenuItem("Tools/Validate Effects")]
     public static void ValidateEffects()
     {
-        var allTypes = AppDomain.CurrentDomain.GetAssemblies()
-            .Where(a => a.FullName.StartsWith("Assembly-CSharp")) // runtime assembly
-            .SelectMany(a => a.GetTypes())
+        var allTypes = Assembly.GetExecutingAssembly().GetTypes()
             .Where(t => typeof(IEffect).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract);
 
         var unitDict = new System.Collections.Generic.Dictionary<UnitEffectType, Type>();

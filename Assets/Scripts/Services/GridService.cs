@@ -1,18 +1,20 @@
+using UnityEngine;
+
 public class GridService : IGridService
 {
-    private readonly GridBounds gridBounds;
-    private readonly IsometricGrid isometricGrid;
+    private readonly GridBoundsBehaviour gridBounds;
+    private readonly ILinearGrid grid;
 
 
-    public GridService(GridBounds gridBounds, IsometricGrid isometricGrid)
+    public GridService(GridBoundsBehaviour gridBounds, ILinearGrid grid)
     {
         this.gridBounds = gridBounds;
-        this.isometricGrid = isometricGrid;
+        this.grid = grid;
     }
 
 
     public void BuildGrid()
     {
-        isometricGrid.BuildFromBounds(gridBounds);
+        grid.BuildGrid(gridBounds.bounds);
     }
 }

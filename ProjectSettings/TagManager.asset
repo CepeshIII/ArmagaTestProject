@@ -42,6 +42,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: PlacedCards
+    uniqueID: 509932145
+    locked: 0
   - name: UI
     uniqueID: 670424015
     locked: 0

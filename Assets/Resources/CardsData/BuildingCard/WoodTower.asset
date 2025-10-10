@@ -17,5 +17,5 @@ MonoBehaviour:
   description: WoodTower
   sprite: {fileID: -1929597620, guid: 67385ed92c625cc4d93a35208da1eec6, type: 3}
   tile: {fileID: 11400000, guid: 4b3892231e3ce364cb2b40ed7814ed6c, type: 2}
-  buildingPrefab: {fileID: 0}
-  effect: {fileID: 0}
+  buildingPrefab: {fileID: 6523121067464140007, guid: 8a22ac7a3c7c1a143b0e80998d521a62, type: 3}
+  effects: []

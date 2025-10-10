@@ -6,7 +6,7 @@ public interface ILinearGrid
     public Vector2Int GridOffset { get; }
     public Vector2Int GridSize { get; }
 
-    public void BuildGrid();
+    public void BuildGrid(GridBounds bounds);
 
     public Vector2Int GridPositionToIndexCoords(Vector2Int gridPos);
     public Vector3 GridPositionToWorld(Vector2 gridPos);
@@ -20,6 +20,6 @@ public interface ILinearGrid
 
     public bool IsInsideGridIndex(Vector2Int indexCoords);
 
-    public Vector2Int WorldToGridPosition(Vector2 isoWorldPos);
-    public Vector2Int WorldToIndexCoords(Vector2 isoWorldPos);
+    public Vector2Int WorldToGridPosition(Vector2 worldPos);
+    public Vector2Int WorldToIndexCoords(Vector2 worldPos);
 }

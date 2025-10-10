@@ -17,7 +17,7 @@ MonoBehaviour:
   description: Increase number of Units
   sprite: {fileID: 2065853741, guid: 21ade160cee9aaf40a69679445223acb, type: 3}
   tile: {fileID: 11400000, guid: 78e21985c7391e04bbaa10820f5373a0, type: 2}
-  buildingPrefab: {fileID: 0}
+  buildingPrefab: {fileID: 6523121067464140007, guid: c73d6a8bf38b824418d592a869ce2c7b, type: 3}
   effects:
   - effectsId: 0
     effectsName: 

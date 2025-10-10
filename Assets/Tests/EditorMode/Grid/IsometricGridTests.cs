@@ -5,25 +5,33 @@ using UnityEngine;
 [TestFixture]
 public class IsometricGridTests
 {
-    private IsometricGrid grid;
+    private ILinearGrid grid;
     private GridBounds bounds;
 
     [SetUp]
     public void SetUp()
     {
         var go = new GameObject();
-        bounds = go.AddComponent<GridBounds>();
-        bounds.pointA = new Vector3(1, 1);
-        bounds.pointC = new Vector3(8, 8);
 
-        grid = new IsometricGrid();
-        grid.BuildFromBounds(bounds);
+        bounds = new GridBounds
+        {
+            pointA = new Vector3(1, 1),
+            pointB = new Vector3(8, 1),
+
+            pointC = new Vector3(8, 8),
+            pointD = new Vector3(1, 8),
+        };
+
+        grid = new LinearGrid(Vector2.one, 
+            new IsometricToWorldCoordinateConverter());
+        grid.BuildGrid(bounds);
     }
 
     [Test]
     public void Constructor_SetsDefaultCellSize()
     {
-        var g = new IsometricGrid();
+        var g = new LinearGrid(Vector2.one, 
+            new IsometricToWorldCoordinateConverter());
         Assert.AreEqual(new Vector2(1, 1), g.CellSize);
     }
 
@@ -37,8 +45,7 @@ public class IsometricGridTests
     [Test]
     public void BuildGrid_InitializesGridArray()
     {
-        // Should be called by BuildFromBounds, but test direct call
-        grid.BuildGrid();
+        grid.BuildGrid(bounds);
         Assert.AreEqual(new Vector2Int(6, 6), grid.GridSize);
     }
 

@@ -2,10 +2,10 @@ using UnityEditor;
 using UnityEngine;
 
 
-[CustomEditor(typeof(GridBounds))]
-public class GridBoundsInspector : Editor
+[CustomEditor(typeof(GridBoundsBehaviour))]
+public class GridBoundsBehaviourInspector : Editor
 {
-    GridBounds cb;
+    GridBoundsBehaviour cb;
     private Rect boundArea;
 
     private const float wpSize = 0.1f;
@@ -13,13 +13,13 @@ public class GridBoundsInspector : Editor
 
     private void OnEnable()
     {
-        cb = (GridBounds)target;
+        cb = (GridBoundsBehaviour)target;
     }
 
 
     public override void OnInspectorGUI()
     {
-        if(cb != null)
+        if (cb != null)
         {
             DrawDefaultInspector();
         }
@@ -31,6 +31,12 @@ public class GridBoundsInspector : Editor
         if (cb != null)
         {
             DrawBorderHandles();
+
+            if (GUI.changed)
+            {
+                Undo.RecordObject(cb, "Modify Grid Bounds");
+                EditorUtility.SetDirty(cb);
+            }
         }
     }
 
@@ -41,34 +47,34 @@ public class GridBoundsInspector : Editor
     public void DrawBorderHandles()
     {
         // Reorder points to make sure A is top-left, B is top-right, C is bottom-right, D is bottom-left of the rectangle
-        var maxY = Mathf.Max(cb.pointA.y, cb.pointB.y, cb.pointC.y, cb.pointD.y);
-        var maxX = Mathf.Max(cb.pointA.x, cb.pointB.x, cb.pointC.x, cb.pointD.x);
+        var maxY = Mathf.Max(cb.bounds.pointA.y, cb.bounds.pointB.y, cb.bounds.pointC.y, cb.bounds.pointD.y);
+        var maxX = Mathf.Max(cb.bounds.pointA.x, cb.bounds.pointB.x, cb.bounds.pointC.x, cb.bounds.pointD.x);
 
-        var minY = Mathf.Min(cb.pointA.y, cb.pointB.y, cb.pointC.y, cb.pointD.y);
-        var minX = Mathf.Min(cb.pointA.x, cb.pointB.x, cb.pointC.x, cb.pointD.x);
+        var minY = Mathf.Min(cb.bounds.pointA.y, cb.bounds.pointB.y, cb.bounds.pointC.y, cb.bounds.pointD.y);
+        var minX = Mathf.Min(cb.bounds.pointA.x, cb.bounds.pointB.x, cb.bounds.pointC.x, cb.bounds.pointD.x);
 
-        cb.pointA = new Vector3(minX, maxY, 0);
-        cb.pointB = new Vector3(maxX, maxY, 0);
+        cb.bounds.pointA = new Vector3(minX, maxY, 0);
+        cb.bounds.pointB = new Vector3(maxX, maxY, 0);
 
-        cb.pointC = new Vector3(maxX, minY, 0);
-        cb.pointD = new Vector3(minX, minY, 0);
+        cb.bounds.pointC = new Vector3(maxX, minY, 0);
+        cb.bounds.pointD = new Vector3(minX, minY, 0);
 
 
         Vector3[] verts = new Vector3[]
         {
-            cb.pointA,
-            cb.pointB,
-            cb.pointC,
-            cb.pointD,
+            cb.bounds.pointA,
+            cb.bounds.pointB,
+            cb.bounds.pointC,
+            cb.bounds.pointD,
         };
 
         // Store offsets for each vertex
         Vector3[] offsets = new Vector3[]
         {
-            cb.pointA,
-            cb.pointB,
-            cb.pointC,
-            cb.pointD,
+            cb.bounds.pointA,
+            cb.bounds.pointB,
+            cb.bounds.pointC,
+            cb.bounds.pointD,
         };
 
         var sum = Vector3.zero;
@@ -101,15 +107,16 @@ public class GridBoundsInspector : Editor
 
 
         // Apply center movement and individual offsets to each corner
-        cb.pointA += rawOffset + new Vector3(minX, maxY);
-        cb.pointB += rawOffset + new Vector3(maxX, maxY);
+        cb.bounds.pointA += rawOffset + new Vector3(minX, maxY);
+        cb.bounds.pointB += rawOffset + new Vector3(maxX, maxY);
 
-        cb.pointC += rawOffset + new Vector3(maxX, minY);
-        cb.pointD += rawOffset + new Vector3(minX, minY);
-
+        cb.bounds.pointC += rawOffset + new Vector3(maxX, minY);
+        cb.bounds.pointD += rawOffset + new Vector3(minX, minY);
 
         // Draw the rectangle
         Handles.DrawSolidRectangleWithOutline(verts, cb.guiColour, Color.white);
+
     }
 }
+
 
