@@ -1,4 +1,4 @@
 public interface IBoundsBehaviourBased
 {
-    public void BuildFromBoundsBehaviour(GridBoundsBehaviour gridBounds);
+    public void BuildFromBoundsBehaviour(IGridBoundsBehaviour gridBounds);
 }

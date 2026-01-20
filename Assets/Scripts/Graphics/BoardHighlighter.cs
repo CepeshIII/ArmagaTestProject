@@ -6,13 +6,13 @@ using static BoardPointerTracker;
 
 public class BoardHighlighter : IInitializable, IDisposable
 {
-    private readonly BoardPointerTracker boardPointerTracker;
-    private readonly BoardDisplayer boardDisplayer;
+    private readonly IBoardPointerTracker boardPointerTracker;
+    private readonly IBoardDisplayer boardDisplayer;
 
 
 
-    public BoardHighlighter(BoardDisplayer boardDisplayer,
-        BoardPointerTracker boardPointerTracker)
+    public BoardHighlighter(IBoardDisplayer boardDisplayer,
+        IBoardPointerTracker boardPointerTracker)
     {
         this.boardDisplayer = boardDisplayer;
         this.boardPointerTracker = boardPointerTracker;

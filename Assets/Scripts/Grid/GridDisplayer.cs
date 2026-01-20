@@ -27,7 +27,7 @@ public class GridDisplayer : MonoBehaviour
         gridBounds = GetComponent<GridBoundsBehaviour>();
         grid = new LinearGrid(Vector2.one, 
             new IsometricToWorldCoordinateConverter());
-        grid.BuildGrid(gridBounds.bounds);
+        grid.BuildGrid(gridBounds.GetGridBounds());
         cachedGridBounds = new CachedGridBounds(gridBounds);
 
         gridShaderController = new GridShaderController();
@@ -53,7 +53,7 @@ public class GridDisplayer : MonoBehaviour
             if (!cachedGridBounds.IsEqual(gridBounds) || !gridShaderController.HasTexture)
             {
                 cachedGridBounds = new CachedGridBounds(gridBounds);
-                grid.BuildGrid(gridBounds.bounds);
+                grid.BuildGrid(gridBounds.GetGridBounds());
                 gridShaderController.SetGridOffset(grid.GridOffset);
 
                 DrawGrid();

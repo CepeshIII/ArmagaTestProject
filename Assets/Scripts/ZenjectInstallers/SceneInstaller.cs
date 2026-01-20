@@ -45,7 +45,7 @@ public class CardPlacerInstaller : Installer
     public override void InstallBindings()
     {
         // Bind the card placer for handling card placement
-        Container.BindInterfacesAndSelfTo<CardPlacer>().FromNewComponentOnNewGameObject().AsSingle();
+        Container.BindInterfacesAndSelfTo<CardPlacer>().FromNew().AsSingle();
     }
 }
 
@@ -54,10 +54,10 @@ public class CardDeckInstaller : Installer
 {
     public override void InstallBindings()
     {
-        Container.BindInterfacesAndSelfTo<CardDeckController>().FromNewComponentOnNewGameObject().AsSingle();
+        Container.BindInterfacesAndSelfTo<CardDeckController>().FromNew().AsSingle();
         
         // Bind the deck display from the scene
-        Container.Bind<CardDeckDisplay>().FromComponentInHierarchy().AsSingle();
+        Container.Bind<ICardDeckDisplay>().To<CardDeckDisplay>().FromComponentInHierarchy().AsSingle();
 
         Container.BindInterfacesAndSelfTo<DeckService>().FromNew().AsSingle().NonLazy();
     }
@@ -69,7 +69,7 @@ public class GridInstaller : Installer
     public override void InstallBindings()
     {
         // Bind the grid component from the scene
-        Container.Bind<GridBoundsBehaviour>().FromComponentInHierarchy().AsSingle();
+        Container.Bind<IGridBoundsBehaviour>().To<GridBoundsBehaviour>().FromComponentInHierarchy().AsSingle();
 
         // Bind the grid component from the scene
         Container.Bind<ILinearGrid>().To<LinearGrid>().FromNew().AsSingle().

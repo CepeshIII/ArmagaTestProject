@@ -1,9 +1,10 @@
 using System;
 using UnityEngine.InputSystem;
 using UnityEngine;
+using Zenject;
 
 
-public class InputManager : Singleton<InputManager>
+public class InputManager : IInitializable, IDisposable
 {
     public static InputSystem_Actions actions;
 
@@ -23,23 +24,33 @@ public class InputManager : Singleton<InputManager>
     public Vector2 GetMousePosition() => actions.GlobalActions.MousePosition.ReadValue<Vector2>();
 
 
-    new public void Awake()
+
+    public void Initialize()
     {
-        base.Awake();
         actions = new InputSystem_Actions();
-    }
 
-
-    private void OnEnable()
-    {
         actions.BoardManageMode.LeftMouseClick.started += LeftMouseClick_Start;
         actions.BoardManageMode.LeftMouseClick.performed += LeftMouseClick_Performed;
         actions.BoardManageMode.LeftMouseClick.canceled += LeftMouseClick_End;
-        
+
         actions.BoardManageMode.MousePosition.performed += MouseMove;
+
     }
 
+    public void Dispose()
+    {
+        if (actions == null) return;
 
+        actions.Disable();
+
+        actions.BoardManageMode.LeftMouseClick.started -= LeftMouseClick_Start;
+        actions.BoardManageMode.LeftMouseClick.performed -= LeftMouseClick_Performed;
+        actions.BoardManageMode.LeftMouseClick.canceled -= LeftMouseClick_End;
+
+        actions.BoardManageMode.MousePosition.performed -= MouseMove;
+    }
+
+    
     private void Start()
     {
         // Enable the default action map for data which shared between modes, for example mouse coordinate
@@ -126,20 +137,6 @@ public class InputManager : Singleton<InputManager>
         actions.Disable();
         ActionMapChanged?.Invoke(null);
         actions.GlobalActions.Disable();
-    }
-
-
-    private void OnDisable()
-    {
-        if (actions == null) return;
-
-        actions.Disable();
-
-        actions.BoardManageMode.LeftMouseClick.started -= LeftMouseClick_Start;
-        actions.BoardManageMode.LeftMouseClick.performed -= LeftMouseClick_Performed;
-        actions.BoardManageMode.LeftMouseClick.canceled -= LeftMouseClick_End;
-
-        actions.BoardManageMode.MousePosition.performed -= MouseMove;
     }
 
 }

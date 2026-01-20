@@ -21,7 +21,7 @@ public enum BoardPointerStates
 /// Tracks the mouse pointer position relative to the game board
 /// and raises events when pointer state changes occur.
 /// </summary>
-public class BoardPointerTracker : MonoBehaviour, IInitializable, IDisposable
+public class BoardPointerTracker : MonoBehaviour, IBoardPointerTracker, IInitializable, IDisposable
 {
     /// <summary>
     /// Internal data structure storing pointer information.

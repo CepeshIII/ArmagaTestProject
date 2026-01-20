@@ -7,18 +7,18 @@ public struct PlacementCompletedSignal { }
 
 
 
-public class CardDeckController : MonoBehaviour, IInitializable, IDisposable
+public class CardDeckController : IInitializable, IDisposable
 {
-    private CardDeck cardDeck;
-    private CardDeckDisplay deckDisplay;
-    private CardPlacer cardPlacer;
+    private readonly ICardDeckDisplay deckDisplay;
+    private readonly CardPlacer cardPlacer;
+    private readonly SignalBus signalBus;
 
-    private SignalBus signalBus;
+    private CardDeck cardDeck;
 
 
 
     [Inject]
-    public void Construct(CardDeckDisplay deckDisplay, CardPlacer cardPlacer, SignalBus signalBus)
+    public CardDeckController(ICardDeckDisplay deckDisplay, CardPlacer cardPlacer, SignalBus signalBus)
     {
         this.cardPlacer = cardPlacer;
         this.deckDisplay = deckDisplay;
@@ -38,7 +38,6 @@ public class CardDeckController : MonoBehaviour, IInitializable, IDisposable
             cardPlacer.CardPlacementConfirmed += HandleCardPlaced;
             cardPlacer.CardPlacementCanceled += HandleCardPlacementCanceled;
         }
-
     }
 
 

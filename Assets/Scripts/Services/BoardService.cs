@@ -13,18 +13,16 @@ public class BoardService : IBoardService, IInitializable, IDisposable
     private readonly BoardCellsBuilder cellsBuilder;
     private readonly GameBoard gameBoard;
     private readonly SignalBus signalBus;
-    private readonly BoardDisplayer boardDisplayer;
 
     private Cell[] boardCells;
 
 
     [Inject]
-    public BoardService(BoardCellsBuilder cellsBuilder, GameBoard gameBoard, SignalBus signalBus, BoardDisplayer boardDisplayer)
+    public BoardService(BoardCellsBuilder cellsBuilder, GameBoard gameBoard, SignalBus signalBus)
     {
         this.cellsBuilder = cellsBuilder;
         this.gameBoard = gameBoard;
         this.signalBus = signalBus;
-        this.boardDisplayer = boardDisplayer;
     }
 
 

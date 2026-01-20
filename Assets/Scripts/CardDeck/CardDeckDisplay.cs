@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 
 
-public class CardDeckDisplay : MonoBehaviour
+public class CardDeckDisplay : MonoBehaviour, ICardDeckDisplay
 {
     [SerializeField] private CardDisplay cardDisplayPrefab;
     [SerializeField] private LayoutGroup layoutGroup;

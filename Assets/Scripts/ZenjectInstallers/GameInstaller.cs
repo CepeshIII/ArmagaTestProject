@@ -11,7 +11,7 @@ public class GameInstaller : MonoInstaller
 
         Container.Bind<CardDataBase>().AsSingle();
 
-        Container.Bind<InputManager>().FromNewComponentOnNewGameObject().AsSingle();
+        Container.BindInterfacesAndSelfTo<InputManager>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<UIManager>().FromComponentInHierarchy().AsSingle();
 
         Container.Install<GameStateManagerInstaller>();

@@ -46,35 +46,37 @@ public class GridBoundsBehaviourInspector : Editor
     // This allows accurate visual editing while maintaining correct rectangle ratios.
     public void DrawBorderHandles()
     {
+        var bounds = cb.GetGridBounds();
+        var newBounds = new GridBounds();
+
         // Reorder points to make sure A is top-left, B is top-right, C is bottom-right, D is bottom-left of the rectangle
-        var maxY = Mathf.Max(cb.bounds.pointA.y, cb.bounds.pointB.y, cb.bounds.pointC.y, cb.bounds.pointD.y);
-        var maxX = Mathf.Max(cb.bounds.pointA.x, cb.bounds.pointB.x, cb.bounds.pointC.x, cb.bounds.pointD.x);
+        var maxY = Mathf.Max(bounds.pointA.y, bounds.pointB.y, bounds.pointC.y, bounds.pointD.y);
+        var maxX = Mathf.Max(bounds.pointA.x, bounds.pointB.x, bounds.pointC.x, bounds.pointD.x);
 
-        var minY = Mathf.Min(cb.bounds.pointA.y, cb.bounds.pointB.y, cb.bounds.pointC.y, cb.bounds.pointD.y);
-        var minX = Mathf.Min(cb.bounds.pointA.x, cb.bounds.pointB.x, cb.bounds.pointC.x, cb.bounds.pointD.x);
+        var minY = Mathf.Min(bounds.pointA.y, bounds.pointB.y, bounds.pointC.y, bounds.pointD.y);
+        var minX = Mathf.Min(bounds.pointA.x, bounds.pointB.x, bounds.pointC.x, bounds.pointD.x);
 
-        cb.bounds.pointA = new Vector3(minX, maxY, 0);
-        cb.bounds.pointB = new Vector3(maxX, maxY, 0);
+        newBounds.pointA = new Vector3(minX, maxY, 0);
+        newBounds.pointB = new Vector3(maxX, maxY, 0);
 
-        cb.bounds.pointC = new Vector3(maxX, minY, 0);
-        cb.bounds.pointD = new Vector3(minX, minY, 0);
-
+        newBounds.pointC = new Vector3(maxX, minY, 0);
+        newBounds.pointD = new Vector3(minX, minY, 0);
 
         Vector3[] verts = new Vector3[]
         {
-            cb.bounds.pointA,
-            cb.bounds.pointB,
-            cb.bounds.pointC,
-            cb.bounds.pointD,
+            newBounds.pointA,
+            newBounds.pointB,
+            newBounds.pointC,
+            newBounds.pointD,
         };
 
         // Store offsets for each vertex
         Vector3[] offsets = new Vector3[]
         {
-            cb.bounds.pointA,
-            cb.bounds.pointB,
-            cb.bounds.pointC,
-            cb.bounds.pointD,
+            newBounds.pointA,
+            newBounds.pointB,
+            newBounds.pointC,
+            newBounds.pointD,
         };
 
         var sum = Vector3.zero;
@@ -107,14 +109,16 @@ public class GridBoundsBehaviourInspector : Editor
 
 
         // Apply center movement and individual offsets to each corner
-        cb.bounds.pointA += rawOffset + new Vector3(minX, maxY);
-        cb.bounds.pointB += rawOffset + new Vector3(maxX, maxY);
+        newBounds.pointA += rawOffset + new Vector3(minX, maxY);
+        newBounds.pointB += rawOffset + new Vector3(maxX, maxY);
 
-        cb.bounds.pointC += rawOffset + new Vector3(maxX, minY);
-        cb.bounds.pointD += rawOffset + new Vector3(minX, minY);
+        newBounds.pointC += rawOffset + new Vector3(maxX, minY);
+        newBounds.pointD += rawOffset + new Vector3(minX, minY);
+
+        cb.SetGridBounds(newBounds);
 
         // Draw the rectangle
-        Handles.DrawSolidRectangleWithOutline(verts, cb.guiColour, Color.white);
+        Handles.DrawSolidRectangleWithOutline(verts, cb.GetColor(), Color.white);
 
     }
 }

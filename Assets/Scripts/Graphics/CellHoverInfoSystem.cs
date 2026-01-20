@@ -13,12 +13,12 @@ public class CellHoverInfoSystem : IInitializable, ITickable, IDisposable
     private float hoverDelay = 0.5f;
     private float timer;
 
-    private readonly BoardPointerTracker boardPointerChecker;
+    private readonly IBoardPointerTracker boardPointerChecker;
     private readonly GameBoard gameBoard;
     private readonly ICellInfoWindow infoWindow;
 
 
-    public CellHoverInfoSystem(BoardPointerTracker boardPointerChecker, GameBoard gameBoard, ICellInfoWindow infoWindow)
+    public CellHoverInfoSystem(IBoardPointerTracker boardPointerChecker, GameBoard gameBoard, ICellInfoWindow infoWindow)
     {
         this.boardPointerChecker = boardPointerChecker;
         this.gameBoard = gameBoard;

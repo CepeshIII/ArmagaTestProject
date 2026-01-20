@@ -10,7 +10,6 @@ public class RoundManager: IInitializable, IDisposable
     private readonly IGridService gridService;
     private readonly IBoardService boardService;
     private readonly IDeckService deckService;
-    private readonly UIManager uiManager;
     private readonly SignalBus signalBus;
 
     private RoundStats currentRoundStats;
@@ -25,24 +24,17 @@ public class RoundManager: IInitializable, IDisposable
 
 
     public RoundManager(IGridService gridService, IBoardService boardService, 
-        IDeckService deckService, UIManager uiManager, SignalBus signalBus)
+        IDeckService deckService, SignalBus signalBus)
     {
         this.gridService = gridService;
         this.boardService = boardService;
         this.deckService = deckService;
-        this.uiManager = uiManager;
         this.signalBus = signalBus;
     }
 
 
     public void Initialize()
     {
-        if (uiManager != null)
-        {
-            uiManager.ToAttackTriggered += OnPreviewPhaseEnded;
-            uiManager.ToBoardTriggered += OnBattlePhaseEnded;
-        }
-
         //signalBus.Subscribe<CardPlacedSignal>(OnCardPlaced);
     }
 
@@ -51,11 +43,6 @@ public class RoundManager: IInitializable, IDisposable
     {
         var board = boardService.GetBoard();
 
-        if (uiManager != null)
-        {
-            uiManager.ToAttackTriggered -= OnPreviewPhaseEnded;
-            uiManager.ToBoardTriggered -= OnBattlePhaseEnded;
-        }
         //signalBus.Unsubscribe<CardPlacedSignal>(OnCardPlaced);
     }
 

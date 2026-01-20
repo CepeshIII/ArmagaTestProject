@@ -649,17 +649,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5731efadae823846889e5db23187794, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &718863286 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8853936247370338069, guid: 59d0e2a42af721f4e8ddc4fbbd5eea87, type: 3}
-  m_PrefabInstance: {fileID: 1866653657104967384}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b52dcdc423f0b3d4384fe831252e8d14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1486,7 +1475,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e9b3922f26bb7141b9c78456241f794, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deckDisplayer: {fileID: 718863286}
   cardInfoUI: {fileID: 389074495}
   toBoardUI: {fileID: 609970261}
   toAttackUI: {fileID: 284626596}
@@ -1787,19 +1775,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 275879193017897541, guid: c02a90e7eb6c8fb44aee25eae4a13e45, type: 3}
       propertyPath: bounds.pointA.y
-      value: -4.708573
+      value: -4.4837837
       objectReference: {fileID: 0}
     - target: {fileID: 275879193017897541, guid: c02a90e7eb6c8fb44aee25eae4a13e45, type: 3}
       propertyPath: bounds.pointB.x
-      value: 5.314787
+      value: 5.131942
       objectReference: {fileID: 0}
     - target: {fileID: 275879193017897541, guid: c02a90e7eb6c8fb44aee25eae4a13e45, type: 3}
       propertyPath: bounds.pointB.y
-      value: -4.708573
+      value: -4.4837837
       objectReference: {fileID: 0}
     - target: {fileID: 275879193017897541, guid: c02a90e7eb6c8fb44aee25eae4a13e45, type: 3}
       propertyPath: bounds.pointC.x
-      value: 5.314787
+      value: 5.131942
       objectReference: {fileID: 0}
     - target: {fileID: 275879193017897541, guid: c02a90e7eb6c8fb44aee25eae4a13e45, type: 3}
       propertyPath: bounds.pointC.y

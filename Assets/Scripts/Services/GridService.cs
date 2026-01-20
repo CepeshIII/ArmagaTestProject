@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class GridService : IGridService
 {
-    private readonly GridBoundsBehaviour gridBounds;
+    private readonly IGridBoundsBehaviour gridBounds;
     private readonly ILinearGrid grid;
 
 
-    public GridService(GridBoundsBehaviour gridBounds, ILinearGrid grid)
+    public GridService(IGridBoundsBehaviour gridBounds, ILinearGrid grid)
     {
         this.gridBounds = gridBounds;
         this.grid = grid;
@@ -15,6 +15,6 @@ public class GridService : IGridService
 
     public void BuildGrid()
     {
-        grid.BuildGrid(gridBounds.bounds);
+        grid.BuildGrid(gridBounds.GetGridBounds());
     }
 }

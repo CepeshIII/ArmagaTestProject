@@ -21,7 +21,7 @@ public struct QueueElement
 }
 
 
-public class BoardDisplayer : MonoBehaviour, IDisposable
+public class BoardDisplayer : MonoBehaviour, IBoardDisplayer, IDisposable
 {
     [SerializeField] private Material boardMaterial;
     [SerializeField] private Vector2Int textureSize = new Vector2Int(16, 16);

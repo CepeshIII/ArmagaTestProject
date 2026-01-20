@@ -3,11 +3,36 @@ using UnityEngine;
 
 
 [Serializable]
-public class GridBoundsBehaviour : MonoBehaviour
+public class GridBoundsBehaviour : MonoBehaviour, IGridBoundsBehaviour
 {
     [SerializeField]
-    public Color guiColour;
+    private Color guiColour;
 
     [SerializeField]
-    public GridBounds bounds = new();
+    private GridBounds bounds = new();
+
+
+
+    public void SetGridBounds(GridBounds gridBounds)
+    {
+        bounds = gridBounds;
+    }
+
+
+    public GridBounds GetGridBounds()
+    {
+        return bounds;
+    }
+    
+
+    public void SetColor(Color color)
+    {
+        guiColour = color;
+    }
+
+
+    public Color GetColor()
+    {
+       return guiColour;
+    }
 }

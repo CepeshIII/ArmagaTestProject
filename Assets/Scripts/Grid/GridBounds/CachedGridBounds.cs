@@ -7,19 +7,26 @@ public struct CachedGridBounds
     public Vector3 pointC;
     public Vector3 pointD;
 
-    public CachedGridBounds(GridBoundsBehaviour bounds)
+
+
+    public CachedGridBounds(GridBoundsBehaviour boundsBehaviour)
     {
-        pointA = bounds.bounds.pointA;
-        pointB = bounds.bounds.pointB;
-        pointC = bounds.bounds.pointC;
-        pointD = bounds.bounds.pointD;
+        var bounds = boundsBehaviour.GetGridBounds();
+
+        pointA = bounds.pointA;
+        pointB = bounds.pointB;
+        pointC = bounds.pointC;
+        pointD = bounds.pointD;
     }
 
-    public bool IsEqual(GridBoundsBehaviour bounds)
+
+    public bool IsEqual(GridBoundsBehaviour boundsBehaviour)
     {
-        return pointA == bounds.bounds.pointA &&
-                pointB == bounds.bounds.pointB &&
-                pointC == bounds.bounds.pointC &&
-                pointD == bounds.bounds.pointD;
+        var bounds = boundsBehaviour.GetGridBounds();
+
+        return pointA == bounds.pointA &&
+                pointB == bounds.pointB &&
+                pointC == bounds.pointC &&
+                pointD == bounds.pointD;
     }
 }

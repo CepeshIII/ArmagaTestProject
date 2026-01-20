@@ -4,7 +4,7 @@ using UnityEngine;
 using Zenject;
 
 
-public class CardPlacer : MonoBehaviour, IInitializable, IDisposable
+public class CardPlacer : IInitializable, IDisposable
 {
     public static event Action<Vector2Int> OnCellSelected;
 
@@ -16,7 +16,7 @@ public class CardPlacer : MonoBehaviour, IInitializable, IDisposable
 
 
     [Inject]
-    public void Construct(GameBoard gameBoard)
+    public CardPlacer(GameBoard gameBoard)
     {
         this.gameBoard = gameBoard;
     }

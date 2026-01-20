@@ -3,9 +3,8 @@ using UnityEngine;
 using Zenject;
 
 
-public class UIManager : MonoBehaviour
+public class UIManager : MonoBehaviour, IUIManager
 {
-    [SerializeField] CardDeckDisplay deckDisplayer;
     [SerializeField] GameObject cardInfoUI;
 
     [SerializeField] GameObject toBoardUI;
@@ -13,6 +12,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] MenuUI menuUI;
 
+    private ICardDeckDisplay deckDisplayer;
     private SignalBus signalBus;
 
     public event Action ToBoardTriggered;
@@ -21,9 +21,10 @@ public class UIManager : MonoBehaviour
 
 
     [Inject]
-    public void Construct(SignalBus signalBus)
+    public void Construct(ICardDeckDisplay deckDisplayer, SignalBus signalBus)
     {
         this.signalBus = signalBus;
+        this.deckDisplayer = deckDisplayer;
     }
 
 
