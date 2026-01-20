@@ -28,6 +28,8 @@ public class BoardReadySignal
 }
 
 
+
+
 public struct BoardCellPosition
 {
     public readonly Vector3 WorldPosition;
@@ -64,7 +66,7 @@ public class GameBoard
 
 
 
-
+    [Inject]
     public GameBoard(ILinearGrid grid, EffectFactory effectFactory, CardInstanceFactory cardFactory)
     {
         this.grid = grid;
@@ -123,6 +125,29 @@ public class GameBoard
             return true;
         }
         cell = null;
+        return false;
+    }
+
+
+    public bool TryGetCellAtWorldPosition(Vector3 worldPosition, out Cell cell)
+    {
+        var gridPosition = grid.WorldToGridPosition(worldPosition);
+        var indexCoords = grid.GridPositionToIndexCoords(gridPosition);
+
+        return TryGetCell(indexCoords, out cell);
+    }
+
+
+    public bool TryGetIndexCoordsAtWorldPosition(Vector3 worldPosition, out Vector2Int indexCoords)
+    {
+        var gridPosition = grid.WorldToGridPosition(worldPosition);
+        indexCoords = grid.GridPositionToIndexCoords(gridPosition);
+
+        if (grid.IsInsideGridIndex(indexCoords))
+        {
+            return true;
+        }
+
         return false;
     }
 

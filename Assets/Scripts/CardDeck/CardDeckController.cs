@@ -3,26 +3,35 @@ using UnityEngine;
 using Zenject;
 
 
+public struct PlacementCompletedSignal { }
+
+
+
 public class CardDeckController : MonoBehaviour, IInitializable, IDisposable
 {
     private CardDeck cardDeck;
     private CardDeckDisplay deckDisplay;
     private CardPlacer cardPlacer;
 
+    private SignalBus signalBus;
+
 
 
     [Inject]
-    public void Construct(CardDeckDisplay deckDisplay, CardPlacer cardPlacer)
+    public void Construct(CardDeckDisplay deckDisplay, CardPlacer cardPlacer, SignalBus signalBus)
     {
         this.cardPlacer = cardPlacer;
         this.deckDisplay = deckDisplay;
+        this.signalBus = signalBus;
     }
 
 
     public void Initialize()
     {
         if (deckDisplay != null)
+        {
             deckDisplay.CardDropped += HandleCardDropped;
+        }
 
         if (cardPlacer != null)
         {
@@ -58,7 +67,12 @@ public class CardDeckController : MonoBehaviour, IInitializable, IDisposable
             UpdateView();
             cardDeck.DeckChanged += UpdateView;
         }
+    }
 
+
+    public CardDeck GetDeck()
+    {
+        return cardDeck;
     }
 
 
@@ -79,7 +93,13 @@ public class CardDeckController : MonoBehaviour, IInitializable, IDisposable
     private void HandleCardPlaced(CardData cardData)
     {
         if (cardPlacer != null)
+        {
             cardDeck.RemoveCard(cardData);
+
+            // In future, should be building a more complex system of control how many card can be placed, for now just fire after each placement
+            signalBus.Fire<PlacementCompletedSignal>();
+        }
+
     }
 
 

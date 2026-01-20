@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
+using Zenject;
 
 public class BoardCellsBuilder
 {
     private readonly ILinearGrid grid;
 
 
+    [Inject]
     public BoardCellsBuilder(ILinearGrid grid)
     {
         this.grid = grid;

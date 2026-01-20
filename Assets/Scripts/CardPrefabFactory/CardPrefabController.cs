@@ -32,7 +32,7 @@ public class CardPrefabController: IInitializable, IDisposable
     private Dictionary<Vector2Int, ICardViewHandler> viewHandlers;
 
 
-
+    [Inject]
     public CardPrefabController(GameBoard gameBoard, CardPrefabFactory cardPrefabFactory, 
         CardViewHandlerFactory cardViewHandlerFactory)
     {

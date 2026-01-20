@@ -48,6 +48,24 @@ public class InputManager : Singleton<InputManager>
     }
 
 
+    public void ToBoardMode()
+    {
+        ToggleActionMap(actions.BoardManageMode);
+    }
+
+
+    public void ToGameMode()
+    {
+        ToggleActionMap(actions.GameMode);
+    }
+
+
+    public void ToIdle()
+    {
+        DisableAllActionMaps();
+    }
+
+
     private void LeftMouseClick_Start(InputAction.CallbackContext ctx)
     {
         BoardClicked_Started?.Invoke(GetWorldMousePosition());
@@ -100,6 +118,14 @@ public class InputManager : Singleton<InputManager>
         // Enable the default action map for data which shared between modes, for example mouse coordinate
         actions.GlobalActions.Enable();
 
+    }
+
+
+    private void DisableAllActionMaps()
+    {
+        actions.Disable();
+        ActionMapChanged?.Invoke(null);
+        actions.GlobalActions.Disable();
     }
 
 

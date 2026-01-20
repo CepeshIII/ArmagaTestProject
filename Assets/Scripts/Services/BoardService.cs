@@ -1,14 +1,24 @@
+using System;
 using UnityEngine;
 using Zenject;
 
 
-public class BoardService : IBoardService
+
+public struct CardPlacedSignal { }
+
+
+
+public class BoardService : IBoardService, IInitializable, IDisposable
 {
     private readonly BoardCellsBuilder cellsBuilder;
     private readonly GameBoard gameBoard;
     private readonly SignalBus signalBus;
     private readonly BoardDisplayer boardDisplayer;
 
+    private Cell[] boardCells;
+
+
+    [Inject]
     public BoardService(BoardCellsBuilder cellsBuilder, GameBoard gameBoard, SignalBus signalBus, BoardDisplayer boardDisplayer)
     {
         this.cellsBuilder = cellsBuilder;
@@ -18,13 +28,37 @@ public class BoardService : IBoardService
     }
 
 
+    public void Initialize()
+    {
+        gameBoard.CardPlaced += OnCardPlaced;
+    }
+
+
+    private void OnCardPlaced(CardInstance instance, BoardCellPosition boardCellPosition)
+    {
+        signalBus.TryFire(new CardPlacedSignal());
+    }
+
+
+    public void Dispose()
+    {
+        throw new NotImplementedException();
+    }
+
+
+    public GameBoard GetBoard()
+    {
+        return gameBoard;
+    }
+
+
     public void SetupBoard()
     {
         // Placement rules
         var placementValidator = PlacementRulesBuilder.CreateDefault();
 
         // Build board cells
-        var boardCells = cellsBuilder.CreateCells();
+        boardCells = cellsBuilder.CreateCells();
         cellsBuilder.SetAvailableCells(boardCells, new Vector2Int[]
         {
             new Vector2Int(0, 0), new Vector2Int(1, 0), new Vector2Int(2, 0),
@@ -41,4 +75,6 @@ public class BoardService : IBoardService
         // Invoke signal BoardReadySignal
         signalBus.TryFire(new BoardReadySignal(gameBoard));
     }
+
+
 }

@@ -1,5 +1,6 @@
 using Zenject;
 
+
 public class DeckService : IDeckService
 {
     private readonly CardDeckBuilder deckBuilder;
@@ -25,5 +26,11 @@ public class DeckService : IDeckService
         //Bind it for this round
         RoundInstaller.Install(container, deck);
         deckController.SetDeck(deck);
+    }
+
+
+    public void AddCardToDeck()
+    {
+        deckBuilder.AddRandomCardToDeck(deckController.GetDeck());
     }
 }

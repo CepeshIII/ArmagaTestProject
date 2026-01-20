@@ -64,7 +64,6 @@ public class BoardDisplayer : MonoBehaviour, IDisposable
     private void OnBoardReady(GameBoard board)
     {
         this.gameBoard = board;
-
         Initialize();
     }
 

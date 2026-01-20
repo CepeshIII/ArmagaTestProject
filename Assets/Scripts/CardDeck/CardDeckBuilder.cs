@@ -51,4 +51,19 @@ public class CardDeckBuilder
         }
         return new CardDeck(cards);
     }
+
+
+    public void AddRandomCardToDeck(CardDeck deck)
+    {
+        var randomId = Random.Range(0, db.CardCount);
+        var card = db.GetCardDataById(randomId);
+
+        deck.AddCard(card);
+    }
+
+
 }
+
+
+
+

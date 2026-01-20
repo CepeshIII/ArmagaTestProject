@@ -10,9 +10,6 @@ public class SceneInstaller : MonoInstaller
         Container.Bind<MainUIGraphicRaycaster>().FromComponentInHierarchy().AsSingle();
         Container.Bind<Camera>().FromComponentOn(Camera.main.gameObject).AsSingle();
 
-        Container.Bind<InputManager>().FromNewComponentOnNewGameObject().AsSingle();
-
-
         Container.Install<CardInstaller>();
         Container.Install<GridInstaller>();
 
@@ -21,7 +18,6 @@ public class SceneInstaller : MonoInstaller
 
         Container.Install<CardDeckInstaller>();
         Container.Install<BoardDisplayerInstaller>();
-
 
         // Bind game managers
         Container.BindInterfacesAndSelfTo<RoundManager>().FromNew().AsSingle().NonLazy();
@@ -37,7 +33,7 @@ public class CardInstaller : Installer
 {
     public override void InstallBindings()
     {
-        // Bind EffectFactory and CardInstanceFactory as a single viewObjects
+        // Bind EffectFactory and CardInstanceFactory as a single
         Container.Bind<EffectFactory>().AsSingle();
         Container.Bind<CardInstanceFactory>().AsSingle();
     }
@@ -90,9 +86,6 @@ public class BoardInstaller : Installer
 {
     public override void InstallBindings()
     {
-        // Bind the signal bus first
-        SignalBusInstaller.Install(Container);
-
         // Bind factory for creating cells
         Container.BindInterfacesAndSelfTo<BoardCellsBuilder>().FromNew().AsSingle().NonLazy();
 
@@ -118,3 +111,4 @@ public class BoardDisplayerInstaller : Installer
         Container.BindInterfacesAndSelfTo<CellHoverInfoSystem>().FromNew().AsSingle();
     }
 }
+

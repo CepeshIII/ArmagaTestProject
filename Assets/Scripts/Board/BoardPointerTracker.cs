@@ -35,7 +35,6 @@ public class BoardPointerTracker : MonoBehaviour, IInitializable, IDisposable
 
     private MainUIGraphicRaycaster graphicRaycaster;
     private InputManager inputManager;
-    private ILinearGrid grid;
     private GameBoard gameBoard;
     private new Camera camera;
 
@@ -69,11 +68,10 @@ public class BoardPointerTracker : MonoBehaviour, IInitializable, IDisposable
     /// Injects required dependencies.
     /// </summary>
     [Inject]
-    public void Construct(InputManager inputManager, ILinearGrid grid,
+    public void Construct(InputManager inputManager,
         GameBoard gameBoard, Camera camera, MainUIGraphicRaycaster graphicRaycaster)
     {
         this.inputManager = inputManager;
-        this.grid = grid;
         this.gameBoard = gameBoard;
         this.camera = camera;
         this.graphicRaycaster = graphicRaycaster;
@@ -122,7 +120,7 @@ public class BoardPointerTracker : MonoBehaviour, IInitializable, IDisposable
     private PointerData CalculatePointerData(Vector2 pointerDisplayPosition)
     {
         Vector2 worldPoint = camera.ScreenToWorldPoint(pointerDisplayPosition);
-        var coordinate = grid.WorldToIndexCoords(worldPoint);
+        gameBoard.TryGetIndexCoordsAtWorldPosition(worldPoint, out var coordinate);
 
         return new PointerData
         {
@@ -143,7 +141,6 @@ public class BoardPointerTracker : MonoBehaviour, IInitializable, IDisposable
         // If pointer is not valid for board interaction, treat as exit
         if (graphicRaycaster.IsPointerOverUI(pointerData.displayPosition) ||
             !IsOverBoardOnly(pointerData.worldPosition) ||
-            !grid.IsInsideGridIndex(pointerData.coordinate) ||
             !gameBoard.CellIsAvailable(pointerData.coordinate))
         {
             nextState = BoardPointerStates.ExitBoard;

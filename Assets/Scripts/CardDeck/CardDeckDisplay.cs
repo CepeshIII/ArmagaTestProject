@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
+
 public class CardDeckDisplay : MonoBehaviour
 {
     [SerializeField] private CardDisplay cardDisplayPrefab;
@@ -15,32 +16,22 @@ public class CardDeckDisplay : MonoBehaviour
 
 
 
-    private void OnEnable()
+    private void Awake()
     {
         layoutGroup = GetComponent<LayoutGroup>();
         GroupActivate();
     }
 
 
-    private void OnDisable()
+    public void Hide()
     {
-        if(currentDeck == null) return;
+        gameObject.SetActive(false);
+    }
 
-        // Unsubscribe from events to prevent memory leaks
-        for (int i = 0; i < currentDeck.Count; i++)
-        {
-            var cardDisplay = currentDeck[i];
-            if (cardDisplay != null)
-            {
-                cardDisplay.CardDragStarted -= HandleCardDragStarted;
-                cardDisplay.CardDragEnded -= HandleCardDragEnded;
 
-                Destroy(cardDisplay.gameObject);
-            }
-        }
-
-        currentDeck.Clear();
-
+    public void ShowCardDisplayers()
+    {
+        gameObject.SetActive(true);
     }
 
 
@@ -89,9 +80,10 @@ public class CardDeckDisplay : MonoBehaviour
             index++;
         }
 
-        // If there are more cardDisplays in the current deck than there are cards in the deck, hide the extra cardDisplays
+        // If there are more cardDisplays in the current deck than there are cards in the deck, destroy the extra cardDisplays
         if(index < currentDeck.Count)
         {
+            //before
             for (int i = index; i < currentDeck.Count; i++)
             {
                 // Logic to hide the cardDisplay from display by deactivating its game object
@@ -99,6 +91,24 @@ public class CardDeckDisplay : MonoBehaviour
                 cardDisplay.Deactivate();
             }
         }
+    }
+
+
+    public void CleanupDeckDisplay()
+    {
+        if (currentDeck == null) return;
+
+        foreach (var cardDisplay in currentDeck)
+        {
+            if (cardDisplay != null)
+            {
+                cardDisplay.CardDragStarted -= HandleCardDragStarted;
+                cardDisplay.CardDragEnded -= HandleCardDragEnded;
+                Destroy(cardDisplay.gameObject);
+            }
+        }
+
+        currentDeck.Clear();
     }
 
 
