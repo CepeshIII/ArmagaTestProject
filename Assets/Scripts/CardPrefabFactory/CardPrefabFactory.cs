@@ -5,13 +5,18 @@ using Zenject;
 
 public class CardPrefabFactory: IInitializable
 {
-    private DiContainer container;
+    private readonly DiContainer container;
 
+
+    public CardPrefabFactory(DiContainer container)
+    {
+        this.container = container;
+    }
 
 
     public void Initialize()
     {
-        container = new DiContainer();
+
     }
 
 

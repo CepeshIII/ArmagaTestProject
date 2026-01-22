@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using UnityEngine;
 using Zenject;
 
@@ -7,7 +8,6 @@ public class SceneInstaller : MonoInstaller
     public override void InstallBindings()
     {
         // Bind Camera
-        Container.Bind<MainUIGraphicRaycaster>().FromComponentInHierarchy().AsSingle();
         Container.Bind<Camera>().FromComponentOn(Camera.main.gameObject).AsSingle();
 
         Container.Install<CardInstaller>();
@@ -17,7 +17,6 @@ public class SceneInstaller : MonoInstaller
         Container.Install<CardPlacerInstaller>();
 
         Container.Install<CardDeckInstaller>();
-        Container.Install<BoardDisplayerInstaller>();
 
         // Bind game managers
         Container.BindInterfacesAndSelfTo<RoundManager>().FromNew().AsSingle().NonLazy();
@@ -56,9 +55,6 @@ public class CardDeckInstaller : Installer
     {
         Container.BindInterfacesAndSelfTo<CardDeckController>().FromNew().AsSingle();
         
-        // Bind the deck display from the scene
-        Container.Bind<ICardDeckDisplay>().To<CardDeckDisplay>().FromComponentInHierarchy().AsSingle();
-
         Container.BindInterfacesAndSelfTo<DeckService>().FromNew().AsSingle().NonLazy();
     }
 }
@@ -70,13 +66,9 @@ public class GridInstaller : Installer
     {
         // Bind the grid component from the scene
         Container.Bind<IGridBoundsBehaviour>().To<GridBoundsBehaviour>().FromComponentInHierarchy().AsSingle();
-
         // Bind the grid component from the scene
         Container.Bind<ILinearGrid>().To<LinearGrid>().FromNew().AsSingle().
             WithArguments(Vector2.one, new IsometricToWorldCoordinateConverter());
-
-        Container.Bind<IMaskShaderController>().To<GridShaderController>().AsCached();
-
         Container.BindInterfacesAndSelfTo<GridService>().FromNew().AsSingle().NonLazy();
     }
 }
@@ -99,16 +91,4 @@ public class BoardInstaller : Installer
     }
 }
 
-
-public class BoardDisplayerInstaller : Installer
-{
-    public override void InstallBindings()
-    {
-        Container.BindInterfacesAndSelfTo<BoardDisplayer>().FromComponentInHierarchy().AsSingle();
-        Container.BindInterfacesAndSelfTo<BoardPointerTracker>().FromComponentInHierarchy().AsSingle();
-        Container.Bind<ICellInfoWindow>().To<CellInfoWindow>().FromComponentInHierarchy().AsSingle();
-        Container.BindInterfacesAndSelfTo<BoardHighlighter>().FromNew().AsSingle();
-        Container.BindInterfacesAndSelfTo<CellHoverInfoSystem>().FromNew().AsSingle();
-    }
-}
 

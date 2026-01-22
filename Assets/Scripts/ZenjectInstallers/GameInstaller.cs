@@ -6,13 +6,6 @@ public class GameInstaller : MonoInstaller
 {
     public override void InstallBindings()
     {
-        // Bind the signal bus first
-        SignalBusInstaller.Install(Container);
-
-        Container.Bind<CardDataBase>().AsSingle();
-
-        Container.BindInterfacesAndSelfTo<InputManager>().FromNew().AsSingle();
-        Container.BindInterfacesAndSelfTo<UIManager>().FromComponentInHierarchy().AsSingle();
 
         Container.Install<GameStateManagerInstaller>();
         //Container.Bind<GameStateContext>().AsSingle();

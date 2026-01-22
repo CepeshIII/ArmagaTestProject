@@ -1,16 +1,18 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 
 public class UIManager : MonoBehaviour, IUIManager
 {
     [SerializeField] GameObject cardInfoUI;
-
     [SerializeField] GameObject toBoardUI;
     [SerializeField] GameObject toAttackUI;
 
-    [SerializeField] MenuUI menuUI;
+    [SerializeField] Button openMenuButton;
+
+    private MenuUI menuUI;
 
     private ICardDeckDisplay deckDisplayer;
     private SignalBus signalBus;
@@ -21,10 +23,25 @@ public class UIManager : MonoBehaviour, IUIManager
 
 
     [Inject]
-    public void Construct(ICardDeckDisplay deckDisplayer, SignalBus signalBus)
+    public void Construct(ICardDeckDisplay deckDisplayer, MenuUI menuUI, SignalBus signalBus)
     {
-        this.signalBus = signalBus;
         this.deckDisplayer = deckDisplayer;
+        this.menuUI = menuUI;
+        this.signalBus = signalBus;
+    }
+
+
+    private void OnEnable()
+    {
+        if(openMenuButton != null)
+            openMenuButton.onClick.AddListener(ShowMenu);
+    }
+
+
+    private void OnDisable()
+    {
+        if (openMenuButton != null)
+            openMenuButton.onClick.RemoveListener(ShowMenu);
     }
 
 
@@ -118,19 +135,13 @@ public class UIManager : MonoBehaviour, IUIManager
 
     public void ShowMenu()
     {
-        if (menuUI != null)
-        {
-            menuUI.Show();
-        }
+        signalBus.TryFire<OpenGamePlayMenu>();
     }
 
 
     public void HideMenu()
     {
-        if (menuUI != null)
-        {
-            menuUI.Hide();
-        }
+        signalBus.TryFire<CloseGamePlayMenu>();
     }
 
 

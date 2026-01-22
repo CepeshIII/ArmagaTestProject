@@ -160,7 +160,10 @@ public class BoardDisplayer : MonoBehaviour, IBoardDisplayer, IDisposable
                     strBuilder.AppendLine(description);
                 }
                 var content = new GUIContent(strBuilder.ToString());
-                Handles.Label(position, content);
+
+                #if UNITY_EDITOR
+                    Handles.Label(position, content);
+                #endif
             }
         }
     }
