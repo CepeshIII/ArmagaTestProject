@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf3207b76755254dba9ca23732f23d6, type: 3}
+  m_Name: Run
+  m_EditorClassIdentifier: 
+  animationType: 1
+  clip0: {fileID: 7400000, guid: 34b8e5ada48902048952af61ef0a2ed3, type: 2}
+  clip90: {fileID: 7400000, guid: c5d8422f7f74dae49bc8133df3a8f86a, type: 2}
+  clip180: {fileID: 7400000, guid: 1abfac6181f6ae74e984a2d7f90934e4, type: 2}
+  clip270: {fileID: 7400000, guid: ff57edbc0a62ffb468ef46caf8153c54, type: 2}

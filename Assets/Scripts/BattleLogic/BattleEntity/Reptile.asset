@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 551cf49d6d2c7a2479df8aabaa729743, type: 3}
+  m_Name: Reptile
+  m_EditorClassIdentifier: 
+  unitData:
+    team: 0
+  attackData:
+    attackDistance: 2
+    attackDamage: 25
+    rechargeTime: 2
+    offset: 1
+    radius: 0.75
+  movementData:
+    speed: 2
+    acceleration: 0
+    threshold: 0.1
+  healthData:
+    health: 100
+  animator: {fileID: 22100000, guid: 47cb19781ad68a04d97ab1c0b90d43c2, type: 2}
+  prefab: {fileID: 8463673095472422573, guid: 0ed24d9f46e49e147a7da1a910873765, type: 3}
+  attack: {fileID: 11400000, guid: 158b444445b9eba43ae0bf9089865911, type: 2}
+  behavior: {fileID: 11400000, guid: ea35581555c54534ba90b0a101e13de2, type: 2}
+  facing: {fileID: 11400000, guid: cdb5d95f0860b6845a21711f9dec980b, type: 2}
+  movement: {fileID: 11400000, guid: 87e4b9942033e0149900c29a26f1faed, type: 2}
+  pathFinder: {fileID: 11400000, guid: 17332f23956a3c74d81f14c972ee4cf0, type: 2}
+  targetFinder: {fileID: 11400000, guid: cf9f30814d9c5bd469313b919d3b854d, type: 2}
+  animationResolver: {fileID: 11400000, guid: 32e46e1c9b56170449b6624248e7f589, type: 2}

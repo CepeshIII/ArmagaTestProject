@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1804429d040b9cd408ea142e372808f6, type: 3}
+  m_Name: BallistaBoltData
+  m_EditorClassIdentifier: 
+  sprite0: {fileID: 21300000, guid: 819257bfe0f2f054b96967d0de8f7cc5, type: 3}
+  sprite45: {fileID: 21300000, guid: 08c2858f5bec9f74a9b86404e7d3f71b, type: 3}
+  sprite90: {fileID: 21300000, guid: 837533fc4c6d9064aad5657954667ab4, type: 3}
+  sprite135: {fileID: 21300000, guid: 0e4e2c91b8769c74eaf6c121bee032c7, type: 3}
+  sprite180: {fileID: 21300000, guid: 4aa897861df841948b2e40c0dc940871, type: 3}
+  sprite225: {fileID: 21300000, guid: 825386db9d6faff4bbe0bbf1e62bdcc7, type: 3}
+  sprite270: {fileID: 21300000, guid: 4edfce20c636fc9488af58af64aba208, type: 3}
+  sprite315: {fileID: 21300000, guid: c8b015f230475c84faa325affd6a44dd, type: 3}
