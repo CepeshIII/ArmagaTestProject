@@ -92,7 +92,7 @@ public class BattlePhaseInstaller: Installer
         Container.Bind<EnemyRoundDefinition>().FromNew().AsSingle();
         Container.Bind<EnemySpawner>().FromNew().AsSingle();
         Container.Bind<BattleEntityArchetypeRegistry>().FromNew().AsSingle();
-
+        Container.Bind<ISpawnPositionProvider>().To<RandomCircleSpawnPositionProvider>().FromComponentInHierarchy().AsSingle();
 
         Container.Bind<BattleEntityFactory>()
             .AsSingle();

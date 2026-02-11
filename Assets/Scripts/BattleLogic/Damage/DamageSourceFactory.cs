@@ -31,7 +31,6 @@ public class DamageSourceFactory
     
     public void SpawnStatic(GameObject owner, Vector3 position, Vector3 targetPosition, AttackData attackData) 
     {
-        Debug.Log($"Static damage source spawned at {position}, with radius: {attackData.radius}");
         var rayCast2D = Physics2D.CircleCastAll(position, attackData.radius, Vector2.zero, 0f, LayerMask.GetMask("Units"));
 
         foreach (var hit in rayCast2D)
