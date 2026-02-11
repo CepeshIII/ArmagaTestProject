@@ -6,5 +6,5 @@ using UnityEngine;
 public class NoMovementDefinition : MovementDefinition
 {
     public override StrategyType<IMovementStrategy> ImplementationType 
-        => new StrategyType<IMovementStrategy>(typeof(NoMovementStrategy));
+        => StrategyType<IMovementStrategy>.From<NoMovementStrategy>();
 }

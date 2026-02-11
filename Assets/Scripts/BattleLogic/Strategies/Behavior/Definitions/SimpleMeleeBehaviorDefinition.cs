@@ -5,5 +5,5 @@ using UnityEngine;
 public class SimpleMeleeBehaviorDefinition : CombatBehaviorDefinition
 {
     public override StrategyType<ICombatBehavior> ImplementationType 
-        => new StrategyType<ICombatBehavior>(typeof(SimpleMeleeBehavior));
+        => StrategyType<ICombatBehavior>.From<SimpleMeleeBehavior>();
 }

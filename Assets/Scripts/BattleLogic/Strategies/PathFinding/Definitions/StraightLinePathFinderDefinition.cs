@@ -5,6 +5,6 @@ using UnityEngine;
 public class StraightLinePathFinderDefinition : PathFinderDefinition
 {
     public override StrategyType<IPathFinder> ImplementationType 
-        => new StrategyType<IPathFinder>(typeof(StraightLinePathFinder));
+        => StrategyType<IPathFinder>.From<StraightLinePathFinder>();
 
 }

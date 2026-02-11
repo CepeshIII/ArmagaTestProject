@@ -5,5 +5,5 @@ using UnityEngine;
 public class SimpleMovementDefinition : MovementDefinition
 {
     public override StrategyType<IMovementStrategy> ImplementationType 
-        => new StrategyType<IMovementStrategy>(typeof(SimpleMovementStrategy));
+        => StrategyType<IMovementStrategy>.From<SimpleMovementStrategy>();
 }

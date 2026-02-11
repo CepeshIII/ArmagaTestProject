@@ -5,5 +5,5 @@ using UnityEngine;
 public class IdleCombatBehaviorDefinition : CombatBehaviorDefinition
 {
     public override StrategyType<ICombatBehavior> ImplementationType 
-        => new StrategyType<ICombatBehavior>(typeof(IdleCombatBehavior));
+        => StrategyType<ICombatBehavior>.From<IdleCombatBehavior>();
 }

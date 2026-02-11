@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using UnityEngine;
 using Zenject;
 
@@ -22,14 +21,7 @@ public class BattleEntityInstaller: Installer
         Container.Bind<IMovementStrategy>().To<SimpleMovementStrategy>().FromNew().AsTransient();
         Container.Bind<IUnitAnimator>().To<SimpleUnitAnimator>().FromNew().AsTransient();
 
-        Container.Bind<BattleEntityData>().FromMethodUntyped(ctx =>
-        {
-            return new BattleEntityData
-            {
-                team = Team.Player,
-            };
-        }).AsTransient();
-
+        
         Container.Bind<MovementData>().FromMethodUntyped(ctx =>
         {
             return new MovementData
@@ -70,16 +62,22 @@ public class UnitTestInstaller : ScriptableObjectInstaller<UnitTestInstaller>
 {
     public override void InstallBindings()
     {
+        Container.Install<BattlePhaseInstaller>();
+    }
+}
+
+
+public class BattlePhaseInstaller: Installer
+{
+    public override void InstallBindings()
+    {
         // Managers bindings
         Container.BindInterfacesAndSelfTo<UnitsManager>().FromNewComponentOnNewGameObject().AsSingle();
-        Container.Bind<UnitTestFactory>().FromComponentInHierarchy().AsSingle();
+        //Container.Bind<UnitTestFactory>().FromComponentInHierarchy().AsSingle();
 
         Container.Bind<IDamageDisplay>().To<DamageDisplay>().FromNewComponentOnNewGameObject().AsSingle();
         Container.Bind<DamageSourceFactory>().FromNew().AsSingle();
         Container.Bind<IDamageManager>().To<DamageManager>().FromNewComponentOnNewGameObject().AsSingle();
-
-        //Container.Install<BattleEntityInstaller>();
-
 
         Container.Bind<AttackStrategyFactory>().FromNew().AsSingle();
         Container.Bind<CombatBehaviorFactory>().FromNew().AsSingle();
@@ -87,11 +85,19 @@ public class UnitTestInstaller : ScriptableObjectInstaller<UnitTestInstaller>
         Container.Bind<MovementStrategyFactory>().FromNew().AsSingle();
         Container.Bind<PathFinderFactory>().FromNew().AsSingle();
         Container.Bind<TargetFinderFactory>().FromNew().AsSingle();
+        Container.Bind<BattleRoundController>().FromNew().AsSingle();
+        Container.BindInterfacesAndSelfTo<BattleFlowController>().FromNew().AsSingle();
+
+        Container.Bind<BattleSceneConfig>().FromComponentInHierarchy().AsSingle();
+        Container.Bind<EnemyRoundDefinition>().FromNew().AsSingle();
+        Container.Bind<EnemySpawner>().FromNew().AsSingle();
+        Container.Bind<BattleEntityArchetypeRegistry>().FromNew().AsSingle();
+
 
         Container.Bind<BattleEntityFactory>()
             .AsSingle();
 
-        Container.Bind<BattleEntityController>().FromComponentInHierarchy()
+        Container.BindInterfacesAndSelfTo<BattleEntityController>().FromNewComponentOnNewGameObject()
             .AsSingle();
 
         Container.Bind<LineUpPhaseApplier>().FromNew()
@@ -100,11 +106,20 @@ public class UnitTestInstaller : ScriptableObjectInstaller<UnitTestInstaller>
         Container.Bind<BattlePhaseApplier>().FromNew()
             .AsSingle();
 
-        Container.Bind<BattlePhaseController>().FromNew()
+        Container.BindInterfacesAndSelfTo<BattlePhaseController>().FromNew()
             .AsSingle();
 
-        Container.BindInterfacesAndSelfTo<LineupProvider>().FromNewComponentOnNewGameObject()
+        Container.Bind<FacingPhaseApplier>().FromNew()
             .AsSingle();
+
+        Container.Bind<ReturnToCellPhaseApplier>().FromNew()
+            .AsSingle();
+
+        Container.Bind<BoardEntityRegistry>().FromNew().AsSingle();
+
+        Container.Bind<BattleLineupPreparer>().FromNew().AsSingle();
+        Container.Bind<ILineupPlacementStrategy>().To<GridLineupPlacementStrategy>().FromNew().AsSingle();
+        Container.Bind<LineupEntityRegistry>().FromNew().AsSingle();
 
     }
 }

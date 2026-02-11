@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 public class UnitCardInstance : CardInstance
 {
+    public BattleEntityDefinition entityDefinition { get; set; }
     public int CurrentUnitCount { get; set; }
     public float CurrentStrength { get; set; }
 
@@ -12,6 +12,7 @@ public class UnitCardInstance : CardInstance
     {
         CurrentUnitCount = data.baseCount;
         CurrentStrength = data.baseStrength;
+        entityDefinition = data.battleEntityDefinition;
     }
 
 

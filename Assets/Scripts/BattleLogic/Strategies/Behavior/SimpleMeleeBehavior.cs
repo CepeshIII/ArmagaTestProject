@@ -13,7 +13,7 @@ public class SimpleMeleeBehavior : ICombatBehavior
 
     public UnitIntent Decide(BattleEntity self, BattleEntityContext context)
     {
-        var targetData = targetFinder.FindTarget(self.transform, context.BattleEntityData);
+        var targetData = targetFinder.FindTarget(self.transform, self.Team);
 
         var hasTarget = targetData != null && targetData.Target != null;
 

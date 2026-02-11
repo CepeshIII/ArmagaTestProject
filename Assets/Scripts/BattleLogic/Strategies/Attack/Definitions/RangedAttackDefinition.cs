@@ -5,5 +5,5 @@ using UnityEngine;
 public class RangedAttackDefinition : AttackDefinition
 {
     public override StrategyType<IAttackStrategy> ImplementationType 
-        => new StrategyType<IAttackStrategy>(typeof(ProjectileAttackStrategy));
+        => StrategyType<IAttackStrategy>.From<ProjectileAttackStrategy>();
 }

@@ -5,7 +5,7 @@ using Zenject;
 /// Base class for all battle phase appliers.
 /// Handles creating a sub-container for dependency injection and applying the entity strategies.
 /// </summary>
-public abstract class BaseBattlePhaseApplier : IBattlePhaseApplier
+public abstract class BasePhaseApplier : IBattlePhaseApplier
 {
     /// <summary>
     /// Zenject container used to resolve and inject dependencies into entities.
@@ -16,7 +16,7 @@ public abstract class BaseBattlePhaseApplier : IBattlePhaseApplier
     /// Initializes the base applier with the DI container.
     /// </summary>
     /// <param name="container">The Zenject DI container.</param>
-    protected BaseBattlePhaseApplier(DiContainer container)
+    protected BasePhaseApplier(DiContainer container)
     {
         this.container = container;
     }
@@ -27,7 +27,7 @@ public abstract class BaseBattlePhaseApplier : IBattlePhaseApplier
     /// </summary>
     /// <param name="entity">The entity to update.</param>
     /// <param name="baseStrategies">The default EntityStrategySet from definition.</param>
-    public void Apply(BattleEntity entity, BattleEntityStrategySet baseStrategies)
+    public virtual void Apply(BattleEntity entity, BattleEntityStrategySet baseStrategies)
     {
         var strategies = GetPhaseStrategies(baseStrategies);
         ApplyStrategies(entity, strategies);
@@ -46,11 +46,15 @@ public abstract class BaseBattlePhaseApplier : IBattlePhaseApplier
         // Bind the entity instance to the sub-container so composer can inject it
         sub.Bind<BattleEntity>().FromInstance(entity).AsSingle();
 
+        // Allow derived appliers to bind extra dependencies
+        BeforeStrategiesBinding(sub);
+
         // Bind all strategies and inject them into the composer
         BattleEntityStrategyInstaller.Bind(sub, strategies);
 
         // Apply all injected strategies to the entity
         sub.Instantiate<BattleEntityComposer>().Apply();
+
     }
 
 
@@ -60,5 +64,16 @@ public abstract class BaseBattlePhaseApplier : IBattlePhaseApplier
     /// <param name="baseStrategies">The default EntityStrategySet from definition.</param>
     /// <returns>A <see cref="BattleEntityStrategySet"/> with the phase-specific strategies.</returns>
     protected abstract BattleEntityStrategySet GetPhaseStrategies(BattleEntityStrategySet baseStrategies);
+
+
+    /// <summary>
+    /// Allows derived phase appliers to bind additional dependencies required by
+    /// the strategies before they are resolved and applied to the entity.
+    /// This method is invoked on the phase sub-container prior to strategy binding.
+    /// </summary>
+    /// <param name="container">
+    /// The sub-container used to resolve strategy dependencies for this phase.
+    /// </param>
+    protected virtual void BeforeStrategiesBinding(DiContainer container) { }
 }
 

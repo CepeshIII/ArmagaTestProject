@@ -17,6 +17,7 @@ MonoBehaviour:
   description: knight
   sprite: {fileID: -1150803524, guid: 536758fa619c1b64b828f941df9eb479, type: 3}
   tile: {fileID: 11400000, guid: d5b61654630cc0e4ba137a14959cf06b, type: 2}
-  baseCount: 10
+  baseCount: 20
   baseStrength: 1
   unitPrefab: {fileID: 2782623577039214918, guid: 55f4d8171e5ac664081a7953e4124676, type: 3}
+  battleEntityDefinition: {fileID: 11400000, guid: 72d888f7eb27a2e43a5396365545d096, type: 2}

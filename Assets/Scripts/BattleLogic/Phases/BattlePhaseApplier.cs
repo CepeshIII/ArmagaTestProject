@@ -5,7 +5,7 @@ using Zenject;
 /// Battle phase applier for the general combat phase.
 /// Applies the default strategies defined in the entity definition.
 /// </summary>
-public sealed class BattlePhaseApplier : BaseBattlePhaseApplier
+public sealed class BattlePhaseApplier : BasePhaseApplier
 {
     /// <summary>
     /// Constructs the combat phase applier with the provided Zenject container.

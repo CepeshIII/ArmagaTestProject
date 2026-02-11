@@ -5,6 +5,6 @@ using UnityEngine;
 public class NoAttackStrategyDefinition : AttackDefinition
 {
     public override StrategyType<IAttackStrategy> ImplementationType 
-        => new StrategyType<IAttackStrategy>(typeof(NoAttackStrategy));
+        => StrategyType<IAttackStrategy>.From<NoAttackStrategy>();
 }
 

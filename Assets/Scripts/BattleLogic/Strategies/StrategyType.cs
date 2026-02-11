@@ -6,7 +6,7 @@ public class StrategyType<T>
 {
     public Type Type { get; }
 
-    public StrategyType(Type type)
+    private StrategyType(Type type)
     {
         if (type != null && !typeof(T).IsAssignableFrom(type))
             throw new ArgumentException($"Type must implement {typeof(T).Name}");

@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour, IUIManager
     [SerializeField] Button openMenuButton;
 
     private MenuUI menuUI;
+    private GameOverMenuUI gameOverMenuUI;
 
     private ICardDeckDisplay deckDisplayer;
     private SignalBus signalBus;
@@ -151,5 +152,12 @@ public class UIManager : MonoBehaviour, IUIManager
         HideCardInfo();
         HideToBoardUI();
         HideToAttackUI();
+    }
+
+
+    public void ShowGameOverMenu()
+    {
+        HideAll();
+        gameOverMenuUI.Show();
     }
 }

@@ -68,7 +68,8 @@ public class GridInstaller : Installer
         Container.Bind<IGridBoundsBehaviour>().To<GridBoundsBehaviour>().FromComponentInHierarchy().AsSingle();
         // Bind the grid component from the scene
         Container.Bind<ILinearGrid>().To<LinearGrid>().FromNew().AsSingle().
-            WithArguments(Vector2.one, new IsometricToWorldCoordinateConverter());
+            WithArguments(Vector2.one);
+        Container.Bind<ICoordinateConverter>().To<IsometricToWorldCoordinateConverter>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<GridService>().FromNew().AsSingle().NonLazy();
     }
 }

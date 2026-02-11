@@ -5,5 +5,5 @@ using UnityEngine;
 public class NearestTargetFinderDefinition : TargetFinderDefinition
 {
     public override StrategyType<ITargetFinder> ImplementationType 
-        => new StrategyType<ITargetFinder>(typeof(NearestTargetFinder));
+        => StrategyType<ITargetFinder>.From<NearestTargetFinder>();
 }

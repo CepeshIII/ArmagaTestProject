@@ -30,19 +30,6 @@ public sealed class BattleEntityStrategySet
     /// </summary>
     public BattleEntityStrategySet() { }
 
-    /// <summary>
-    /// Initializes the strategy set from the entity definition.
-    /// </summary>
-    public BattleEntityStrategySet(BattleEntityDefinition def)
-    {
-        SetCombatBehavior(def.behavior.ImplementationType);
-        SetAttackStrategy(def.attack.ImplementationType);
-        SetPathFinder(def.pathFinder.ImplementationType);
-        SetTargetFinder(def.targetFinder.ImplementationType);
-        SetMovementStrategy(def.movement.ImplementationType);
-        SetFacingStrategy(def.facing.ImplementationType);
-        SetAnimationResolver(def.animationResolver.ImplementationType);
-    }
 
     /// <summary>
     /// Initializes the strategy set from the entity definition.

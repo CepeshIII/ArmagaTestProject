@@ -12,9 +12,9 @@ public class NearestTargetFinder : ITargetFinder
     }
 
 
-    public TargetData FindTarget(Transform transform, BattleEntityData unitData)
+    public TargetData FindTarget(Transform transform, Team team)
     {
-        var enemies = unitsManager.GetUnitsByTeam((Team)(1 - (int)unitData.team));
+        var enemies = unitsManager.GetUnitsByTeam((Team)(1 - (int)team));
 
         var minDistance = float.MaxValue;  
         var minDistanceEnemy = (BattleEntity)null;

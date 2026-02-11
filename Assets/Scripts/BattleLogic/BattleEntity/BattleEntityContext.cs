@@ -1,11 +1,10 @@
 using System;
 using UnityEngine;
 
+
 [Serializable]
 public class BattleEntityContext
 {
-    [SerializeField]
-    private BattleEntityData battleEntityData;
     [SerializeField]
     private AttackData attackData;
     [SerializeField] 
@@ -13,26 +12,18 @@ public class BattleEntityContext
     [SerializeField]
     private HealthData healthData;
 
-    public BattleEntityData BattleEntityData => battleEntityData;
     public AttackData AttackData => attackData;
     public MovementData MovementData => movementData;
     public HealthData HealthData => healthData;
 
 
 
-    public BattleEntityContext(BattleEntityData battleEntityData,
-        AttackData attackData, MovementData movementData, HealthData healthData)
+    public BattleEntityContext(AttackData attackData, 
+        MovementData movementData, HealthData healthData)
     {
-        SetBattleEntityData(battleEntityData);
         SetAttackData(attackData);
         SetMovementData(movementData);
         SetHealthData(healthData);
-    }
-
-
-    public void SetBattleEntityData(BattleEntityData data)
-    {
-        battleEntityData = data;
     }
 
 
@@ -51,6 +42,16 @@ public class BattleEntityContext
     public void SetHealthData(HealthData data)
     {
         healthData = data;
+    }
+
+
+    public BattleEntityContext Clone()
+    {
+        return new BattleEntityContext(
+            attackData,
+            movementData,
+            healthData
+        );
     }
 
 }

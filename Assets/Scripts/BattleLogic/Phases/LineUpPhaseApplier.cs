@@ -5,7 +5,7 @@ using Zenject;
 /// Battle phase applier for the "LiningUp" phase.
 /// Overrides certain strategies to disable combat and targeting while lining up units.
 /// </summary>
-public sealed class LineUpPhaseApplier : BaseBattlePhaseApplier
+public sealed class LineUpPhaseApplier : BasePhaseApplier
 {
     /// <summary>
     /// Constructs the lineup phase applier with the provided Zenject container.
@@ -14,6 +14,12 @@ public sealed class LineUpPhaseApplier : BaseBattlePhaseApplier
     [Inject]
     public LineUpPhaseApplier(DiContainer container) : base(container) { }
 
+
+    protected override void BeforeStrategiesBinding(DiContainer container)
+    {
+        container.BindInterfacesAndSelfTo<RegistryLineupPositionProvider>().FromNew()
+        .AsTransient();
+    }
 
     /// <summary>
     /// Returns the strategies to apply for the "LiningUp" phase.
@@ -26,13 +32,12 @@ public sealed class LineUpPhaseApplier : BaseBattlePhaseApplier
         // Start with the base strategies from the entity definition
         var strategies = new BattleEntityStrategySet(baseStrategies);
 
-
         // Override strategies specific to the LiningUp phase
-        strategies.SetCombatBehavior(new StrategyType<ICombatBehavior>(typeof(LineupCombatBehavior))); // Disable combat logic
-        strategies.SetCombatBehavior(new StrategyType<ICombatBehavior>(typeof(LineupCombatBehavior))); // Disable combat logic
-        strategies.SetAttackStrategy(new StrategyType<IAttackStrategy>(typeof(NoAttackStrategy)));      // Prevent attacks
-        strategies.SetTargetFinder(new StrategyType<ITargetFinder>(typeof(NoTargetFinder)));          // Disable targeting
+        strategies.SetCombatBehavior(StrategyType<ICombatBehavior>.From<LineupCombatBehavior>()); // Disable combat logic
+        strategies.SetAttackStrategy(StrategyType<IAttackStrategy>.From<NoAttackStrategy>());     // Prevent attacks
+        strategies.SetTargetFinder(StrategyType<ITargetFinder>.From<NoTargetFinder>());           // Disable targeting
 
         return strategies;
     }
 }
+

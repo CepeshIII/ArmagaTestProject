@@ -59,9 +59,9 @@ public class BoardService : IBoardService, IInitializable, IDisposable
         boardCells = cellsBuilder.CreateCells();
         cellsBuilder.SetAvailableCells(boardCells, new Vector2Int[]
         {
-            new Vector2Int(0, 0), new Vector2Int(1, 0), new Vector2Int(2, 0),
-            new Vector2Int(0, 1), new Vector2Int(1, 1), new Vector2Int(2, 1),
-            new Vector2Int(0, 2), new Vector2Int(1, 2), new Vector2Int(2, 2),
+            new Vector2Int(0, 0), new Vector2Int(1, 0), new Vector2Int(2, 0), new Vector2Int(3, 0),
+            new Vector2Int(0, 1), new Vector2Int(1, 1), new Vector2Int(2, 1), new Vector2Int(3, 1),
+            new Vector2Int(0, 2), new Vector2Int(1, 2), new Vector2Int(2, 2), new Vector2Int(3, 2),
         });
 
         // Set PlacementRules

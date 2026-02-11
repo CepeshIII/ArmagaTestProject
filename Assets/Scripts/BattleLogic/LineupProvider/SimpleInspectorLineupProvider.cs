@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
 
-public class LineupProvider : MonoBehaviour, ILineupPositionProvider
+public class SimpleInspectorLineupProvider : MonoBehaviour, ILineupPositionProvider
 {
     [SerializeField] private int countInLine = 5;
     [SerializeField] private float distanceBetweenUnits = 3f;
@@ -23,13 +24,21 @@ public class LineupProvider : MonoBehaviour, ILineupPositionProvider
     {
         cachedPositions = new Dictionary<int, Vector2>();
         var units = unitsManager.AllUnits;
-        var positions = CalculateLineUpPositions(units.Count);
 
-        for (var i = 0; i < units.Count; i++)
+        var count = 0;
+        foreach (var position in units) 
         {
-            var item = units[i];
-            var pos = positions[i];
-            cachedPositions.Add(item.GetInstanceID(), pos);
+            count++;
+        }
+
+        var positions = CalculateLineUpPositions(count);
+
+        count = 0;
+        foreach (var unit in units)
+        {
+            var pos = positions[count];
+            cachedPositions.Add(unit.GetInstanceID(), pos);
+            count++;
         }
 
     }

@@ -2,9 +2,10 @@ using UnityEngine;
 
 public class StaticFacingStrategy : IFacingStrategy
 {
-    private readonly Vector2 facing;
+    private readonly Vector2 facing = new Vector2(1, -1).normalized;
 
-    public StaticFacingStrategy(Vector2 facing)
+
+    public StaticFacingStrategy()
     {
         this.facing = facing.normalized;
     }

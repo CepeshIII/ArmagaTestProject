@@ -5,6 +5,6 @@ using UnityEngine;
 public class MoveFacingDefinition : FacingDefinition
 {
     public override StrategyType<IFacingStrategy> ImplementationType 
-        => new StrategyType<IFacingStrategy>(typeof(MoveFacingStrategy));
+        => StrategyType<IFacingStrategy>.From<MoveFacingStrategy>();
 }
 

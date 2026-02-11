@@ -4,5 +4,5 @@ using UnityEngine;
 public class NoTargetFinderFinderDefinition : TargetFinderDefinition
 {
     public override StrategyType<ITargetFinder> ImplementationType 
-        => new StrategyType<ITargetFinder>(typeof(NoTargetFinder));
+        => StrategyType<ITargetFinder>.From<NoTargetFinder>();
 }

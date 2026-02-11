@@ -14,6 +14,7 @@ public interface IUIManager
     public void OnToBoardButtonPressed();
     public void OnToAttackButtonPressed();
     public void ShowMenu();
+    public void ShowGameOverMenu();
     public void HideMenu();
     public void HideAll();
 }

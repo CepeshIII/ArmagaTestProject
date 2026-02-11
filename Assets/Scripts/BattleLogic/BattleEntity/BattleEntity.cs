@@ -32,14 +32,17 @@ public sealed class BattleEntity : MonoBehaviour,
     private readonly AttackContext attackContext = new();
 
     public Vector3 EnemyBasePosition { get; internal set; }
-    public BattleEntityStrategySet BaseStrategies { get; private set; }
+    public int ArchetypeId { get; private set; }
+    public Team Team { get; private set; }
 
     public event EventHandler<float> OnDamaged;
-    public event EventHandler<float> OnDied;
+    public event EventHandler OnDied;
+    public event EventHandler<Team> OnTeamChanged;
 
     public BattleEntityContext Context => entityContext;
     public UnitIntent CurrentIntent => currentUnitIntent;
-
+    public bool IsAlive => entityContext.HealthData.health > 0f;
+    public MoveData CurrentMoveData => currentMoveData;
 
     #region Injection
 
@@ -69,11 +72,10 @@ public sealed class BattleEntity : MonoBehaviour,
     #endregion
 
 
-    public void Initialize(BattleEntityContext battleEntityContext, BattleEntityStrategySet baseStrategies)
+    public void Initialize(int archetypeId, BattleEntityContext battleEntityContext)
     {
-        BaseStrategies = baseStrategies;
+        ArchetypeId = archetypeId;
         entityContext = battleEntityContext;
-
     }
 
 
@@ -183,11 +185,33 @@ public sealed class BattleEntity : MonoBehaviour,
 
         OnDamaged?.Invoke(this, damageAmount);
 
-        if (entityContext.HealthData.health <= 0f)
+        if (!IsAlive)
         {
-            OnDied?.Invoke(this, 0f);
-            Destroy(gameObject);
+            OnDied?.Invoke(this, null);
+            //Destroy(gameObject);
         }
+    }
+
+
+    public void SetTeam(Team team)
+    {
+        if (Team == team)
+            return;
+
+        Team = team;
+        OnTeamChanged?.Invoke(this, team);
+    }
+
+
+    public void ResetDataToBase(BattleEntityContext baseContext)
+    {
+        entityContext = baseContext.Clone();
+
+        // reset runtime-only state
+        attackContext.Reset();
+        currentMoveData = default;
+        currentUnitIntent = default;
+        currentFacing = Vector2.zero;
     }
 
 

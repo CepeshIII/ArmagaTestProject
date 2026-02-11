@@ -9,7 +9,6 @@ public struct OpenGamePlayMenu { }
 public struct OpenSettingsSignal { }
 
 
-
 public class MenuUI : MonoBehaviour, IInitializable, IDisposable
 {
     [SerializeField] private Button returnButton;

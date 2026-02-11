@@ -1,6 +1,7 @@
 ﻿using Zenject;
 
 
+public struct RoundBeginSignal { }
 public struct RoundWinSignal {}
 public struct RoundLooseSignal { }
 
@@ -10,48 +11,48 @@ public class AttackState : IGameState
 
     private readonly SignalBus signalBus;
     private readonly GameStateContext context;
+    private readonly BattleRoundController roundController;
+    private readonly BattleFlowController flowController;
 
     private static readonly int stateID = (int)GameState.BattlePhase;
 
 
-    public AttackState(GameStateContext context, SignalBus signalBus)
+
+    public AttackState(BattleRoundController roundController, 
+        GameStateContext context, BattleFlowController flowController, SignalBus signalBus)
     {
         this.context = context;
         this.signalBus = signalBus;
+        this.roundController = roundController;
+        this.flowController = flowController;
     }
 
 
     public void Enter()
     {
-        if(context.UIManager != null)
-        {
-            context.UIManager.ShowToBoardUI();
-        }
+        context.UIManager?.ShowToBoardUI();
+        context.InputManager?.ToGameMode();
 
-        if (context.InputManager != null)
-        {
-            context.InputManager.ToGameMode();
-        }
+        roundController.StartNextRound();
+        flowController.StartBattle();
 
+        signalBus.TryFire<RoundBeginSignal>();
         signalBus.Subscribe<RoundWinSignal>(OnRoundWin);
         signalBus.Subscribe<RoundLooseSignal>(OnRoundLose);
+
+        flowController.OnBattleFinished += OnBattleFinished;
     }
 
 
     public void Exit()
     {
-        if (context.UIManager != null)
-        {
-            context.UIManager.HideToBoardUI();
-        }
+        context.UIManager?.HideToBoardUI();
+        context.InputManager?.ToIdle();
 
-        if (context.InputManager != null)
-        {
-            context.InputManager.ToIdle();
-        }
+        signalBus.TryUnsubscribe<RoundWinSignal>(OnRoundWin);
+        signalBus.TryUnsubscribe<RoundLooseSignal>(OnRoundLose);
 
-        signalBus.Unsubscribe<RoundWinSignal>(OnRoundWin);
-        signalBus.Unsubscribe<RoundLooseSignal>(OnRoundLose);
+        flowController.OnBattleFinished -= OnBattleFinished;
     }
 
 
@@ -70,5 +71,14 @@ public class AttackState : IGameState
     public int GetID()
     {
         return (int)stateID;
+    }
+
+
+    private void OnBattleFinished(Team winner)
+    {
+        if (winner == Team.Player)
+            signalBus.TryFire<RoundWinSignal>();
+        else
+            signalBus.TryFire<RoundLooseSignal>();
     }
 }

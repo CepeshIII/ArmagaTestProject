@@ -5,6 +5,8 @@
 public enum BattlePhase
 {
     LiningUp,
-    Combat
+    Facing,
+    Combat,
+    ReturningToCells
 }
 

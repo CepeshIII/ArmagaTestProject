@@ -46,7 +46,7 @@ public class PreviewState : IGameState
             context.InputManager.ToIdle();
         }
 
-        signalBus.Unsubscribe<MoveIsMadeSignal>(OnMoveIsMade);
+        signalBus.TryUnsubscribe<MoveIsMadeSignal>(OnMoveIsMade);
     }
 
 
@@ -54,4 +54,48 @@ public class PreviewState : IGameState
     {
         signalBus.TryFire(new SwitchToNewState(GameState.BattlePhase));
     }
+}
+
+
+
+public class RoundPassedState : IGameState
+{
+
+    private readonly SignalBus signalBus;
+    private readonly GameStateContext context;
+
+
+
+    public RoundPassedState(GameStateContext context, SignalBus signalBus)
+    {
+        this.context = context;
+        this.signalBus = signalBus;
+    }
+
+
+    public void Enter()
+    {
+        signalBus.TryFire(new SwitchToNewState(GameState.CardPlacement));
+
+        if (context.UIManager != null)
+        {
+        }
+
+        if (context.InputManager != null)
+        {
+        }
+    }
+
+
+    public void Exit()
+    {
+        if (context.UIManager != null)
+        {
+        }
+
+        if (context.InputManager != null)
+        {
+        }
+    }
+
 }

@@ -5,6 +5,6 @@ using UnityEngine;
 public class MeleeAttackDefinition : AttackDefinition
 {
     public override StrategyType<IAttackStrategy> ImplementationType 
-        => new StrategyType<IAttackStrategy>(typeof(MeleeAttackStrategy));
+        => StrategyType<IAttackStrategy>.From<MeleeAttackStrategy>();
 }
 

@@ -14,7 +14,9 @@ public class GamePlayUIInstaller : MonoInstaller
         Container.Bind<MainUIGraphicRaycaster>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<UIManager>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<MenuUI>().FromComponentInHierarchy().AsSingle();
-        
+        Container.BindInterfacesAndSelfTo<GameOverMenuUI>().FromComponentInHierarchy().AsSingle();
+
+
         Container.Bind<ICellInfoWindow>().To<CellInfoWindow>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<CellHoverInfoSystem>().FromNew().AsSingle();
 

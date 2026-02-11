@@ -22,7 +22,6 @@ public interface IRangedAttacker : ICombatant
 
 public class UnitTestFactory: MonoBehaviour
 {
-    [SerializeField] private BattleEntityData unitData;
     [SerializeField] private bool spawnUnit;
     [SerializeField] private GameObject prefab;
     [SerializeField] private float radius;
@@ -71,14 +70,12 @@ public class UnitTestFactory: MonoBehaviour
             try
             {
                 var unit = battleEntityFactory.Create(battleEntityDefinition, position, Quaternion.identity);
-                var strategySet = new BattleEntityStrategySet(battleEntityDefinition);
-                var context = new BattleEntityContext(battleEntityDefinition.unitData, 
-                    battleEntityDefinition.attackData, battleEntityDefinition.movementData, 
-                    battleEntityDefinition.healthData);
+                var strategySet = battleEntityDefinition.GetStrategySet();
+                var context = battleEntityDefinition.GetEntityContext();
 
-                unit.Initialize(context, strategySet);
+                unit.Initialize(battleEntityDefinition.GetInstanceID(), context);
 
-                unitManager.Register(unit.GetComponent<BattleEntity>());
+                unitManager.Register(unit);
             }
             finally
             {

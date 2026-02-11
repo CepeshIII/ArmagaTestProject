@@ -39,9 +39,20 @@ public class GameStateManagerInstaller : Installer
             .To<CardPlacementState>()
             .AsSingle();
 
-        
+        Container.Bind<IGameState>()
+            .WithId(GameState.GameOver)
+            .To<GameOverState>()
+            .AsSingle();
+
+        Container.Bind<IGameState>()
+            .WithId(GameState.RoundPassed)
+            .To<RoundPassedState>()
+            .AsSingle();
+
+
         Container.DeclareSignal<SwitchToNewState>();
 
+        Container.DeclareSignal<RoundBeginSignal>();
         Container.DeclareSignal<RoundWinSignal>();
         Container.DeclareSignal<RoundLooseSignal>();
         Container.DeclareSignal<CardPlacedSignal>();

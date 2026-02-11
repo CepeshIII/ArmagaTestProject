@@ -19,3 +19,4 @@ public class AttackFacingStrategy : IFacingStrategy
         return true;
     }
 }
+
