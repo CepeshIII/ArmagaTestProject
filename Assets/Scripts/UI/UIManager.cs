@@ -24,10 +24,12 @@ public class UIManager : MonoBehaviour, IUIManager
 
 
     [Inject]
-    public void Construct(ICardDeckDisplay deckDisplayer, MenuUI menuUI, SignalBus signalBus)
+    public void Construct(ICardDeckDisplay deckDisplayer, 
+        MenuUI menuUI, GameOverMenuUI gameOverMenuUI, SignalBus signalBus)
     {
         this.deckDisplayer = deckDisplayer;
         this.menuUI = menuUI;
+        this.gameOverMenuUI = gameOverMenuUI;
         this.signalBus = signalBus;
     }
 

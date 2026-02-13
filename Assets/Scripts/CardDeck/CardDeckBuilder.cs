@@ -17,26 +17,35 @@ public class CardDeckBuilder
 
     public CardDeck CreateDefaultDeck()
     {
-        return new CardDeck(new List<CardData>
+        var defaultCardIds = new List<int>()
         {
-            db.GetCardDataById(0),
-            db.GetCardDataById(1),
-            db.GetCardDataById(2),
-            db.GetCardDataById(3),
-            db.GetCardDataById(4),
-        });
+            1, 2, 3, 4,
+        };
+
+        var cards = new List<CardData>();
+        foreach (var defaultCardId in defaultCardIds)
+        {
+            if (db.TryGetCardDataById(defaultCardId, out var card))
+            {
+                cards.Add(card);
+            }
+        }
+
+        return new CardDeck(cards);
     }
 
 
     public CardDeck CreateRandomDeck(int size)
     {
         var cards = new List<CardData>();
+        var deck = new CardDeck();
+
         for (int i = 0; i < size; i++)
         {
-            var randomId = Random.Range(0, db.CardCount); // example range
-            cards.Add(db.GetCardDataById(randomId));
+            AddRandomCardToDeck(deck);
         }
-        return new CardDeck(cards);
+
+        return deck;
     }
 
 
@@ -45,9 +54,10 @@ public class CardDeckBuilder
         var cards = new List<CardData>();
         for (int i = 0; i < db.CardCount; i++)
         {
-            var card = db.GetCardDataById(i);
-            if (card != null)
+            if (db.TryGetCardDataById(i, out var card))
+            {
                 cards.Add(card);
+            }
         }
         return new CardDeck(cards);
     }
@@ -55,10 +65,11 @@ public class CardDeckBuilder
 
     public void AddRandomCardToDeck(CardDeck deck)
     {
-        var randomId = Random.Range(0, db.CardCount);
-        var card = db.GetCardDataById(randomId);
-
-        deck.AddCard(card);
+        var randomId = Random.Range(0, db.CardCount); // example range
+        if (db.TryGetCardDataById(randomId, out var card))
+        {
+            deck.AddCard(card);
+        }
     }
 
 

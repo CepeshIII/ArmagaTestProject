@@ -6,10 +6,9 @@ public class StraightLinePathFinder : IPathFinder
     public PathData FindPath(Transform selfTransform, Vector2 targetPosition)
     {
 
-        Vector3[] path = new Vector3[2]
+        Vector3[] path = new Vector3[]
         {
-            selfTransform.position,
-            targetPosition,
+            targetPosition
         };
 
         return new PathData
@@ -18,3 +17,4 @@ public class StraightLinePathFinder : IPathFinder
         };
     }
 }
+

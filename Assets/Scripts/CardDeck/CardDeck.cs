@@ -23,6 +23,10 @@ public class CardDeck
 
     public void AddCard(CardData card)
     {
+        if(card == null)
+        {
+            throw new ArgumentNullException();
+        }
         cards.Add(card);
         DeckChanged?.Invoke();
     }

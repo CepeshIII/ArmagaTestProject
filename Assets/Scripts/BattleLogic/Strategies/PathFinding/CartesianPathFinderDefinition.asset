@@ -9,9 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 951cd6f2bc4b98b41a111f3c77771a0f, type: 3}
-  m_Name: EnemyWaveDefinition
+  m_Script: {fileID: 11500000, guid: 80cbd9f3bd4739d4db3198144c3ba3a6, type: 3}
+  m_Name: CartesianPathFinderDefinition
   m_EditorClassIdentifier: 
-  Enemies:
-  - EnemyDefinition: {fileID: 11400000, guid: 72d888f7eb27a2e43a5396365545d096, type: 2}
-    Count: 10

@@ -51,6 +51,12 @@ public class CardDeckDisplay : MonoBehaviour, ICardDeckDisplay
         int index = 0;
         foreach (var card in cards)
         {
+            if(card == null)
+            {
+                Debug.LogError("Card is null");
+                continue;
+            }
+
             CardDisplay cardDisplay;
             
             // if there is already a cardDisplay in the current deck at this index, just get it
