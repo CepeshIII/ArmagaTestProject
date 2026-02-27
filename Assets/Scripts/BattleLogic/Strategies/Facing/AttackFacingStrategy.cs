@@ -15,8 +15,7 @@ public class AttackFacingStrategy : IFacingStrategy
         }
 
         var dir = intent.Target.transform.position - self.transform.position;
-        facing = new Vector2(dir.x, dir.z).normalized;
+        facing = new Vector2(dir.x, dir.y).normalized;
         return true;
     }
 }
-

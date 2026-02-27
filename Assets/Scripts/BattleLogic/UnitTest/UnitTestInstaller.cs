@@ -10,7 +10,7 @@ public class BattleEntityInstaller: Installer
         // Units bindings
         Container.Bind<BattleEntity>().FromComponentInHierarchy().AsTransient();
         Container.Bind<BattleEntityAnimationEventHandler>().FromNewComponentSibling().AsTransient();
-        Container.Bind<IDamageManager>().To<DamageManager>().FromNewComponentOnNewGameObject().AsSingle();
+        Container.Bind<ICombatResolver>().To<CombatResolver>().FromNewComponentOnNewGameObject().AsSingle();
         Container.Bind<IBattleEntity>().FromComponentsInHierarchy().AsTransient();
         Container.Bind<ITargetFinder>().To<NearestTargetFinder>().FromNew().AsTransient();
         Container.Bind<IPathFinder>().To<StraightLinePathFinder>().FromNew().AsTransient();
@@ -77,7 +77,7 @@ public class BattlePhaseInstaller: Installer
 
         Container.Bind<IDamageDisplay>().To<DamageDisplay>().FromNewComponentOnNewGameObject().AsSingle();
         Container.Bind<DamageSourceFactory>().FromNew().AsSingle();
-        Container.Bind<IDamageManager>().To<DamageManager>().FromNewComponentOnNewGameObject().AsSingle();
+        Container.Bind<ICombatResolver>().To<CombatResolver>().FromNewComponentOnNewGameObject().AsSingle();
 
         Container.Bind<AttackStrategyFactory>().FromNew().AsSingle();
         Container.Bind<CombatBehaviorFactory>().FromNew().AsSingle();

@@ -9,7 +9,7 @@ public struct MoveToPositionIntent : IMovementIntent
         Position = position;
     }
 
-    public bool TryGetDestination(BattleEntity self, out Vector3 destination)
+    public bool TryGetDestination(out Vector3 destination)
     {
         destination = Position;
         return true;

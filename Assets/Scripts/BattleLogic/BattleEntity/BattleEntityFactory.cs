@@ -55,8 +55,6 @@ public class BattleEntityFactory
         // Build strategy set from definition and bind it to the sub-container
         var strategies = definition.GetStrategySet();
         var defaultStrategies = new BattleEntityStrategySet(strategies);
-        //defaultStrategies.SetCombatBehavior(StrategyType<ICombatBehavior>.From<IdleCombatBehavior>());
-        //defaultStrategies.SetFacingStrategy(StrategyType<IFacingStrategy>.From<StaticFacingStrategy>());
         BattleEntityStrategyInstaller.Bind(subContainer, defaultStrategies);
 
         // Instantiate the entity prefab with all dependencies injected
@@ -75,6 +73,7 @@ public class BattleEntityFactory
 
         // Initialize entity-specific data (stats, visuals, etc.)
         entity.Initialize(definition.GetInstanceID(), entityContext);
+        entity.SetAttackConfiguration(definition.attackConfiguration);
 
         return entity;
     }

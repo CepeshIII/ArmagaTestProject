@@ -1,7 +1,10 @@
-﻿public class NoAttackStrategy : IAttackStrategy
+﻿using UnityEngine;
+
+public class NoAttackStrategy : IAttackStrategy
 {
 
-    public void ExecuteAttack(BattleEntity entity, AttackContext attackContext)
+    public void ExecuteAttack(BattleEntity attacker, AttackData attackData, UnitIntent unitIntent,
+        IAttackConfiguration attackConfiguration, AttackContext attackContext)
     {
         attackContext.phase = AttackPhase.None;
         attackContext.Target = null;
@@ -9,7 +12,8 @@
     }
 
 
-    public void OnAttackHit(BattleEntity entity, AttackContext attackContext)
+    public void OnAttackHit(BattleEntity attacker, AttackData attackData, UnitIntent unitIntent,
+        IAttackConfiguration attackConfiguration, AttackContext attackContext)
     {
         attackContext.phase = AttackPhase.None;
         attackContext.Target = null;

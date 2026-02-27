@@ -1,36 +1,65 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Linq;
+using UnityEngine;
 using Zenject;
+
+
 
 public class ProjectileAttackStrategy : BaseAttackStrategy
 {
     private readonly DamageSourceFactory damageSourceFactory;
-    private readonly ProjectileData projectileData;
 
 
 
     [Inject]
-    public ProjectileAttackStrategy(DamageSourceFactory damageSourceFactory, ProjectileData projectileData)
+    public ProjectileAttackStrategy(DamageSourceFactory damageSourceFactory)
     {
         this.damageSourceFactory = damageSourceFactory;
-        this.projectileData = projectileData;
     }
 
 
-    public override void OnAttackHit(BattleEntity entity, AttackContext attackContext)
+    public override void OnAttackHit(BattleEntity attacker, AttackData attackData, UnitIntent unitIntent,
+        IAttackConfiguration attackConfiguration, AttackContext attackContext)
     {
+        if (attackConfiguration is not IRangeAttackConfiguration rangeConfig)
+        {
+            var interfaces = attackConfiguration.GetType()
+                .GetInterfaces()
+                .Select(x => x.Name);
+
+            throw new ArgumentException(
+                $"Wrong attack config type. " +
+                $"Expect: {nameof(IRangeAttackConfiguration)}, " +
+                $"But get interfaces: {string.Join(", ", interfaces)}");
+        }
+
         attackContext.phase = AttackPhase.Recovery;
-        var attackData = entity.Context.AttackData;
-        var transform = entity.transform;
 
         if (attackContext.Target == null)
         {
             return;
         }
 
-        var directionToTarget = (attackContext.Target.transform.position - transform.position).normalized;
+        var attackerTransform = attacker.transform;
+        var targetTransform = attackContext.Target.transform;
+        var directionToTarget = (targetTransform.position - attackerTransform.position).normalized;
 
-        Debug.Log($"Attack hit event triggered: {transform.position}, Direction: {directionToTarget}");
-        damageSourceFactory.SpawnProjectile(transform.gameObject, transform.position + directionToTarget * attackData.offset,
-                                            attackContext.Target.transform.position, attackData, projectileData);
+        var payload = new CombatPayload
+        {
+            Source = attacker,
+            Target = unitIntent.Target,
+            BaseDamage = attackData.attackDamage,
+            DamageType = DamageType.Physical
+        };
+
+        var position = attackerTransform.position + 
+            (Vector3)rangeConfig.ProjectileData.projectileOrigin + directionToTarget * attackData.offset;
+
+        damageSourceFactory.SpawnProjectile(
+            position, 
+            targetTransform,
+            rangeConfig.ProjectileData,
+            payload
+            );
     }
 }

@@ -1,6 +1,5 @@
 using UnityEngine;
 
-
 [CreateAssetMenu(fileName = "BattleEntityDefinition", menuName = "Scriptable Objects/BattleEntityDefinition")]
 public class BattleEntityDefinition : ScriptableObject
 {
@@ -8,6 +7,9 @@ public class BattleEntityDefinition : ScriptableObject
     public AttackData attackData;
     public MovementData movementData;
     public HealthData healthData;
+
+    [SerializeReference, SubclassSelector]
+    public IAttackConfiguration attackConfiguration;
 
     [Header("Visuals")]
     public AnimatorOverrideController animator;

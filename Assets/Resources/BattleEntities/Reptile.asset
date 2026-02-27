@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Reptile
   m_EditorClassIdentifier: 
   attackData:
-    attackDistance: 0.2
+    attackDistance: 0.4
     attackDamage: 25
     rechargeTime: 1.5
     offset: 0.2
@@ -24,12 +24,21 @@ MonoBehaviour:
     threshold: 0.01
   healthData:
     health: 100
+  attackConfiguration:
+    rid: 8336498680264654913
   animator: {fileID: 22100000, guid: 47cb19781ad68a04d97ab1c0b90d43c2, type: 2}
   prefab: {fileID: 8463673095472422573, guid: 0ed24d9f46e49e147a7da1a910873765, type: 3}
   attack: {fileID: 11400000, guid: 158b444445b9eba43ae0bf9089865911, type: 2}
   behavior: {fileID: 11400000, guid: ea35581555c54534ba90b0a101e13de2, type: 2}
-  facing: {fileID: 11400000, guid: cdb5d95f0860b6845a21711f9dec980b, type: 2}
+  facing: {fileID: 11400000, guid: 6b512334a0eb0da4fa833167c715b246, type: 2}
   movement: {fileID: 11400000, guid: 0eafff0ffa632744bac085c89f7badb7, type: 2}
-  pathFinder: {fileID: 11400000, guid: a811b11fccce69c48963da01fd1a8fb2, type: 2}
+  pathFinder: {fileID: 11400000, guid: e0b254e555ede9943a3926abfe64b904, type: 2}
   targetFinder: {fileID: 11400000, guid: cf9f30814d9c5bd469313b919d3b854d, type: 2}
   animationResolver: {fileID: 11400000, guid: 32e46e1c9b56170449b6624248e7f589, type: 2}
+  references:
+    version: 2
+    RefIds:
+    - rid: 8336498680264654913
+      type: {class: MeleeAttackConfiguration, ns: , asm: ScriptsAssembly}
+      data:
+        m_IsRound: 1

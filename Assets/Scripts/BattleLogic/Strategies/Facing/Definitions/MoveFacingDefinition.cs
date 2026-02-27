@@ -7,4 +7,3 @@ public class MoveFacingDefinition : FacingDefinition
     public override StrategyType<IFacingStrategy> ImplementationType 
         => StrategyType<IFacingStrategy>.From<MoveFacingStrategy>();
 }
-

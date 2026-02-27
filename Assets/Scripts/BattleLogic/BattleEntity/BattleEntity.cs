@@ -25,6 +25,8 @@ public sealed class BattleEntity : MonoBehaviour,
     private UnitIntent currentUnitIntent;
     private Vector2 currentFacing;
 
+    private IAttackConfiguration attackConfiguration;
+
     // Supporting services
     private IUnitAnimator unitAnimator;
     private BattleEntityAnimationEventHandler animationEventHandler;
@@ -45,6 +47,7 @@ public sealed class BattleEntity : MonoBehaviour,
     public MoveData CurrentMoveData => currentMoveData;
 
     #region Injection
+
 
 
     [Inject]
@@ -116,7 +119,7 @@ public sealed class BattleEntity : MonoBehaviour,
     {
         if (currentUnitIntent.Type == IntentType.Attack)
         {
-            attackStrategy.ExecuteAttack(this, attackContext);
+            attackStrategy.ExecuteAttack(this, Context.AttackData, currentUnitIntent, attackConfiguration, attackContext);
         }
 
     }
@@ -140,7 +143,7 @@ public sealed class BattleEntity : MonoBehaviour,
         if (!currentUnitIntent.HasMovement)
             return;
 
-        if (!currentUnitIntent.Movement.TryGetDestination(this, out var destination))
+        if (!currentUnitIntent.Movement.TryGetDestination(out var destination))
             return;
 
         var path = pathFinder.FindPath(transform, destination);
@@ -173,7 +176,8 @@ public sealed class BattleEntity : MonoBehaviour,
 
     private void OnAttackHit()
     {
-        attackStrategy.OnAttackHit(this, attackContext);
+        attackStrategy.OnAttackHit(this, Context.AttackData, 
+            currentUnitIntent, attackConfiguration, attackContext);
     }
 
 
@@ -212,6 +216,12 @@ public sealed class BattleEntity : MonoBehaviour,
         currentMoveData = default;
         currentUnitIntent = default;
         currentFacing = Vector2.zero;
+    }
+
+
+    public void SetAttackConfiguration(IAttackConfiguration attackConfiguration)
+    {
+        this.attackConfiguration = attackConfiguration;
     }
 
 

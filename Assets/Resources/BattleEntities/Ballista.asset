@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Ballista
   m_EditorClassIdentifier: 
   attackData:
-    attackDistance: 0.2
-    attackDamage: 25
+    attackDistance: 10
+    attackDamage: 50
     rechargeTime: 1.5
     offset: 0.2
     radius: 0.1
@@ -23,13 +23,23 @@ MonoBehaviour:
     acceleration: 0
     threshold: 0.01
   healthData:
-    health: 100
+    health: 100000
+  attackConfiguration:
+    rid: 8336498593396949267
   animator: {fileID: 22100000, guid: 1a0eccdbcea454540bd2f3107fb0c23c, type: 2}
   prefab: {fileID: 3053236717826210955, guid: 779cf2d57bf96f74bbdf365dea4658e3, type: 3}
-  attack: {fileID: 11400000, guid: 158b444445b9eba43ae0bf9089865911, type: 2}
+  attack: {fileID: 11400000, guid: 7c6bd2b199893f244bbc3e770114240f, type: 2}
   behavior: {fileID: 11400000, guid: ea35581555c54534ba90b0a101e13de2, type: 2}
-  facing: {fileID: 11400000, guid: cdb5d95f0860b6845a21711f9dec980b, type: 2}
+  facing: {fileID: 11400000, guid: 6b512334a0eb0da4fa833167c715b246, type: 2}
   movement: {fileID: 11400000, guid: 0eafff0ffa632744bac085c89f7badb7, type: 2}
   pathFinder: {fileID: 11400000, guid: a811b11fccce69c48963da01fd1a8fb2, type: 2}
   targetFinder: {fileID: 11400000, guid: cf9f30814d9c5bd469313b919d3b854d, type: 2}
   animationResolver: {fileID: 11400000, guid: 32e46e1c9b56170449b6624248e7f589, type: 2}
+  references:
+    version: 2
+    RefIds:
+    - rid: 8336498593396949267
+      type: {class: RangeAttackConfiguration, ns: , asm: ScriptsAssembly}
+      data:
+        m_Description: Ripe
+        projectileData: {fileID: 11400000, guid: 3b1cd789c05022747bee1f506b90bca6, type: 2}

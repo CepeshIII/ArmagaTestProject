@@ -11,7 +11,7 @@ public struct MoveToTargetIntent : IMovementIntent
     }
 
 
-    public bool TryGetDestination(BattleEntity self, out Vector3 destination)
+    public bool TryGetDestination(out Vector3 destination)
     {
         if (Target == null)
         {

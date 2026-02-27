@@ -8,3 +8,4 @@ public class StraightLinePathFinderDefinition : PathFinderDefinition
         => StrategyType<IPathFinder>.From<StraightLinePathFinder>();
 
 }
+

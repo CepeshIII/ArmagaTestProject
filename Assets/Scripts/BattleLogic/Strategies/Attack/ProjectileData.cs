@@ -3,15 +3,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ProjectileData", menuName = "Scriptable Objects/ProjectileData")]
 public class ProjectileData : ScriptableObject
 {
-    [Header("Sprites")]
-    public Sprite sprite0;
-    public Sprite sprite45;
-    public Sprite sprite90;
-    public Sprite sprite135;
-    public Sprite sprite180;
-    public Sprite sprite225;
-    public Sprite sprite270;
-    public Sprite sprite315;
+    public Vector2 projectileOrigin;
+    public MovementData movementData;
+    public AttackData attackData;
+
+    public AnimatorOverrideController animator;
+
+    public float speed;
+    public GameObject prefab;
 
     [Header("ColliderParam")]
     public Vector2 colliderOffset;
