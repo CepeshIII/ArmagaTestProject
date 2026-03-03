@@ -8,7 +8,7 @@ public class ProjectileDamageSource : MonoBehaviour, IDamageSource
     private Transform target;
     private ProjectileData projectileData;
     private Animator animator;
-
+    private Vector3 direction;
 
 
     public void OnEnable()
@@ -30,6 +30,7 @@ public class ProjectileDamageSource : MonoBehaviour, IDamageSource
         this.combatResolver = resolver;
 
         transform.position = origin;
+        direction = (target.position - transform.position).normalized;
     }
 
 
@@ -65,15 +66,10 @@ public class ProjectileDamageSource : MonoBehaviour, IDamageSource
 
     private void MoveTowardsTarget()
     {
-            
-        var newPosition = Vector3.MoveTowards(
-            transform.position,
-            target.position,
-            projectileData.speed * Time.deltaTime
-            );
+        var delta = projectileData.speed * Time.deltaTime * direction;
+        var newPosition = transform.position + delta;
 
-        var delta = newPosition - transform.position;
-        UpdateAnimation(delta);
+        UpdateAnimation(direction);
 
         transform.position = newPosition;
     }

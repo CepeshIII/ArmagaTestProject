@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 551cf49d6d2c7a2479df8aabaa729743, type: 3}
-  m_Name: Reptile
+  m_Name: Tower
   m_EditorClassIdentifier: 
   attackData:
-    attackDistance: 0.4
-    attackDamage: 25
-    rechargeTime: 1.5
+    instantAttack: 1
+    attackDistance: 10
+    attackDamage: 50
+    rechargeTime: 0.5
     offset: 0.2
     radius: 0.1
   movementData:
@@ -25,14 +26,14 @@ MonoBehaviour:
   healthData:
     health: 100
   capabilities:
-    CanMove: 1
+    CanMove: 0
     CanAttack: 1
     CanDecide: 1
   attackConfiguration:
-    rid: 8336498680264654913
+    rid: 1097899825627398207
   animator: {fileID: 22100000, guid: 47cb19781ad68a04d97ab1c0b90d43c2, type: 2}
-  prefab: {fileID: 8463673095472422573, guid: 0ed24d9f46e49e147a7da1a910873765, type: 3}
-  attack: {fileID: 11400000, guid: 158b444445b9eba43ae0bf9089865911, type: 2}
+  prefab: {fileID: 1455947311445407465, guid: 8a22ac7a3c7c1a143b0e80998d521a62, type: 3}
+  attack: {fileID: 11400000, guid: 7c6bd2b199893f244bbc3e770114240f, type: 2}
   behavior: {fileID: 11400000, guid: ea35581555c54534ba90b0a101e13de2, type: 2}
   facing: {fileID: 11400000, guid: 6b512334a0eb0da4fa833167c715b246, type: 2}
   movement: {fileID: 11400000, guid: 0eafff0ffa632744bac085c89f7badb7, type: 2}
@@ -42,7 +43,8 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 8336498680264654913
-      type: {class: MeleeAttackConfiguration, ns: , asm: ScriptsAssembly}
+    - rid: 1097899825627398207
+      type: {class: RangeAttackConfiguration, ns: , asm: ScriptsAssembly}
       data:
-        m_IsRound: 1
+        m_Description: Ripe
+        projectileData: {fileID: 11400000, guid: 4fe0654e0ec3e7b419d8f12b1444c6c4, type: 2}

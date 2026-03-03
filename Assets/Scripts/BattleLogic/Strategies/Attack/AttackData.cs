@@ -5,6 +5,11 @@ using UnityEngine;
 [Serializable]
 public struct AttackData
 {
+    /// <summary>
+    /// If attack logic should called instant or wait for animation call
+    /// </summary>
+    public bool instantAttack;
+
     public float attackDistance;
     public float attackDamage;
     public float rechargeTime;

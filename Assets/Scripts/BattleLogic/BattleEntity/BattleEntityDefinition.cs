@@ -1,4 +1,35 @@
+using System;
 using UnityEngine;
+
+
+[Serializable]
+public sealed class EntityCapabilities
+{
+    public bool CanMove = true;
+    public bool CanAttack = true;
+    public bool CanDecide = true;
+
+
+
+    public void Reset()
+    {
+        CanMove = true;
+        CanAttack = true;
+        CanDecide = true;
+    }
+
+
+    public EntityCapabilities Clone()
+    {
+        return new EntityCapabilities
+        {
+            CanMove = CanMove,
+            CanAttack = CanAttack,
+            CanDecide = CanDecide
+        };
+    }
+}
+
 
 [CreateAssetMenu(fileName = "BattleEntityDefinition", menuName = "Scriptable Objects/BattleEntityDefinition")]
 public class BattleEntityDefinition : ScriptableObject
@@ -7,6 +38,7 @@ public class BattleEntityDefinition : ScriptableObject
     public AttackData attackData;
     public MovementData movementData;
     public HealthData healthData;
+    public EntityCapabilities capabilities;
 
     [SerializeReference, SubclassSelector]
     public IAttackConfiguration attackConfiguration;

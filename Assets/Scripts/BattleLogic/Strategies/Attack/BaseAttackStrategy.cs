@@ -18,7 +18,17 @@ public abstract class BaseAttackStrategy : IAttackStrategy
                 if (distanceToTarget <= attackData.attackDistance)
                 {
                     rechargeTimer = attackData.rechargeTime;
-                    attackPhase = AttackPhase.Windup;
+
+                    if (attackData.instantAttack)
+                    {
+                        OnAttackHit(attacker, attackData,
+                            unitIntent, attackConfiguration, attackContext);
+                        attackPhase = attackContext.phase;
+                    }
+                    else
+                    {
+                        attackPhase = AttackPhase.Windup;
+                    }
                 }
             }
             else

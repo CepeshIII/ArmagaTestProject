@@ -19,7 +19,8 @@ public class CardViewHandlerFactory
                 return new BattleEntityCardViewHandler(unitsManager, new RadiusPlacementStrategy(grid), boardEntityRegistry);
             //return new UnitCardViewHandler(cardPrefabFactory, new RadiusPlacementStrategy(grid));
             case CardType.Building:
-                return new BuildingCardViewHandler(cardPrefabFactory, new CenterPlacementStrategy(grid));
+                return new BattleEntityBuildingCardViewHandler(unitsManager, new RadiusPlacementStrategy(grid), boardEntityRegistry);
+            //return new BuildingCardViewHandler(cardPrefabFactory, new CenterPlacementStrategy(grid));
         }
 
         return null;    

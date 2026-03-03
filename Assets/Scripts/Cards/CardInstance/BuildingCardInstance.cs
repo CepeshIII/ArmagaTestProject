@@ -3,10 +3,13 @@ using UnityEngine;
 
 public class BuildingCardInstance : CardInstance
 {
+    public BattleEntityDefinition entityDefinition { get; set; }
 
-    public BuildingCardInstance(BuildingCard data, Vector2Int indexCoords = default) : base(data, indexCoords)
+
+    public BuildingCardInstance(BuildingCard data, Vector2Int indexCoords = default)
+        : base(data, indexCoords)
     {
-
+        entityDefinition = data.battleEntityDefinition;
     }
 
 
@@ -14,6 +17,7 @@ public class BuildingCardInstance : CardInstance
     {
 
     }
+
 
     public override IEnumerable<string> GetDescription()
     {

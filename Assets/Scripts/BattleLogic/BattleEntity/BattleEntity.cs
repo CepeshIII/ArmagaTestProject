@@ -36,6 +36,7 @@ public sealed class BattleEntity : MonoBehaviour,
     public Vector3 EnemyBasePosition { get; internal set; }
     public int ArchetypeId { get; private set; }
     public Team Team { get; private set; }
+    public EntityCapabilities capabilities { get; private set; }
 
     public event EventHandler<float> OnDamaged;
     public event EventHandler OnDied;
@@ -87,22 +88,34 @@ public sealed class BattleEntity : MonoBehaviour,
         animator = GetComponent<Animator>();
         animationEventHandler = gameObject.GetComponent<BattleEntityAnimationEventHandler>();
 
-        animationEventHandler.OnAttackEvent += OnAttackHit;
+        if(animationEventHandler != null)
+        {
+            animationEventHandler.OnAttackEvent += OnAttackHit;
+        }
     }
 
 
     private void OnDisable()
     {
-        animationEventHandler.OnAttackEvent -= OnAttackHit;
+        if (animationEventHandler != null)
+        {
+            animationEventHandler.OnAttackEvent -= OnAttackHit;
+        }
     }
 
 
     private void Update()
     {
-        TickBehavior();
-        TickCombat();
+        if(capabilities.CanDecide)
+            TickBehavior();
+
+        if(capabilities.CanAttack)
+            TickCombat();
+
+        if(capabilities.CanMove)
+            TickMovement();
+
         TickFacing();
-        TickMovement();
         TickAnimation();
     }
 
@@ -164,11 +177,14 @@ public sealed class BattleEntity : MonoBehaviour,
             currentMoveData
         );
 
-        unitAnimator.PlayMoveAnimation(
-            animator,
-            animationType,
-            currentFacing
-        );
+        if(animator != null)
+        {
+            unitAnimator?.PlayMoveAnimation(
+                animator,
+                animationType,
+                currentFacing
+            );
+        }
     }
 
     #endregion
@@ -222,6 +238,12 @@ public sealed class BattleEntity : MonoBehaviour,
     public void SetAttackConfiguration(IAttackConfiguration attackConfiguration)
     {
         this.attackConfiguration = attackConfiguration;
+    }
+
+
+    public void SetCapabilities(EntityCapabilities capabilities)
+    {
+        this.capabilities = capabilities;
     }
 
 

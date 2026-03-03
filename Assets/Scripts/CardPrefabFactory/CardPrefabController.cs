@@ -67,7 +67,11 @@ public class CardPrefabController: IInitializable, IDisposable
     private void HandleCardPlaced(CardInstance cardInstance, BoardCellPosition cellPosition)
     {
         Debug.Log($"HandleCardPlaced. Info: \ncoordinate: {cellPosition.CoordIndex};\ngridPosition: {cellPosition.GridPosition};\nWorldPosition: {cellPosition.WorldPosition}");
-        var viewHandler = cardViewHandlerFactory.GetHandler(cardInstance.Data.CardType, cardPrefabFactory, gameBoard.Grid);
+        var viewHandler = cardViewHandlerFactory.GetHandler(
+            cardInstance.Data.CardType, 
+            cardPrefabFactory, 
+            gameBoard.Grid
+            );
 
         if (viewHandler != null)
         {
@@ -93,7 +97,6 @@ public class CardPrefabController: IInitializable, IDisposable
             viewHandler?.RemoveView();
             viewHandlers.Remove(cellPosition.CoordIndex);
         }
-
     }
 
 

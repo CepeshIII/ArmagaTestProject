@@ -6,6 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Scriptable Objects/Cards/Building")]
 public class BuildingCard : CardData, IEffectSourceCard, IPrefabSource
 {
+    public BattleEntityDefinition battleEntityDefinition;
     public GameObject buildingPrefab;
     public List<EffectData> effects;
 

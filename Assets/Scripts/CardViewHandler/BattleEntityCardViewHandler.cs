@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Zenject;
 
 
 public class BattleEntityCardViewHandler : ICardViewHandler
@@ -12,14 +11,12 @@ public class BattleEntityCardViewHandler : ICardViewHandler
     private readonly ICellPlacementStrategy placementStrategy;
     private readonly BoardEntityRegistry boardEntityRegistry;
     
-
     public CardInstance Instance { get; private set; }
     public BattleEntityDefinition definition { get; private set; }
     public BoardCellPosition Position { get; private set; }
 
 
 
-    [Inject]
     public BattleEntityCardViewHandler(UnitsManager unitManager, 
         ICellPlacementStrategy placementStrategy, BoardEntityRegistry boardEntityRegistry)
     {
@@ -60,9 +57,15 @@ public class BattleEntityCardViewHandler : ICardViewHandler
 
         RemoveView();
 
-        var positions = placementStrategy.GetPositions(Instance.IndexCoords, unitInstance.CurrentUnitCount);
-        viewObjects = battleEntityManager.GetFreeEntities(definition, positions.Count());
+        var positions = placementStrategy.GetPositions(
+            Instance.IndexCoords, 
+            unitInstance.CurrentUnitCount
+            );
 
+        viewObjects = battleEntityManager.GetFreeEntities(
+            definition, 
+            positions.Count()
+            );
 
         foreach (var (entity, index) in viewObjects.Select((value, i) => (value, i)))
         {

@@ -74,6 +74,7 @@ public class BattleEntityFactory
         // Initialize entity-specific data (stats, visuals, etc.)
         entity.Initialize(definition.GetInstanceID(), entityContext);
         entity.SetAttackConfiguration(definition.attackConfiguration);
+        entity.SetCapabilities(definition.capabilities.Clone());
 
         return entity;
     }

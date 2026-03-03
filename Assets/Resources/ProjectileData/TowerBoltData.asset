@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1804429d040b9cd408ea142e372808f6, type: 3}
-  m_Name: BallistaBoltData
+  m_Name: TowerBoltData
   m_EditorClassIdentifier: 
-  projectileOrigin: {x: 0, y: 0.1}
+  projectileOrigin: {x: 0, y: 0.65}
   movementData:
-    speed: 1
+    speed: 50
     acceleration: 0
     threshold: 0
   attackData:
@@ -25,7 +25,7 @@ MonoBehaviour:
     offset: 0
     radius: 0.1
   animator: {fileID: 22100000, guid: e08fa5d1a4687cf48a493e4291e8fc68, type: 2}
-  speed: 20
+  speed: 5
   prefab: {fileID: 1737750109675586558, guid: d6c07039794d41b49b7e6c16e55efef6, type: 3}
-  colliderOffset: {x: 0, y: 0}
+  colliderOffset: {x: 0, y: 0.05}
   colliderRadius: 0.1

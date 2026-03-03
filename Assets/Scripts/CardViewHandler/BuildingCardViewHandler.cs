@@ -14,7 +14,8 @@ public class BuildingCardViewHandler : ICardViewHandler
 
 
 
-    public BuildingCardViewHandler(CardPrefabFactory cardPrefabFactory, ICellPlacementStrategy placementStrategy)
+    public BuildingCardViewHandler(CardPrefabFactory cardPrefabFactory, 
+        ICellPlacementStrategy placementStrategy)
     {
         this.cardPrefabFactory = cardPrefabFactory;
         this.placementStrategy = placementStrategy;

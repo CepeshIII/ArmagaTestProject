@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 551cf49d6d2c7a2479df8aabaa729743, type: 3}
-  m_Name: Reptile
+  m_Name: Farm
   m_EditorClassIdentifier: 
   attackData:
     attackDistance: 0.4
@@ -25,13 +25,13 @@ MonoBehaviour:
   healthData:
     health: 100
   capabilities:
-    CanMove: 1
-    CanAttack: 1
-    CanDecide: 1
+    CanMove: 0
+    CanAttack: 0
+    CanDecide: 0
   attackConfiguration:
     rid: 8336498680264654913
   animator: {fileID: 22100000, guid: 47cb19781ad68a04d97ab1c0b90d43c2, type: 2}
-  prefab: {fileID: 8463673095472422573, guid: 0ed24d9f46e49e147a7da1a910873765, type: 3}
+  prefab: {fileID: 6747177935182639153, guid: c73d6a8bf38b824418d592a869ce2c7b, type: 3}
   attack: {fileID: 11400000, guid: 158b444445b9eba43ae0bf9089865911, type: 2}
   behavior: {fileID: 11400000, guid: ea35581555c54534ba90b0a101e13de2, type: 2}
   facing: {fileID: 11400000, guid: 6b512334a0eb0da4fa833167c715b246, type: 2}
