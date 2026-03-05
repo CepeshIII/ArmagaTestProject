@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Ballista
   m_EditorClassIdentifier: 
   attackData:
+    instantAttack: 0
     attackDistance: 10
     attackDamage: 50
     rechargeTime: 1.5
@@ -23,7 +24,11 @@ MonoBehaviour:
     acceleration: 0
     threshold: 0.01
   healthData:
-    health: 100000
+    health: 350
+  capabilities:
+    CanMove: 1
+    CanAttack: 1
+    CanDecide: 1
   attackConfiguration:
     rid: 8336498593396949267
   animator: {fileID: 22100000, guid: 1a0eccdbcea454540bd2f3107fb0c23c, type: 2}

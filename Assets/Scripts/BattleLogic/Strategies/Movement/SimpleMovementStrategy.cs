@@ -3,6 +3,7 @@
 
 public class SimpleMovementStrategy : IMovementStrategy
 {
+
     public MoveData Move(Transform selfTransform, MovementData movementData, PathData pathTargetData)
     {
         var targetPosition = pathTargetData.path[^1];
@@ -31,7 +32,18 @@ public class SimpleMovementStrategy : IMovementStrategy
         {
             isMoving = isMoving,
             direction = moveDirection,
-            distanceToTarget = distanceToTarget
         };
     }
+
+
+    public bool IsAtDestination(Transform selfTransform, MovementData movementData, PathData pathTargetData)
+    {
+        var endPoint = pathTargetData.path[^1];
+        var distance = (selfTransform.position - endPoint).magnitude;
+
+        return distance <= movementData.threshold;
+    }
+
 }
+
+

@@ -52,7 +52,8 @@ public class ProjectileDamageSource : MonoBehaviour, IDamageSource
             out BattleEntity targetEntity))
             return;
 
-        if (targetEntity == payload.Source)
+        if (targetEntity == payload.Source 
+            || targetEntity.Team == payload.Source.Team)
         {
             return;
         }

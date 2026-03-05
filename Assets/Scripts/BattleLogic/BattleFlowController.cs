@@ -83,12 +83,10 @@ public sealed class BattleFlowController: ITickable
             if (!unit.IsAlive)
                 continue;
 
-            if (!unit.capabilities.CanMove)
-                return true;
+            if (!unit.Ñapabilities.CanMove)
+                continue;
 
-            var IsUnitInPosition = 
-                unit.Context.MovementData.threshold >= unit.CurrentMoveData.distanceToTarget;
-            if (!IsUnitInPosition)
+            if (!unit.HasReachedDestination)
                 return false;
 
         }

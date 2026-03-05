@@ -17,8 +17,18 @@ MonoBehaviour:
   description: Forge
   sprite: {fileID: -524079010, guid: 67385ed92c625cc4d93a35208da1eec6, type: 3}
   tile: {fileID: 0}
+  battleEntityDefinition: {fileID: 0}
   buildingPrefab: {fileID: 6523121067464140007, guid: 45997dc8f6f7ed142bca45e1110ee0b7, type: 3}
   effects:
+  - effectsId: 0
+    effectsName: 
+    effectArea:
+      areaType: 1
+      range: 1
+    effectTarget: 1
+    unitEffectType: 2
+    buildingEffectType: 0
+    effectValue: 1.5
   - effectsId: 0
     effectsName: 
     effectArea:

@@ -17,7 +17,6 @@ public class AttackState : IGameState
     private static readonly int stateID = (int)GameState.BattlePhase;
 
 
-
     public AttackState(BattleRoundController roundController, 
         GameStateContext context, BattleFlowController flowController, SignalBus signalBus)
     {
@@ -58,7 +57,14 @@ public class AttackState : IGameState
 
     public void OnRoundWin()
     {
-        signalBus.TryFire(new SwitchToNewState(GameState.RoundPassed));
+        if (roundController.AllRoundsPassed)
+        {
+            signalBus.TryFire(new SwitchToNewState(GameState.LevelPassed));
+        }
+        else
+        {
+            signalBus.TryFire(new SwitchToNewState(GameState.RoundPassed));
+        }
     }
 
 

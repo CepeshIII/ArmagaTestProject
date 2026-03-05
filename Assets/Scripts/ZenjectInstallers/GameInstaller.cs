@@ -45,6 +45,11 @@ public class GameStateManagerInstaller : Installer
             .AsSingle();
 
         Container.Bind<IGameState>()
+            .WithId(GameState.LevelPassed)
+            .To<LevelPassedState>()
+            .AsSingle();
+
+        Container.Bind<IGameState>()
             .WithId(GameState.RoundPassed)
             .To<RoundPassedState>()
             .AsSingle();

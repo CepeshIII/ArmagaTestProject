@@ -10,7 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7cfcb244417ad354785a1a591b1f860a, type: 3}
-  m_Name: EnemyRoundDefinition
+  m_Name: Round2
   m_EditorClassIdentifier: 
   Waves:
-  - {fileID: 11400000, guid: 99a71371796e4fd4b99817e6851df400, type: 2}
+  - Enemies:
+    - EnemyDefinition: {fileID: 11400000, guid: 72d888f7eb27a2e43a5396365545d096, type: 2}
+      Count: 15
+  - Enemies:
+    - EnemyDefinition: {fileID: 11400000, guid: 1da81ced135ddae448221ffe2f752581, type: 2}
+      Count: 2

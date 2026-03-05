@@ -13,6 +13,8 @@ public class BattleRoundController
     private readonly BattlePhaseController phaseController;
     private readonly BattleLineupPreparer battleLineupPreparer;
 
+    public bool AllRoundsPassed => currentWaveIndex >= config.Rounds.Length;
+
 
     [Inject]
     public BattleRoundController(

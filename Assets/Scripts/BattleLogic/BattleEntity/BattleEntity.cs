@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using Zenject;
+using static UnityEditorInternal.ReorderableList;
 
 
 public sealed class BattleEntity : MonoBehaviour,
@@ -36,7 +37,8 @@ public sealed class BattleEntity : MonoBehaviour,
     public Vector3 EnemyBasePosition { get; internal set; }
     public int ArchetypeId { get; private set; }
     public Team Team { get; private set; }
-    public EntityCapabilities capabilities { get; private set; }
+    public EntityCapabilities Ñapabilities { get; private set; }
+    public bool HasReachedDestination { get; private set; }
 
     public event EventHandler<float> OnDamaged;
     public event EventHandler OnDied;
@@ -106,13 +108,13 @@ public sealed class BattleEntity : MonoBehaviour,
 
     private void Update()
     {
-        if(capabilities.CanDecide)
+        if(Ñapabilities.CanDecide)
             TickBehavior();
 
-        if(capabilities.CanAttack)
+        if(Ñapabilities.CanAttack)
             TickCombat();
 
-        if(capabilities.CanMove)
+        if(Ñapabilities.CanMove)
             TickMovement();
 
         TickFacing();
@@ -166,6 +168,13 @@ public sealed class BattleEntity : MonoBehaviour,
             entityContext.MovementData,
             path
         );
+
+        HasReachedDestination = movementStrategy.
+            IsAtDestination(
+            transform,
+            entityContext.MovementData,
+            path
+            );
     }
 
 
@@ -243,7 +252,7 @@ public sealed class BattleEntity : MonoBehaviour,
 
     public void SetCapabilities(EntityCapabilities capabilities)
     {
-        this.capabilities = capabilities;
+        Ñapabilities = capabilities;
     }
 
 

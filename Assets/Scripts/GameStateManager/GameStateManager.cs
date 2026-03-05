@@ -10,6 +10,7 @@ public enum GameState
     BattlePhase,
     GameOver,
     RoundPassed,
+    LevelPassed,
     BetweenRound,
     Menu,
 }

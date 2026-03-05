@@ -3,6 +3,9 @@ using static IsoMath;
 
 public class CartesianMovementStrategy : IMovementStrategy
 {
+
+
+
     public MoveData Move(Transform selfTransform, MovementData movementData, PathData pathTargetData)
     {
         var cartesianTargetPosition = pathTargetData.path[^1];
@@ -40,7 +43,21 @@ public class CartesianMovementStrategy : IMovementStrategy
         {
             isMoving = isMoving,
             direction = isoDirection,
-            distanceToTarget = cartesianDistanceToTarget
         };
     }
+
+
+
+    public bool IsAtDestination(Transform selfTransform, MovementData movementData, PathData pathTargetData)
+    {
+        var cartesianTargetPosition = pathTargetData.path[^1];
+        var isoSelfPosition = selfTransform.position;
+        var cartesianSelfPosition = ReverseIsoProject(isoSelfPosition);
+        var cartesianDistanceToTarget = 
+            Vector3.Distance(cartesianSelfPosition, cartesianTargetPosition);
+
+        return cartesianDistanceToTarget <= movementData.threshold;
+    }
+
+
 }
