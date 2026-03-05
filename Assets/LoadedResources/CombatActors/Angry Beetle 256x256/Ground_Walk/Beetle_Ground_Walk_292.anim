@@ -1,0 +1,94 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!74 &7400000
+AnimationClip:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Beetle_Ground_Walk_292
+  serializedVersion: 7
+  m_Legacy: 0
+  m_Compressed: 0
+  m_UseHighQualityCurve: 1
+  m_RotationCurves: []
+  m_CompressedRotationCurves: []
+  m_EulerCurves: []
+  m_PositionCurves: []
+  m_ScaleCurves: []
+  m_FloatCurves: []
+  m_PPtrCurves:
+  - serializedVersion: 2
+    curve:
+    - time: 0.0
+      value: {fileID: 21300000, guid: 08924fbf08bd4734aba96faf7ec2caf3, type: 3}
+    - time: 0.06666666666666667
+      value: {fileID: 21300000, guid: 0468833822dd13d459f606877246a644, type: 3}
+    - time: 0.13333333333333333
+      value: {fileID: 21300000, guid: 523311dd9409be44eb731f49624935d1, type: 3}
+    - time: 0.2
+      value: {fileID: 21300000, guid: 119e46d231444c54bbc500e208ba02bd, type: 3}
+    - time: 0.26666666666666666
+      value: {fileID: 21300000, guid: 62582fbac0d2a2245bda12bd9bf0f7a6, type: 3}
+    - time: 0.3333333333333333
+      value: {fileID: 21300000, guid: 48757871324c85449b2f43ca10fb7bb3, type: 3}
+    - time: 0.4
+      value: {fileID: 21300000, guid: 13ea4bd962837af41ad86b63a18cff94, type: 3}
+    - time: 0.4666666666666667
+      value: {fileID: 21300000, guid: 42199271c4fe0664fac32246cfc5ec77, type: 3}
+    - time: 0.5333333333333333
+      value: {fileID: 21300000, guid: 4628c5283939f32459e200e8b7b98ad8, type: 3}
+    - time: 0.6
+      value: {fileID: 21300000, guid: 79bb99b151a32574bbedc945e3560154, type: 3}
+    - time: 0.6666666666666666
+      value: {fileID: 21300000, guid: cc285fc9d172c174c99ff2e687ecd9a2, type: 3}
+    - time: 0.7333333333333333
+      value: {fileID: 21300000, guid: 1a2ba730f399b6041a09b74a1020e1a8, type: 3}
+    - time: 0.8
+      value: {fileID: 21300000, guid: dd7f9ea7527b4c546a6eff3d3351c739, type: 3}
+    - time: 0.8666666666666667
+      value: {fileID: 21300000, guid: 49c5e5a1edae6564292f98ae1764e724, type: 3}
+    - time: 0.9333333333333333
+      value: {fileID: 21300000, guid: 29d95bd424c0eca4394b5c1811c0c46a, type: 3}
+    - time: 1.0
+      value: {fileID: 21300000, guid: 3f17028d425c55748be99d9e375c90d8, type: 3}
+    attribute: m_Sprite
+    path: Square
+    classID: 212
+    script: {fileID: 0}
+    flags: 2
+  m_SampleRate: 60
+  m_WrapMode: 0
+  m_ClipBindingConstant:
+    genericBindings:
+    - serializedVersion: 2
+      path: 3394203039
+      attribute: 0
+      script: {fileID: 0}
+      typeID: 212
+      customType: 23
+      isPPtrCurve: 1
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
+    pptrCurveMapping:
+    - {fileID: 21300000, guid: 08924fbf08bd4734aba96faf7ec2caf3, type: 3}
+    - {fileID: 21300000, guid: 0468833822dd13d459f606877246a644, type: 3}
+    - {fileID: 21300000, guid: 523311dd9409be44eb731f49624935d1, type: 3}
+    - {fileID: 21300000, guid: 119e46d231444c54bbc500e208ba02bd, type: 3}
+    - {fileID: 21300000, guid: 62582fbac0d2a2245bda12bd9bf0f7a6, type: 3}
+    - {fileID: 21300000, guid: 48757871324c85449b2f43ca10fb7bb3, type: 3}
+    - {fileID: 21300000, guid: 13ea4bd962837af41ad86b63a18cff94, type: 3}
+    - {fileID: 21300000, guid: 42199271c4fe0664fac32246cfc5ec77, type: 3}
+    - {fileID: 21300000, guid: 4628c5283939f32459e200e8b7b98ad8, type: 3}
+    - {fileID: 21300000, guid: 79bb99b151a32574bbedc945e3560154, type: 3}
+    - {fileID: 21300000, guid: cc285fc9d172c174c99ff2e687ecd9a2, type: 3}
+    - {fileID: 21300000, guid: 1a2ba730f399b6041a09b74a1020e1a8, type: 3}
+    - {fileID: 21300000, guid: dd7f9ea7527b4c546a6eff3d3351c739, type: 3}
+    - {fileID: 21300000, guid: 49c5e5a1edae6564292f98ae1764e724, type: 3}
+    - {fileID: 21300000, guid: 29d95bd424c0eca4394b5c1811c0c46a, type: 3}
+    - {fileID: 21300000, guid: 3f17028d425c55748be99d9e375c90d8, type: 3}
+  m_AnimationClipSettings:
+    serializedVersion: 2
+    m_StartTime: 0
+    m_StopTime: 1.0666666666666667
+    m_LoopTime: 1

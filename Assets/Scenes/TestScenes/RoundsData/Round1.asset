@@ -15,6 +15,8 @@ MonoBehaviour:
   Waves:
   - Enemies:
     - EnemyDefinition: {fileID: 11400000, guid: 72d888f7eb27a2e43a5396365545d096, type: 2}
-      Count: 5
+      Count: 3
     - EnemyDefinition: {fileID: 11400000, guid: 1da81ced135ddae448221ffe2f752581, type: 2}
+      Count: 1
+    - EnemyDefinition: {fileID: 11400000, guid: 196b357317355ae4ba7538ad71e87a7d, type: 2}
       Count: 1

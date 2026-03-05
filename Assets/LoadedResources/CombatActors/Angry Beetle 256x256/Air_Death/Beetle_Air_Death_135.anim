@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!74 &7400000
+AnimationClip:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Beetle_Air_Death_135
+  serializedVersion: 7
+  m_Legacy: 0
+  m_Compressed: 0
+  m_UseHighQualityCurve: 1
+  m_RotationCurves: []
+  m_CompressedRotationCurves: []
+  m_EulerCurves: []
+  m_PositionCurves: []
+  m_ScaleCurves: []
+  m_FloatCurves: []
+  m_PPtrCurves:
+  - serializedVersion: 2
+    curve:
+    - time: 0.0
+      value: {fileID: 21300000, guid: 2d6fc6491a9ebff48a72d6dd79e54019, type: 3}
+    - time: 0.06666666666666667
+      value: {fileID: 21300000, guid: 70954d1a76c2a0744b8c42d078865db8, type: 3}
+    - time: 0.13333333333333333
+      value: {fileID: 21300000, guid: 1c1f7d496f8852a4f9950270d1b55faf, type: 3}
+    - time: 0.2
+      value: {fileID: 21300000, guid: ae31d76a1723bfd4c8fa99272214904b, type: 3}
+    - time: 0.26666666666666666
+      value: {fileID: 21300000, guid: c39a3b012bc4dd94f8cf265f5a9f46a1, type: 3}
+    - time: 0.3333333333333333
+      value: {fileID: 21300000, guid: 46672e9dc04e4d347af88a385e9d60b1, type: 3}
+    - time: 0.4
+      value: {fileID: 21300000, guid: 9846fd1cce6de5c46a631dc3687ae99a, type: 3}
+    - time: 0.4666666666666667
+      value: {fileID: 21300000, guid: 75fee92404bc6964d9a599e5967b291b, type: 3}
+    - time: 0.5333333333333333
+      value: {fileID: 21300000, guid: 50298437626511e40b207c9ab16595c5, type: 3}
+    - time: 0.6
+      value: {fileID: 21300000, guid: d9fb97a6c771b2d47adb941cc0167e00, type: 3}
+    - time: 0.6666666666666666
+      value: {fileID: 21300000, guid: 227b7cc7b3b8ff546b67a86f9c9bf577, type: 3}
+    - time: 0.7333333333333333
+      value: {fileID: 21300000, guid: 04f214b6aad7d0449bf3328c9e0d7349, type: 3}
+    attribute: m_Sprite
+    path: Square
+    classID: 212
+    script: {fileID: 0}
+    flags: 2
+  m_SampleRate: 60
+  m_WrapMode: 0
+  m_ClipBindingConstant:
+    genericBindings:
+    - serializedVersion: 2
+      path: 3394203039
+      attribute: 0
+      script: {fileID: 0}
+      typeID: 212
+      customType: 23
+      isPPtrCurve: 1
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
+    pptrCurveMapping:
+    - {fileID: 21300000, guid: 2d6fc6491a9ebff48a72d6dd79e54019, type: 3}
+    - {fileID: 21300000, guid: 70954d1a76c2a0744b8c42d078865db8, type: 3}
+    - {fileID: 21300000, guid: 1c1f7d496f8852a4f9950270d1b55faf, type: 3}
+    - {fileID: 21300000, guid: ae31d76a1723bfd4c8fa99272214904b, type: 3}
+    - {fileID: 21300000, guid: c39a3b012bc4dd94f8cf265f5a9f46a1, type: 3}
+    - {fileID: 21300000, guid: 46672e9dc04e4d347af88a385e9d60b1, type: 3}
+    - {fileID: 21300000, guid: 9846fd1cce6de5c46a631dc3687ae99a, type: 3}
+    - {fileID: 21300000, guid: 75fee92404bc6964d9a599e5967b291b, type: 3}
+    - {fileID: 21300000, guid: 50298437626511e40b207c9ab16595c5, type: 3}
+    - {fileID: 21300000, guid: d9fb97a6c771b2d47adb941cc0167e00, type: 3}
+    - {fileID: 21300000, guid: 227b7cc7b3b8ff546b67a86f9c9bf577, type: 3}
+    - {fileID: 21300000, guid: 04f214b6aad7d0449bf3328c9e0d7349, type: 3}
+  m_AnimationClipSettings:
+    serializedVersion: 2
+    m_StartTime: 0
+    m_StopTime: 0.8
+    m_LoopTime: 1
