@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2cafea134ddf12e4ba92605a44536919
+guid: c05a6305b15488b499c4d40949264fc7
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -121,34 +121,12 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: WavesLine_1_0
-      rect:
-        serializedVersion: 2
-        x: 9
-        y: 451
-        width: 4238
-        height: 306
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 193, y: 0, z: 307, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5d5a21af79669294c93290b4c6e08cf6
-      internalID: -1702880506
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: f647bd553ce58544b8b1f863e8369bca
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -157,8 +135,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      WavesLine_1_0: -1702880506
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

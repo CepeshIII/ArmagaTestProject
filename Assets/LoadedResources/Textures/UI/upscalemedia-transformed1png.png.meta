@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2cafea134ddf12e4ba92605a44536919
+guid: b0ef89da8426f2e448f13140eab460fe
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -123,23 +123,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: WavesLine_1_0
+      name: upscalemedia-transformed1png_0
       rect:
         serializedVersion: 2
-        x: 9
-        y: 451
-        width: 4238
-        height: 306
+        x: 231
+        y: 71
+        width: 533
+        height: 139
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 193, y: 0, z: 307, w: 0}
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5d5a21af79669294c93290b4c6e08cf6
-      internalID: -1702880506
+      spriteID: a6cdcdf8c6c6909409a2ae825911ffc1
+      internalID: -1522804613
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: f647bd553ce58544b8b1f863e8369bca
+    spriteID: 00e583771e9acc8478a2796ed41adb54
     internalID: 0
     vertices: []
     indices: 
@@ -158,7 +158,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      WavesLine_1_0: -1702880506
+      upscalemedia-transformed1png_0: -1522804613
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

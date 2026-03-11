@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour, IUIManager
     [SerializeField] GameObject cardInfoUI;
     [SerializeField] GameObject toBoardUI;
     [SerializeField] GameObject toAttackUI;
+    [SerializeField] RoundsBar roundsBar;
 
     [SerializeField] Button openMenuButton;
 
@@ -161,5 +162,11 @@ public class UIManager : MonoBehaviour, IUIManager
     {
         HideAll();
         gameOverMenuUI.Show();
+    }
+
+
+    public void UpdateRoundsLine(BattleSceneConfig battleSceneConfig)
+    {
+        roundsBar.UpdateRoundsBar(battleSceneConfig);
     }
 }

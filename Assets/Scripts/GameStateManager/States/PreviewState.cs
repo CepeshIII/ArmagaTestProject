@@ -63,27 +63,31 @@ public class RoundPassedState : IGameState
 
     private readonly SignalBus signalBus;
     private readonly GameStateContext context;
+    private readonly BattleSceneConfig battleSceneConfig;
 
 
-
-    public RoundPassedState(GameStateContext context, SignalBus signalBus)
+    public RoundPassedState(GameStateContext context, 
+        BattleSceneConfig battleSceneConfig, SignalBus signalBus)
     {
         this.context = context;
+        this.battleSceneConfig = battleSceneConfig;
         this.signalBus = signalBus;
     }
 
 
     public void Enter()
     {
-        signalBus.TryFire(new SwitchToNewState(GameState.CardPlacement));
 
         if (context.UIManager != null)
         {
+            context.UIManager.UpdateRoundsLine(battleSceneConfig);
         }
 
         if (context.InputManager != null)
         {
         }
+
+        signalBus.TryFire(new SwitchToNewState(GameState.CardPlacement));
     }
 
 

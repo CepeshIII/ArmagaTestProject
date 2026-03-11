@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using Zenject;
-using static UnityEditorInternal.ReorderableList;
 
 
 public sealed class BattleEntity : MonoBehaviour,

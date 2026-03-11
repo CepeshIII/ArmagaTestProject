@@ -88,7 +88,6 @@ public class BattlePhaseInstaller: Installer
         Container.Bind<BattleRoundController>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<BattleFlowController>().FromNew().AsSingle();
 
-        Container.Bind<BattleSceneConfig>().FromComponentInHierarchy().AsSingle();
         Container.Bind<EnemyRoundDefinition>().FromNew().AsSingle();
         Container.Bind<EnemySpawner>().FromNew().AsSingle();
         Container.Bind<BattleEntityArchetypeRegistry>().FromNew().AsSingle();

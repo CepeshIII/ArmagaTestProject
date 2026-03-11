@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2cafea134ddf12e4ba92605a44536919
+guid: 4d12d7bd4a1e6cb4f94d9590c5c04d9e
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -123,23 +123,67 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: WavesLine_1_0
+      name: NewWavesine_0
       rect:
         serializedVersion: 2
-        x: 9
-        y: 451
-        width: 4238
+        x: 653
+        y: 0
+        width: 497
         height: 306
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 193, y: 0, z: 307, w: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5d5a21af79669294c93290b4c6e08cf6
-      internalID: -1702880506
+      spriteID: 71c40ded527ece3489fb36a463aae5e2
+      internalID: 1025283808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewWavesine_1
+      rect:
+        serializedVersion: 2
+        x: 378
+        y: 18
+        width: 271
+        height: 271
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4b7a59845ebaf843b66415917d83635
+      internalID: -300803474
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewWavesine_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 305
+        height: 306
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0e4bbd2045b01ea4e9eb7a2bebd61db1
+      internalID: -95013300
       vertices: []
       indices: 
       edges: []
@@ -148,7 +192,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: f647bd553ce58544b8b1f863e8369bca
+    spriteID: a3013f425d433794a91fc6b5c5821cfe
     internalID: 0
     vertices: []
     indices: 
@@ -158,7 +202,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      WavesLine_1_0: -1702880506
+      NewWavesine_0: 1025283808
+      NewWavesine_1: -300803474
+      NewWavesine_2: -95013300
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

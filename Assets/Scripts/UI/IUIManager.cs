@@ -17,4 +17,6 @@ public interface IUIManager
     public void ShowGameOverMenu();
     public void HideMenu();
     public void HideAll();
+
+    public void UpdateRoundsLine(BattleSceneConfig battleSceneConfig);
 }

@@ -46,7 +46,8 @@ public class GameManager : IInitializable, IDisposable
 
     public void StartRound()
     {
-        signalBus.Fire(new SwitchToNewState(GameState.CardPlacement));
+        signalBus.TryFire(new SwitchToNewState(GameState.RoundPassed));
+        //signalBus.Fire(new SwitchToNewState(GameState.CardPlacement));
         //gameStateManager.SwitchState(GameState.CardPlacement);
         roundManager.InitRound();
     }

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2cafea134ddf12e4ba92605a44536919
+guid: 6efdf0cd0fbc944488db3b2eaa9a5569
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -123,23 +123,67 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: WavesLine_1_0
+      name: PixelBin-AI-Editor-1773159558522_0
       rect:
         serializedVersion: 2
-        x: 9
-        y: 451
-        width: 4238
-        height: 306
+        x: 154
+        y: 310
+        width: 1009
+        height: 139
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 193, y: 0, z: 307, w: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5d5a21af79669294c93290b4c6e08cf6
-      internalID: -1702880506
+      spriteID: dc96de94058733647b523efc1d278bb4
+      internalID: 395318011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EmprtyLineBar 1_0
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 310
+        width: 141
+        height: 139
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c1c0c3205bde99d44b9c0bad85d15260
+      internalID: 231626661
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EmprtyLineBar 1_1
+      rect:
+        serializedVersion: 2
+        x: 1168
+        y: 60
+        width: 181
+        height: 199
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f18a477bb1df628479dfe733f4ec62b6
+      internalID: -1238469316
       vertices: []
       indices: 
       edges: []
@@ -148,7 +192,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: f647bd553ce58544b8b1f863e8369bca
+    spriteID: 9034a1d69213c2e43bea6974dac89e1c
     internalID: 0
     vertices: []
     indices: 
@@ -158,7 +202,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      WavesLine_1_0: -1702880506
+      EmprtyLineBar 1_0: 231626661
+      EmprtyLineBar 1_1: -1238469316
+      PixelBin-AI-Editor-1773159558522_0: 395318011
+      PixelBin-AI-Editor-1773159558522_1: -2105724409
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

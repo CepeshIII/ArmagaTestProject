@@ -5,15 +5,13 @@ using Zenject;
 
 public class BattleRoundController
 {
-    private int currentWaveIndex;
-
     private readonly BattleSceneConfig config;
     private readonly EnemySpawner enemySpawner;
     private readonly UnitsManager unitsManager;
     private readonly BattlePhaseController phaseController;
     private readonly BattleLineupPreparer battleLineupPreparer;
 
-    public bool AllRoundsPassed => currentWaveIndex >= config.Rounds.Length;
+    public bool AllRoundsPassed => config.CurrentIndex >= config.Rounds.Length;
 
 
     [Inject]
@@ -35,10 +33,10 @@ public class BattleRoundController
 
     public void StartNextRound()
     {
-        if (!config.TryGetRoundDefinition(currentWaveIndex,
+        if (!config.TryGetRoundDefinition(config.CurrentIndex,
             out var roundDefinition))
         {
-            throw new System.Exception($"No round definition found for wave index {currentWaveIndex}");
+            throw new System.Exception($"No round definition found for wave index {config.CurrentIndex}");
         }
 
         foreach (var wave in roundDefinition.Waves)
@@ -50,7 +48,7 @@ public class BattleRoundController
         var enemies = unitsManager.GetUnitsByTeam(Team.Enemy).ToList();
         battleLineupPreparer.Prepare(players, enemies);
 
-        currentWaveIndex++;
+        config.NextRound();
     }
 
 }

@@ -24,6 +24,9 @@ public class SceneInstaller : MonoInstaller
         Container.Bind<CardViewHandlerFactory>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<CardPrefabFactory>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<CardPrefabController>().FromNew().AsSingle();
+
+        Container.Bind<BattleSceneConfig>().FromComponentInHierarchy().AsSingle();
+
     }
 }
 

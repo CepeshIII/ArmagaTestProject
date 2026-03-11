@@ -5,4 +5,5 @@ using UnityEngine;
 public class EnemyRoundDefinition : ScriptableObject
 {
     public List<EnemyWaveDefinition> Waves;
+    public Sprite waveIcon;
 }

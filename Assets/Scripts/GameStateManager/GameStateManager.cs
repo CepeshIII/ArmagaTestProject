@@ -73,13 +73,13 @@ public class GameStateManager: IInitializable, IDisposable, IGameStateManager
 
     public void Initialize()
     {
-        signalBus.Subscribe<SwitchToNewState>(x => SwitchState(x.NewState));
+        signalBus.Subscribe<SwitchToNewState>(SwitchState);
     }
 
 
     public void Dispose()
     {
-        signalBus.Unsubscribe<SwitchToNewState>(x => SwitchState(x.NewState));
+        signalBus.Unsubscribe<SwitchToNewState>(SwitchState);
     }
 
 
@@ -87,18 +87,23 @@ public class GameStateManager: IInitializable, IDisposable, IGameStateManager
     {
         var newState = container.ResolveId<IGameState>(state);
 
-        if (currentState != null)
-        {
-            currentState.Exit();
-        }
-
-        if (newState != null)
-        {
-            newState.Enter();
-        }
-
         previoslyState = currentState;
         currentState = newState;
+
+        if (previoslyState != null)
+        {
+            previoslyState.Exit();
+        }
+
+        if (currentState != null)
+        {
+            currentState.Enter();
+        }
     }
 
+
+    private void SwitchState(SwitchToNewState switchToNewState)
+    {
+        SwitchState(switchToNewState.NewState);
+    }
 }
