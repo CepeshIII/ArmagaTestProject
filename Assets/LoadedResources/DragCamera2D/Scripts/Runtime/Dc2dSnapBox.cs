@@ -7,8 +7,8 @@ public class Dc2dSnapBox : MonoBehaviour
 {
     /*
      * This is a snap box and is a target window for the 2d camera. 
-     * While the player/entity/camera is in this window the camera will try to stay in its bounds
-     * if the character exits then the camera returns to free follow mode and can be picked up by another snap box or bounds
+     * While the player/entity/camera is in this window the camera will try to stay in its worldBounds
+     * if the character exits then the camera returns to free follow mode and can be picked up by another snap box or worldBounds
      * can overlap with othe snap boxes and highest priority box will have control
      * 
      */

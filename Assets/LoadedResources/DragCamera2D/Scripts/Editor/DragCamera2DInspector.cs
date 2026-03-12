@@ -108,7 +108,7 @@ public class DragCamera2DInspector : Editor {
             EditorGUI.indentLevel++;
             dc2d.clampCamera = EditorGUILayout.Toggle(new GUIContent("Clamp Camera", "Limit camera motion to area defined in Camera Bounds"), dc2d.clampCamera);
             GUILayout.BeginHorizontal(); 
-                dc2d.bounds = (CameraBounds)EditorGUILayout.ObjectField(new GUIContent("Bounds", "Camera Bounds Object that defines viewable area"), dc2d.bounds, typeof(Object), true);
+                dc2d.worldBounds = (CameraBounds)EditorGUILayout.ObjectField(new GUIContent("Bounds", "Camera Bounds Object that defines viewable area"), dc2d.worldBounds, typeof(Object), true);
                 if (GUILayout.Button(dollyAddTex, GUILayout.Width(25))) {
                     dc2d.addCameraBounds();
                 }

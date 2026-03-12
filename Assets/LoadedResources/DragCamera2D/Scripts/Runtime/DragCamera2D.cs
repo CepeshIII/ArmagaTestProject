@@ -22,8 +22,8 @@ public class DragCamera2D : MonoBehaviour
      *  DONE: option to lock camera to track even if object escapes area
      *  add multiple dolly tracks to allow creating loops etc
      *  add track change triggers
-     *  add bounds ids for multiple bounds
-     *  add bounds triggers(e.g. small bounds until x event(obtain key etc) then larger bounds
+     *  add worldBounds ids for multiple worldBounds
+     *  add worldBounds triggers(e.g. small worldBounds until x event(obtain key etc) then larger worldBounds
      *  add configurable keymap to allow developers/usres to map keys to actions
      *  DONE: add in scene dolly track controls
      *  possibly add event system for lerping camera to position
@@ -121,8 +121,9 @@ public class DragCamera2D : MonoBehaviour
 
     [Header("Camera Bounds")]
     public bool clampCamera = true;
-    public CameraBounds bounds; 
+    public CameraBounds worldBounds; 
     public Dc2dDolly dollyRail;
+    public float boundsMargin = 0.1f;
 
     
     //hidden
@@ -134,8 +135,8 @@ public class DragCamera2D : MonoBehaviour
     }
 
     // private vars
-    Vector3 bl;
-    Vector3 tr;
+    Vector3 screenBottomLeft;
+    Vector3 screenTopRight;
     private Vector2 touchOrigin = -Vector2.one;
 
     public Dc2dSnapBox snapTarget;
@@ -150,6 +151,7 @@ public class DragCamera2D : MonoBehaviour
 
     void LateUpdate() {
         frameid++;
+        
         if (dragEnabled) {
             panControl();
         }
@@ -158,9 +160,9 @@ public class DragCamera2D : MonoBehaviour
             edgeScroll();
         }
 
-
+        ZoomDelta zoomDelta = default;
         if (zoomEnabled) {
-            zoomControl();
+            ZoomControl(out zoomDelta);
         }
 
         if (snapTarget != null) {
@@ -168,7 +170,12 @@ public class DragCamera2D : MonoBehaviour
             conformToSnapTarget();
         } else {
             if (followTarget != null) {
-                transform.position = Vector3.Lerp(transform.position, followTarget.transform.position + offset, lerpSpeed);
+                transform.position = 
+                    Vector3.Lerp(
+                        transform.position, 
+                        followTarget.transform.position + offset, 
+                        lerpSpeed
+                    );
             }
         }
 
@@ -177,7 +184,7 @@ public class DragCamera2D : MonoBehaviour
         }
 
         if (clampCamera) {
-            cameraClamp();
+            ClampCamera(zoomDelta);
         }
 
         if (touchEnabled) {
@@ -281,17 +288,17 @@ public class DragCamera2D : MonoBehaviour
     }
 
     public void addCameraBounds() {
-        if (bounds == null) {
+        if (worldBounds == null) {
 
-            bounds = GameObject.FindAnyObjectByType<CameraBounds>();
+            worldBounds = GameObject.FindAnyObjectByType<CameraBounds>();
 
-            if(bounds == null)
+            if(worldBounds == null)
             {
                 GameObject go = new GameObject("CameraBounds");
                 CameraBounds cb = go.AddComponent<CameraBounds>();
                 cb.guiColour = new Color(0,0,1f,0.1f);
                 cb.pointa = new Vector3(20,20,0);
-                this.bounds = cb;
+                this.worldBounds = cb;
             }
 
 #if UNITY_EDITOR
@@ -353,49 +360,77 @@ public class DragCamera2D : MonoBehaviour
         
     }
 
+
     private void clampZoom() {
         Camera.main.orthographicSize =  Mathf.Clamp(Camera.main.orthographicSize, minZoom, maxZoom);
-        Mathf.Max(cam.orthographicSize, 0.1f);
-
-
     }
 
-    void ZoomOrthoCamera(Vector3 zoomTowards, float amount) {
+
+    void ZoomOrthoCamera(Vector3 zoomTowards, float amount, out ZoomDelta zoomData) {
+
         // Calculate how much we will have to move towards the zoomTowards position
         float multiplier = (1.0f / Camera.main.orthographicSize * amount);
         // Move camera
-        transform.position += (zoomTowards - transform.position) * multiplier;
-        // Zoom camera
-        Camera.main.orthographicSize -= amount;
-        // Limit zoom
-        Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, minZoom, maxZoom);
+        //transform.position += (zoomTowards - transform.position) * multiplier;
+        //// Zoom camera
+        //Camera.main.orthographicSize -= amount;
+        //// Limit zoom
+        //Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, minZoom, maxZoom);
+
+        zoomData = new ZoomDelta()
+        {
+            cameraDelta = (zoomTowards - transform.position) * multiplier,
+            zoomDelta = -amount,
+        };
+    }
+
+    public struct ZoomDelta
+    {
+        public Vector3 cameraDelta;
+        public float zoomDelta;
     }
 
     // managae zooming
-    public void zoomControl() {
+    public void ZoomControl(out ZoomDelta zoomDelta) {
+        zoomDelta = new ZoomDelta()
+        {
+            cameraDelta = Vector3.zero,
+            zoomDelta = 0f
+        };
+
         if (zoomToMouse) {
             if (Input.GetAxis("Mouse ScrollWheel") > 0 && minZoom < Camera.main.orthographicSize) // forward
             {
-                ZoomOrthoCamera(Camera.main.ScreenToWorldPoint(Input.mousePosition), zoomStepSize);
+                ZoomOrthoCamera(Camera.main.ScreenToWorldPoint(Input.mousePosition), zoomStepSize, out zoomDelta);
             }
             if(Input.GetAxis("Mouse ScrollWheel") < 0 && maxZoom > Camera.main.orthographicSize) // back            
             {
-                ZoomOrthoCamera(Camera.main.ScreenToWorldPoint(Input.mousePosition), -zoomStepSize);
+                ZoomOrthoCamera(Camera.main.ScreenToWorldPoint(Input.mousePosition), -zoomStepSize, out zoomDelta);
             }
 
         } else {
-
             if (Input.GetAxis("Mouse ScrollWheel") > 0 && minZoom < Camera.main.orthographicSize) // forward
             {
-                Camera.main.orthographicSize = Camera.main.orthographicSize - zoomStepSize;
+                zoomDelta = new ZoomDelta()
+                {
+                    zoomDelta = -zoomStepSize,
+                    cameraDelta = Vector3.zero,
+                };
+                //Camera.main.orthographicSize = Camera.main.orthographicSize - zoomDelta;
             }
 
             if (Input.GetAxis("Mouse ScrollWheel") < 0 && maxZoom > Camera.main.orthographicSize) // back            
             {
-                Camera.main.orthographicSize = Camera.main.orthographicSize + zoomStepSize;
+                zoomDelta = new ZoomDelta()
+                {
+                    zoomDelta = zoomStepSize,
+                    cameraDelta = Vector3.zero,
+                };
+                //Camera.main.orthographicSize = Camera.main.orthographicSize + zoomDelta;
             }
         }
-        clampZoom();
+
+        //clampZoom();
     }
 
 
@@ -404,30 +439,69 @@ public class DragCamera2D : MonoBehaviour
     private bool lfymax = false;
     private bool lfymin = false;
 
-    // Clamp Camera to bounds
-    private void cameraClamp() {
-        tr = cam.ScreenToWorldPoint(new Vector3(cam.pixelWidth, cam.pixelHeight, -transform.position.z));
-        bl = cam.ScreenToWorldPoint(new Vector3(0, 0, -transform.position.z));
 
-        if(bounds == null) {
+    private bool CanContain(Bounds outer, Bounds inner)
+    {
+        var diff = outer.size - inner.size;
+        if (diff.x < 0 || diff.y < 0)
+        {
+            return false;
+        }
+        return true;
+    }
+
+
+    private Vector3 CalculateContainmentOffset(Bounds outer, Bounds inner)
+    {
+        var offsetX = (-Mathf.Min(inner.min.x - outer.min.x, 0f) + Mathf.Min(outer.max.x - inner.max.x, 0f));
+        var offsetY = (-Mathf.Min(inner.min.y - outer.min.y, 0f) + Mathf.Min(outer.max.y - inner.max.y, 0f));
+
+        return new Vector3(offsetX, offsetY);
+    }
+
+
+    // Clamp Camera to worldBounds
+    private void ClampCamera(ZoomDelta zoomDelta) 
+    {
+        screenTopRight = cam.ScreenToWorldPoint(new Vector3(cam.pixelWidth, cam.pixelHeight, -transform.position.z));
+        screenBottomLeft = cam.ScreenToWorldPoint(new Vector3(0, 0, -transform.position.z));
+
+        var screenCenter = (screenTopRight + screenBottomLeft) / 2;
+        var screenSize = (screenTopRight - screenBottomLeft);
+        
+        var newScreenBounds = new Bounds(
+            screenCenter + zoomDelta.cameraDelta, 
+            screenSize + Vector3.one * zoomDelta.zoomDelta
+            );
+
+        var bounds = worldBounds.GetBounds();
+        var safeBounds = new Bounds(bounds.center, bounds.size * (1f - boundsMargin));
+
+        if (CanContain(safeBounds, newScreenBounds))
+        {
+            Camera.main.orthographicSize += zoomDelta.zoomDelta;
+            transform.position += CalculateContainmentOffset(safeBounds, newScreenBounds);
+        }
+        
+        if (worldBounds == null) {
             Debug.Log("Clamp Camera Enabled but no Bounds has been set.");
             return;
         }
 
-        float boundsMaxX = bounds.pointa.x;
-        float boundsMinX = bounds.transform.position.x;
-        float boundsMaxY = bounds.pointa.y;
-        float boundsMinY = bounds.transform.position.y;
+        float boundsMaxX = worldBounds.pointa.x;
+        float boundsMinX = worldBounds.transform.position.x;
+        float boundsMaxY = worldBounds.pointa.y;
+        float boundsMinY = worldBounds.transform.position.y;
 
-        if (tr.x > boundsMaxX && bl.x < boundsMinX) {
-            Debug.Log("User tried to zoom out past x axis bounds - locked to bounds");
-            Camera.main.orthographicSize = Camera.main.orthographicSize - zoomStepSize; // zoomControl in to compensate
+        if (screenTopRight.x > boundsMaxX && screenBottomLeft.x < boundsMinX) {
+            Debug.Log("User tried to zoom out past x axis worldBounds - locked to worldBounds");
+            Camera.main.orthographicSize = Camera.main.orthographicSize - zoomStepSize; // ZoomControl in to compensate
             clampZoom();
         }
 
-        if (tr.y > boundsMaxY && bl.y < boundsMinY) {
-            Debug.Log("User tried to zoom out past y axis bounds - locked to bounds");
-            Camera.main.orthographicSize = Camera.main.orthographicSize - zoomStepSize; // zoomControl in to compensate
+        if (screenTopRight.y > boundsMaxY && screenBottomLeft.y < boundsMinY) {
+            Debug.Log("User tried to zoom out past y axis worldBounds - locked to worldBounds");
+            Camera.main.orthographicSize = Camera.main.orthographicSize - zoomStepSize; // ZoomControl in to compensate
             clampZoom();
         }
 
@@ -436,39 +510,39 @@ public class DragCamera2D : MonoBehaviour
         bool tfymax = false;
         bool tfymin = false;
 
-        if (tr.x > boundsMaxX) {
+        if (screenTopRight.x > boundsMaxX) {
             if (lfxmin) {
-                Camera.main.orthographicSize = Camera.main.orthographicSize - zoomStepSize; // zoomControl in to compensate
+                Camera.main.orthographicSize = Camera.main.orthographicSize - zoomStepSize; // ZoomControl in to compensate
                 clampZoom();
             } else {
-                transform.position = new Vector3(transform.position.x - (tr.x - boundsMaxX), transform.position.y, transform.position.z);
+                transform.position = new Vector3(transform.position.x - (screenTopRight.x - boundsMaxX), transform.position.y, transform.position.z);
                 tfxmax = true;
             }
         }
-        if (tr.y > boundsMaxY) {
+        if (screenTopRight.y > boundsMaxY) {
             if (lfymin) {
-                Camera.main.orthographicSize = Camera.main.orthographicSize - zoomStepSize; // zoomControl in to compensate
+                Camera.main.orthographicSize = Camera.main.orthographicSize - zoomStepSize; // ZoomControl in to compensate
                 clampZoom();
             } else {
-                transform.position = new Vector3(transform.position.x, transform.position.y - (tr.y - boundsMaxY), transform.position.z);
+                transform.position = new Vector3(transform.position.x, transform.position.y - (screenTopRight.y - boundsMaxY), transform.position.z);
                 tfymax = true;
             }
         } 
-        if (bl.x < boundsMinX) {
+        if (screenBottomLeft.x < boundsMinX) {
             if (lfxmax) {
-                Camera.main.orthographicSize = Camera.main.orthographicSize - zoomStepSize; // zoomControl in to compensate
+                Camera.main.orthographicSize = Camera.main.orthographicSize - zoomStepSize; // ZoomControl in to compensate
                 clampZoom();
             } else {
-                transform.position = new Vector3(transform.position.x + (boundsMinX - bl.x), transform.position.y, transform.position.z);
+                transform.position = new Vector3(transform.position.x + (boundsMinX - screenBottomLeft.x), transform.position.y, transform.position.z);
                 tfxmin = true;
             }
         }
-        if (bl.y < boundsMinY) {
+        if (screenBottomLeft.y < boundsMinY) {
             if (lfymax) {
-                Camera.main.orthographicSize = Camera.main.orthographicSize - zoomStepSize; // zoomControl in to compensate
+                Camera.main.orthographicSize = Camera.main.orthographicSize - zoomStepSize; // ZoomControl in to compensate
                 clampZoom();
             } else {
-                transform.position = new Vector3(transform.position.x, transform.position.y + (boundsMinY - bl.y), transform.position.z);
+                transform.position = new Vector3(transform.position.x, transform.position.y + (boundsMinY - screenBottomLeft.y), transform.position.z);
                 tfymin = true;
             }
         }
@@ -478,6 +552,7 @@ public class DragCamera2D : MonoBehaviour
         lfymax = tfymax;
         lfymin = tfymin;
     }
+
 
     public void stickToDollyRail() {
         if(dollyRail != null && followTarget != null) {
