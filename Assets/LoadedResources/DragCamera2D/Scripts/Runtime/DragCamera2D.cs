@@ -327,8 +327,8 @@ public class DragCamera2D : MonoBehaviour
     public void panControl() {
         // if keyboard input is allowed
         if (keyboardInput) {
-            float x = -Input.GetAxis("Horizontal") * dragSpeed;
-            float y = -Input.GetAxis("Vertical") * dragSpeed;
+            float x = -Input.GetAxis("Horizontal") * dragSpeed * Time.deltaTime ;
+            float y = -Input.GetAxis("Vertical") * dragSpeed * Time.deltaTime;
 
             if (linkedZoomDrag) {
                 x *= Camera.main.orthographicSize;
@@ -346,8 +346,8 @@ public class DragCamera2D : MonoBehaviour
 
        // if mouse is down
         if (Input.GetMouseButton((int)mouseButton)) {
-            float x = Input.GetAxis("Mouse X") * dragSpeed;
-            float y = Input.GetAxis("Mouse Y") * dragSpeed;
+            float x = Input.GetAxis("Mouse X") * dragSpeed * Time.deltaTime;
+            float y = Input.GetAxis("Mouse Y") * dragSpeed * Time.deltaTime;
 
             if (linkedZoomDrag) {
                 x *= Camera.main.orthographicSize;

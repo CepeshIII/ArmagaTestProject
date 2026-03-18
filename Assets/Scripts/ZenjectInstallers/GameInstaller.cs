@@ -64,6 +64,6 @@ public class GameStateManagerInstaller : Installer
         Container.DeclareSignal<MoveIsMadeSignal>();
         Container.DeclareSignal<PlacementCompletedSignal>();
 
-        Container.Bind<GameStateService>().FromNew().AsSingle();
+        Container.Bind<IGameStateService>().To<GameStateService>().FromNew().AsSingle();
     }
 }

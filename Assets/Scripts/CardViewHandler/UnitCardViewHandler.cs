@@ -59,7 +59,7 @@ public class UnitCardViewHandler : ICardViewHandler
 
 
     /// <summary>
-    /// Updates or creates GameObjects based on current card state.
+    /// Updates or creates GameObjects based on currentSettings card state.
     /// </summary>
     public void UpdateView()
     {

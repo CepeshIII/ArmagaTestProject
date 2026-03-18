@@ -4,11 +4,17 @@ using UnityEngine.UI;
 using Zenject;
 
 
+public struct OpenSettingsMenuSignal { }
+public struct CloseSettingsMenuSignal { }
+
+
 public class MainMenuUI : MonoBehaviour
 {
     [SerializeField] private Button newGameButton;
     [SerializeField] private Button continueButton;
     [SerializeField] private Button quitButton;
+    [SerializeField] private Button settingsButton;
+
 
     private SignalBus signalBus;
 
@@ -36,6 +42,9 @@ public class MainMenuUI : MonoBehaviour
         {
             quitButton.onClick.AddListener(QuitButtonPressed);
         }
+
+        if (settingsButton != null)
+            settingsButton.onClick.AddListener(SettingsButtonWasPressed);
     }
 
 
@@ -55,6 +64,9 @@ public class MainMenuUI : MonoBehaviour
         {
             quitButton.onClick.RemoveListener(QuitButtonPressed);
         }
+
+        if (settingsButton != null)
+            settingsButton.onClick.RemoveListener(SettingsButtonWasPressed);
     }
 
 
@@ -67,6 +79,18 @@ public class MainMenuUI : MonoBehaviour
     private void ContinueButtonPressed() 
     { 
         signalBus.TryFire<LoadSceneSignal>( new LoadSceneSignal(1));
+    }
+
+
+    private void ReturnButtonWasPressed()
+    {
+        signalBus.TryFire<CloseGamePlayMenu>();
+    }
+
+
+    private void SettingsButtonWasPressed()
+    {
+        signalBus.TryFire<OpenSettingsMenuSignal>();
     }
 
 

@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 694b96887ef366749ad29ec1cb21e9b4, type: 3}
+  m_Name: SupportScreenResolutions
+  m_EditorClassIdentifier: 
+  screenResolutions:
+  - aspectRatio: 0
+    Width: 1280
+  - aspectRatio: 0
+    Width: 1920
+  - aspectRatio: 0
+    Width: 2560
+  - aspectRatio: 1
+    Width: 1280
+  - aspectRatio: 1
+    Width: 1920
+  - aspectRatio: 1
+    Width: 2560
+  - aspectRatio: 3
+    Width: 1920
+  - aspectRatio: 3
+    Width: 2560
+  - aspectRatio: 4
+    Width: 1920
+  - aspectRatio: 4
+    Width: 2560
+  - aspectRatio: 5
+    Width: 1920
+  - aspectRatio: 5
+    Width: 2560

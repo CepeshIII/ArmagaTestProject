@@ -6,7 +6,7 @@ using Zenject;
 
 public struct CloseGamePlayMenu { }
 public struct OpenGamePlayMenu { }
-public struct OpenSettingsSignal { }
+
 
 
 public class MenuUI : MonoBehaviour, IInitializable, IDisposable
@@ -79,7 +79,7 @@ public class MenuUI : MonoBehaviour, IInitializable, IDisposable
 
     private void SettingsButtonWasPressed()
     {
-        signalBus.TryFire<OpenSettingsSignal>();
+        signalBus.TryFire<OpenSettingsMenuSignal>();
     }
 
 

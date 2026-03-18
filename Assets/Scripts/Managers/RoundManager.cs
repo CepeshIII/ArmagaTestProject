@@ -10,6 +10,7 @@ public class RoundManager: IInitializable, IDisposable
     private readonly IGridService gridService;
     private readonly IBoardService boardService;
     private readonly IDeckService deckService;
+    private readonly IGameStateService gameStateService;
     private readonly SignalBus signalBus;
 
     private RoundStats currentRoundStats;
@@ -24,11 +25,12 @@ public class RoundManager: IInitializable, IDisposable
 
 
     public RoundManager(IGridService gridService, IBoardService boardService, 
-        IDeckService deckService, SignalBus signalBus)
+        IDeckService deckService, IGameStateService gameStateService, SignalBus signalBus)
     {
         this.gridService = gridService;
         this.boardService = boardService;
         this.deckService = deckService;
+        this.gameStateService = gameStateService;
         this.signalBus = signalBus;
     }
 
@@ -55,6 +57,7 @@ public class RoundManager: IInitializable, IDisposable
 
     public void InitRound()
     {
+        gameStateService.SetupGameStateMachine();
         deckService.CreateAndAssignDeck();
         gridService.BuildGrid();
         boardService.SetupBoard();

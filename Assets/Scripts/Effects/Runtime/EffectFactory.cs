@@ -25,7 +25,7 @@ public class EffectFactory
     /// </summary>
     private void RegisterEffects()
     {
-        // Find all effect implementations in the current assembly
+        // Find all effect implementations in the currentSettings assembly
         var allTypes = Assembly.GetExecutingAssembly()
             .GetTypes()
             .Where(t => typeof(IEffect).IsAssignableFrom(t) && !t.IsInterface);

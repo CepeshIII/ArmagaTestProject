@@ -44,7 +44,7 @@ public class CardDeckDisplay : MonoBehaviour, ICardDeckDisplay
         }
 
 
-        // If the current deck is null create a new list
+        // If the currentSettings deck is null create a new list
         currentDeck ??= new List<CardDisplay>(cards.Count);
 
 
@@ -59,7 +59,7 @@ public class CardDeckDisplay : MonoBehaviour, ICardDeckDisplay
 
             CardDisplay cardDisplay;
             
-            // if there is already a cardDisplay in the current deck at this index, just get it
+            // if there is already a cardDisplay in the currentSettings deck at this index, just get it
             if ( index < currentDeck.Count)
             {
                 // If the cardDisplay at this index is null, instantiate a new one
@@ -86,7 +86,7 @@ public class CardDeckDisplay : MonoBehaviour, ICardDeckDisplay
             index++;
         }
 
-        // If there are more cardDisplays in the current deck than there are cards in the deck, destroy the extra cardDisplays
+        // If there are more cardDisplays in the currentSettings deck than there are cards in the deck, destroy the extra cardDisplays
         if(index < currentDeck.Count)
         {
             //before

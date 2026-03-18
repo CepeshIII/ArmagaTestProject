@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour, IUIManager
 
     private MenuUI menuUI;
     private GameOverMenuUI gameOverMenuUI;
+    private SettingsMenu settingsMenu;
 
     private ICardDeckDisplay deckDisplayer;
     private SignalBus signalBus;
@@ -26,11 +27,12 @@ public class UIManager : MonoBehaviour, IUIManager
 
     [Inject]
     public void Construct(ICardDeckDisplay deckDisplayer, 
-        MenuUI menuUI, GameOverMenuUI gameOverMenuUI, SignalBus signalBus)
+        MenuUI menuUI, GameOverMenuUI gameOverMenuUI, SettingsMenu settingsMenu, SignalBus signalBus)
     {
         this.deckDisplayer = deckDisplayer;
         this.menuUI = menuUI;
         this.gameOverMenuUI = gameOverMenuUI;
+        this.settingsMenu = settingsMenu;
         this.signalBus = signalBus;
     }
 
@@ -149,12 +151,20 @@ public class UIManager : MonoBehaviour, IUIManager
     }
 
 
+    public void HideSettingsMenu()
+    {
+        signalBus.TryFire<CloseSettingsMenuSignal>();
+    }
+
+
     public void HideAll()
     {
+        HideMenu();
         HideDeck();
         HideCardInfo();
         HideToBoardUI();
         HideToAttackUI();
+        HideSettingsMenu();
     }
 
 

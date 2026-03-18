@@ -21,6 +21,7 @@ public class CardPlacementState : IGameState
     {
         if (context.UIManager != null)
         {
+            context.UIManager.HideAll();
             context.UIManager.ShowDeck();
             context.UIManager.ShowCardInfo();
             context.UIManager.ShowToAttackUI();

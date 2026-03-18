@@ -51,6 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entityContext:
     attackData:
+      instantAttack: 0
       attackDistance: 0
       attackDamage: 0
       rechargeTime: 0
@@ -277,4 +278,4 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
