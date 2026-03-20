@@ -2,7 +2,7 @@ using Zenject;
 
 
 /// <summary>
-/// Installs a <see cref="BattleEntityStrategySet"/> into a Zenject container.
+/// Installs a <see cref="BattleEntityStrategySet"/> into a Zenject settingsContainer.
 /// 
 /// This class is responsible for binding all strategy interfaces
 /// to their concrete implementations for a single entity.

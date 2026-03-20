@@ -38,15 +38,15 @@ class BattleEntityComposer
     /// <summary>
     /// Constructor used by Zenject to inject all required strategies and dependencies.
     /// </summary>
-    /// <param name="battleEntity">The entity to apply strategies to.</param>
-    /// <param name="combatBehavior">The entity's combat behavior.</param>
-    /// <param name="targetFinder">The entity's target selection logic.</param>
-    /// <param name="pathFinder">The entity's pathfinding logic.</param>
-    /// <param name="attackStrategy">The entity's attack strategy.</param>
-    /// <param name="movementStrategy">The entity's movement strategy.</param>
-    /// <param name="facingStrategy">The entity's facing strategy.</param>
-    /// <param name="unitAnimator">Animator interface for playing animations (injected but unused here).</param>
-    /// <param name="animationResolver">Resolves which animations to play for actions.</param>
+    /// <param displayName="battleEntity">The entity to apply strategies to.</param>
+    /// <param displayName="combatBehavior">The entity's combat behavior.</param>
+    /// <param displayName="targetFinder">The entity's target selection logic.</param>
+    /// <param displayName="pathFinder">The entity's pathfinding logic.</param>
+    /// <param displayName="attackStrategy">The entity's attack strategy.</param>
+    /// <param displayName="movementStrategy">The entity's movement strategy.</param>
+    /// <param displayName="facingStrategy">The entity's facing strategy.</param>
+    /// <param displayName="unitAnimator">Animator interface for playing animations (injected but unused here).</param>
+    /// <param displayName="animationResolver">Resolves which animations to play for actions.</param>
     [Inject]
     public BattleEntityComposer(
         BattleEntity battleEntity,

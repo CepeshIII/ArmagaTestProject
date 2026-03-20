@@ -8,6 +8,12 @@ public class GraphicsInstaller : MonoInstaller
     private SupportScreenResolutions supportedResolutions;
 
     [SerializeField]
+    private UISettingsTemplate uiSettingsTemplate;
+
+    [SerializeField]
+    private SettingsMenuTemplate settingsMenuTemplate;
+
+    [SerializeField]
     private GraphicsSettingsDefaults graphicsSettingsDefaults;
 
     [SerializeField]
@@ -21,11 +27,15 @@ public class GraphicsInstaller : MonoInstaller
 
         Container.BindInstance(supportedResolutions);
         Container.BindInstance(graphicsSettingsDefaults);
+        Container.BindInstance(uiSettingsTemplate);
+        Container.BindInstance(settingsMenuTemplate);
 
         Container.BindInterfacesAndSelfTo<GraphicsSettingsBootstrap>()
             .AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<GraphicsSettingsManager>().AsSingle();
         Container.BindInterfacesAndSelfTo<SettingsMenu>().FromComponentInNewPrefab(settingsMenuPrefab).AsSingle();
-        
+        Container.BindInterfacesAndSelfTo<SettingsUIBuilder>().FromNew().AsSingle();
+        Container.BindInterfacesAndSelfTo<SettingBindingFactory>().FromNew().AsSingle();
+        Container.BindInterfacesAndSelfTo<SettingsContainer>().FromComponentInHierarchy().AsSingle();
     }
 }

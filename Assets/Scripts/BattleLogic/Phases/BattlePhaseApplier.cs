@@ -8,9 +8,9 @@ using Zenject;
 public sealed class BattlePhaseApplier : BasePhaseApplier
 {
     /// <summary>
-    /// Constructs the combat phase applier with the provided Zenject container.
+    /// Constructs the combat phase applier with the provided Zenject settingsContainer.
     /// </summary>
-    /// <param name="container">The DI container used to instantiate and inject strategies.</param>
+    /// <param displayName="settingsContainer">The DI settingsContainer used to instantiate and inject strategies.</param>
     [Inject]
     public BattlePhaseApplier(DiContainer container) : base(container) { }
 
@@ -19,11 +19,11 @@ public sealed class BattlePhaseApplier : BasePhaseApplier
     /// Returns the strategies to apply for the combat phase.
     /// In this case, the strategies are taken directly from the entity definition.
     /// </summary>
-    /// <param name="baseStrategies">The default EntityStrategySet from definition.</param>
+    /// <param displayName="baseStrategies">The default EntityStrategySet from definition.</param>
     /// <returns>A <see cref="BattleEntityStrategySet"/> containing the strategies for this phase.</returns>
     protected override BattleEntityStrategySet GetPhaseStrategies(BattleEntityStrategySet baseStrategies)
     {
-        // Create a container with all strategies from the entity definition
+        // Create a settingsContainer with all strategies from the entity definition
         var strategies = new BattleEntityStrategySet(baseStrategies);
         return strategies;
     }

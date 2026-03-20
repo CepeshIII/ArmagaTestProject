@@ -1,9 +1,11 @@
+using UnityEngine;
 using Zenject;
 
 
 public class GraphicsSettingsManager
 {
     private readonly IResolutionScaler resolutionScaler;
+    private readonly IFrameRateLimitSetter frameRateLimitSetter;
 
     private GraphicsSettingsData currentSettings;
     private GraphicsSettingsData pendingSettings;
@@ -17,6 +19,7 @@ public class GraphicsSettingsManager
     public GraphicsSettingsManager()
     {
         resolutionScaler = ResolutionScalerFactory.Create();
+        frameRateLimitSetter = new FrameRateLimitSetter();
     }
 
 
@@ -62,8 +65,11 @@ public class GraphicsSettingsManager
         Update();
     }
 
+
     private void Update() 
     { 
         resolutionScaler.SetResolution(pendingSettings.Resolution, pendingSettings.IsFullScreen);
+        QualitySettings.vSyncCount = pendingSettings.VSync;
+        frameRateLimitSetter.SetFrameRateLimit(pendingSettings.FrameRateLimit);
     }
 }

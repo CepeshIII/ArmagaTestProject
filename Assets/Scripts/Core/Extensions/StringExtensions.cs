@@ -37,7 +37,7 @@ public static class StringExtensions
     }
 
     /// <summary>
-    /// Wraps the string in a &lt;color&gt; tag with the given color name or hex code.
+    /// Wraps the string in a &lt;color&gt; tag with the given color displayName or hex code.
     /// Example: "text".Color("red"), "text".Color("#FF0000")
     /// </summary>
     public static string Color(this string str, string color)

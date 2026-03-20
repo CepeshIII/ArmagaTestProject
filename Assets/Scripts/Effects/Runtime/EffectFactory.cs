@@ -13,7 +13,7 @@ public class EffectFactory
 
     public EffectFactory()
     {
-        // Prepare maps for effect registration
+        // GetInitialData maps for effect registration
         unitEffectMap = new();
         buildingEffectMap = new();
         RegisterEffects();

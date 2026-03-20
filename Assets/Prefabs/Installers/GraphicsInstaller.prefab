@@ -45,5 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   supportedResolutions: {fileID: 11400000, guid: 735b549ac1f47c84f9b125548f89eccd, type: 2}
+  uiSettingsTemplate: {fileID: 11400000, guid: 2e116deb6dde9ca4388a9f9ee025f220, type: 2}
+  settingsMenuTemplate: {fileID: 11400000, guid: 2d6668db70503f24ea25387827f4f456, type: 2}
   graphicsSettingsDefaults: {fileID: 11400000, guid: ab80f1c04f84f0a408f02e08aaf639e0, type: 2}
   settingsMenuPrefab: {fileID: 732597213614845165, guid: 5d22946009fd8e049bd62f02301bb395, type: 3}

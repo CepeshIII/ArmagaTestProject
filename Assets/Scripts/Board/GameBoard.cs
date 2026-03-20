@@ -179,9 +179,9 @@ public class GameBoard
     /// Creates a CardInstance, assigns it to a cell on the board, 
     /// and registers any effects for later application.
     /// </summary>
-    /// <param name="cardData">The sourceCard data to instantiate.</param>
-    /// <param name="indexCoords">The coordinates of the target cell on the board.</param>
-    /// <param name="cell">The cell where the CardInstance will be placed.</param>
+    /// <param displayName="cardData">The sourceCard data to instantiate.</param>
+    /// <param displayName="indexCoords">The coordinates of the target cell on the board.</param>
+    /// <param displayName="cell">The cell where the CardInstance will be placed.</param>
     private CardInstance CreateCardInstance(CardData cardData, Vector2Int indexCoords, Cell cell)
     {
         // Create a new card instance from the factory
@@ -210,8 +210,8 @@ public class GameBoard
     /// Retrieves all effects from the given effect source sourceCard and registers them
     /// to the specified cell for later application by the board's effect system.
     /// </summary>
-    /// <param name="sourceCard">The sourceCard that provides effects.</param>
-    /// <param name="indexCoords">The coordinate of cell to which the effects will be added.</param>
+    /// <param displayName="sourceCard">The sourceCard that provides effects.</param>
+    /// <param displayName="indexCoords">The coordinate of cell to which the effects will be added.</param>
     private void RegisterEffectsFromCard(IEffectSourceCard sourceCard, Vector2Int indexCoords)
     {
         var effects = sourceCard.GetEffects();
@@ -231,8 +231,8 @@ public class GameBoard
     /// <summary>
     /// Adds the specified effect to all cells within its effect area relative to the given origin coordinates.
     /// </summary>
-    /// <param name="effect">The effect data to be applied.</param>
-    /// <param name="originCoords">The origin coordinates from which the effect area is calculated.</param>
+    /// <param displayName="effect">The effect data to be applied.</param>
+    /// <param displayName="originCoords">The origin coordinates from which the effect area is calculated.</param>
     private void SetEffectInstances(EffectInstance instance, Vector2Int originCoords)
     {
         // Get all cell coordinates affected by this effect, based on its effect area and board size

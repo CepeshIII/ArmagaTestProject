@@ -21,9 +21,9 @@ public class CardInstanceFactory
     }
 
     /// <summary>
-    /// Creates a card instance for the given <paramref name="cardData"/>.
+    /// Creates a card instance for the given <paramref displayName="cardData"/>.
     /// </summary>
-    /// <param name="cardData">The card data to create an instance from.</param>
+    /// <param displayName="cardData">The card data to create an instance from.</param>
     /// <returns>
     /// A new <see cref="CardInstance"/> corresponding to the card type, 
     /// or <c>null</c> if the card type is not registered or data is invalid.
@@ -41,10 +41,10 @@ public class CardInstanceFactory
     }
 
     /// <summary>
-    /// Attempts to create a card instance for the given <paramref name="cardData"/>.
+    /// Attempts to create a card instance for the given <paramref displayName="cardData"/>.
     /// </summary>
-    /// <param name="cardData">The card data to create an instance from.</param>
-    /// <param name="cardInstance">When this method returns, contains the created card instance if successful, otherwise <c>null</c>.</param>
+    /// <param displayName="cardData">The card data to create an instance from.</param>
+    /// <param displayName="cardInstance">When this method returns, contains the created card instance if successful, otherwise <c>null</c>.</param>
     /// <returns><c>true</c> if a card instance was created successfully; otherwise, <c>false</c>.</returns>
     public bool TryGetInstance(CardData cardData, out CardInstance cardInstance)
     {

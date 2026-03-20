@@ -5,7 +5,7 @@ using System;
 /// used by a <see cref="BattleEntity"/> at runtime.
 /// 
 /// This object is phase-aware and can be modified before being
-/// installed into a DI container.
+/// installed into a DI settingsContainer.
 /// </summary>
 public sealed class BattleEntityStrategySet
 {

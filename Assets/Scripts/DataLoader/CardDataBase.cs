@@ -87,7 +87,7 @@ public class CardDataBase
             // Handle Name Duplicates
             if (nameToCard.ContainsKey(cardData.name))
             {
-                Debug.LogError($"[CardDataBase] Duplicate card name: {cardData.name}");
+                Debug.LogError($"[CardDataBase] Duplicate card displayName: {cardData.name}");
                 continue;
             }
             nameToCard.Add(cardData.name, cardData);

@@ -55,7 +55,7 @@ public class BoardService : IBoardService, IInitializable, IDisposable
         // Placement rules
         var placementValidator = PlacementRulesBuilder.CreateDefault();
 
-        // Build board cells
+        // GetInitialData board cells
         boardCells = cellsBuilder.CreateCells();
         cellsBuilder.SetAvailableCells(boardCells, new Vector2Int[]
         {

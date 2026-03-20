@@ -20,11 +20,11 @@ public class RowsPlacementStrategy : ICellPlacementStrategy
     /// <summary>
     /// Initializes a new instance of the <see cref="RowsPlacementStrategy"/> class.
     /// </summary>
-    /// <param name="grid">The grid used for coordinate conversions.</param>
-    /// <param name="maxPerRow">Maximum number of objects per row.</param>
-    /// <param name="maxPerColumn">Maximum number of rows (columns visually).</param>
-    /// <param name="xOffset">Horizontal spacing between objects.</param>
-    /// <param name="yOffset">Vertical spacing between rows.</param>
+    /// <param displayName="grid">The grid used for coordinate conversions.</param>
+    /// <param displayName="maxPerRow">Maximum number of objects per row.</param>
+    /// <param displayName="maxPerColumn">Maximum number of rows (columns visually).</param>
+    /// <param displayName="xOffset">Horizontal spacing between objects.</param>
+    /// <param displayName="yOffset">Vertical spacing between rows.</param>
     public RowsPlacementStrategy(ILinearGrid grid, 
         int maxPerRow = 5, int maxPerColumn = 5, 
         float xOffset = 0.2f, float yOffset = 0.2f)
@@ -41,8 +41,8 @@ public class RowsPlacementStrategy : ICellPlacementStrategy
     /// <summary>
     /// Calculates the world rowPositions for objects placed in a cell according to this strategy.
     /// </summary>
-    /// <param name="cellCoords">The grid cell coordinates.</param>
-    /// <param name="objectCount">The total number of objects to place.</param>
+    /// <param displayName="cellCoords">The grid cell coordinates.</param>
+    /// <param displayName="objectCount">The total number of objects to place.</param>
     /// <returns>An array of world rowPositions for object placement.</returns>
     public Vector3[] GetPositions(Vector2Int cellCoords, int objectCount)
     {

@@ -44,8 +44,8 @@ public sealed class BattlePhaseController: IInitializable, IDisposable
     /// <summary>
     /// Creates a new instance of <see cref="BattlePhaseController"/> and injects the necessary phase appliers.
     /// </summary>
-    /// <param name="lineUpApplier">Applier for the LiningUp phase.</param>
-    /// <param name="combatApplier">Applier for the Combat phase.</param>
+    /// <param displayName="lineUpApplier">Applier for the LiningUp phase.</param>
+    /// <param displayName="combatApplier">Applier for the Combat phase.</param>
     [Inject]
     public BattlePhaseController(
         BattleEntityArchetypeRegistry archetypeRegistry,
@@ -77,11 +77,11 @@ public sealed class BattlePhaseController: IInitializable, IDisposable
 
 
     /// <summary>
-    /// Applies the specified <paramref name="phase"/> to all <paramref name="entities"/>.
+    /// Applies the specified <paramref displayName="phase"/> to all <paramref displayName="entities"/>.
     /// Each entity's strategies are updated according to the phase.
     /// </summary>
-    /// <param name="phase">The battle phase to apply (e.g., LiningUp, Combat).</param>
-    /// <param name="entities">The list of entities to update.</param>
+    /// <param displayName="phase">The battle phase to apply (e.g., LiningUp, Combat).</param>
+    /// <param displayName="entities">The list of entities to update.</param>
     public void ApplyPhase(
         BattlePhase phase,
         IEnumerable<BattleEntity> entities)

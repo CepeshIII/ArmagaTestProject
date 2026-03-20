@@ -17,8 +17,8 @@ public class EffectInstance
     /// <summary>
     /// Creates a new effect instance.
     /// </summary>
-    /// <param name="data">The effect data.</param>
-    /// <param name="source">The source card that generated the effect.</param>
+    /// <param displayName="data">The effect data.</param>
+    /// <param displayName="source">The source card that generated the effect.</param>
     public EffectInstance(EffectData data, IEffectSourceCard source)
     {
         Data = data;

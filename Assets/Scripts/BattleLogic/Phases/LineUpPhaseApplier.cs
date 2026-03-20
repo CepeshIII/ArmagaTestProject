@@ -8,9 +8,9 @@ using Zenject;
 public sealed class LineUpPhaseApplier : BasePhaseApplier
 {
     /// <summary>
-    /// Constructs the lineup phase applier with the provided Zenject container.
+    /// Constructs the lineup phase applier with the provided Zenject settingsContainer.
     /// </summary>
-    /// <param name="container">The DI container used to instantiate and inject strategies.</param>
+    /// <param displayName="settingsContainer">The DI settingsContainer used to instantiate and inject strategies.</param>
     [Inject]
     public LineUpPhaseApplier(DiContainer container) : base(container) { }
 
@@ -25,7 +25,7 @@ public sealed class LineUpPhaseApplier : BasePhaseApplier
     /// Returns the strategies to apply for the "LiningUp" phase.
     /// Overrides combat and targeting strategies to prevent attacks while lining up.
     /// </summary>
-    /// <param name="baseStrategies">The default EntityStrategySet from definition.</param>
+    /// <param displayName="baseStrategies">The default EntityStrategySet from definition.</param>
     /// <returns>A <see cref="BattleEntityStrategySet"/> containing the modified strategies for lining up.</returns>
     protected override BattleEntityStrategySet GetPhaseStrategies(BattleEntityStrategySet baseStrategies)
     {

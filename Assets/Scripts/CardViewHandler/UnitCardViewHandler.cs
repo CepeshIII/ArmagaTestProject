@@ -78,7 +78,7 @@ public class UnitCardViewHandler : ICardViewHandler
     {
         int existingCount = viewObjects.Count;
 
-        // Update existing objects
+        // Initialize existing objects
         for (int i = 0; i < Mathf.Min(existingCount, positions.Length); i++)
         {
             var obj = viewObjects[i];

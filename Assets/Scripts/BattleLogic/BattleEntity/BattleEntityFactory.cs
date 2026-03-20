@@ -4,7 +4,7 @@ using Zenject;
 /// <summary>
 /// Factory responsible for creating <see cref="BattleEntity"/> instances.
 /// 
-/// It creates a dedicated sub-container per entity, binds all runtime strategies
+/// It creates a dedicated sub-settingsContainer per entity, binds all runtime strategies
 /// based on the entity definition, and instantiates the entity prefab with
 /// those dependencies injected.
 /// </summary>
@@ -42,7 +42,7 @@ public class BattleEntityFactory
     /// <summary>
     /// Creates a battle entity at the given position using the provided definition.
     /// 
-    /// A sub-container is created per entity so that strategies are isolated
+    /// A sub-settingsContainer is created per entity so that strategies are isolated
     /// and can be swapped per phase without affecting other entities.
     /// </summary>
     public BattleEntity Create(
@@ -52,7 +52,7 @@ public class BattleEntityFactory
     {
         var subContainer = container.CreateSubContainer();
 
-        // Build strategy set from definition and bind it to the sub-container
+        // GetInitialData strategy set from definition and bind it to the sub-settingsContainer
         var strategies = definition.GetStrategySet();
         var defaultStrategies = new BattleEntityStrategySet(strategies);
         BattleEntityStrategyInstaller.Bind(subContainer, defaultStrategies);

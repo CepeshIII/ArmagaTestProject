@@ -15,8 +15,8 @@ public class GraphicSettings : MonoBehaviour
 
     void OnEnable()
     {
-        QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = frameRate;
+       // QualitySettings.vSyncCount = 0;
+       // Application.targetFrameRate = frameRate;
 
     }
 }

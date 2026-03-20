@@ -59,7 +59,7 @@ public class UnitTestFactory: MonoBehaviour
     {
         if (spawnUnit)
         {
-            //var subContainer = container.CreateSubContainer();
+            //var subContainer = settingsContainer.CreateSubContainer();
             //subContainer.Bind<BattleEntityData>().FromMethod(x => unitData).AsTransient(); 
             //var unit = subContainer.InstantiatePrefab(prefab, transform);
 
