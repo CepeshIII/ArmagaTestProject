@@ -4,7 +4,9 @@ using UnityEngine;
 public class SpellCardInstance : CardInstance
 {
 
-    public SpellCardInstance(SpellCard data, Vector2Int indexCoords = default) : base(data, indexCoords)
+    public SpellCardInstance(SpellCard data, 
+        Vector2Int indexCoords = default, 
+        Team team = Team.Player) : base(data, indexCoords, team)
     {
 
     }

@@ -189,6 +189,7 @@ public class GameBoard
         {
             // Assign the board position to the instance
             cardInstance.Move(indexCoords);
+            cardInstance.SetTeam(Team.Player);
 
             // Add the instance to the target cell
             cell.cards.Add(cardInstance);
@@ -317,13 +318,19 @@ public class GameBoard
             {
                 // Get the concrete effect implementation from the factory
                 var effect = effectFactory.GetEffect(effectInstance.Data);
+
+
                 if (effect == null)
                     continue;
 
                 // Apply the effect to each card present in the cell
                 foreach (var card in cell.cards)
                 {
-                    effect.Apply(card, effectInstance.Data.effectValue);
+                    if(EffectFilterEvaluator.CanApply(effectInstance, card))
+                    {
+                        effect.Apply(card, effectInstance.Data.effectValue);
+                        Debug.Log($"Effect: {effect.GetDescription()} has been applied to {card.GetType()}");
+                    }
                 }
             }
         }

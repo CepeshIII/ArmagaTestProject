@@ -5,6 +5,7 @@ public class PathFinderFactory : IFactory<PathFinderDefinition, IPathFinder>
     private readonly DiContainer _container;
 
 
+    [Inject]
     public PathFinderFactory(DiContainer container)
     {
         _container = container;

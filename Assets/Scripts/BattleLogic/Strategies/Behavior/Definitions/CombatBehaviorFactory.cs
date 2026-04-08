@@ -5,6 +5,7 @@ public class CombatBehaviorFactory : IFactory<CombatBehaviorDefinition, ICombatB
     private readonly DiContainer _container;
 
 
+    [Inject]
     public CombatBehaviorFactory(DiContainer container)
     {
         _container = container;

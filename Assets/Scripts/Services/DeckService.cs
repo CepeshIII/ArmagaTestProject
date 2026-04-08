@@ -9,6 +9,7 @@ public class DeckService : IDeckService
 
 
 
+    [Inject]
     public DeckService(CardDeckBuilder deckBuilder, CardDeckController deckController, DiContainer container) 
     { 
         this.deckBuilder = deckBuilder;

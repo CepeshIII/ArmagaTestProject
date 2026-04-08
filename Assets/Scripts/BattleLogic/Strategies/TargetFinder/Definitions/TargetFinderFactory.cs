@@ -5,6 +5,7 @@ public class TargetFinderFactory : IFactory<TargetFinderDefinition, ITargetFinde
     private readonly DiContainer _container;
 
 
+    [Inject]
     public TargetFinderFactory(DiContainer container)
     {
         _container = container;

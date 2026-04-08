@@ -5,6 +5,7 @@ public class AttackStrategyFactory : IFactory<AttackDefinition, IAttackStrategy>
     private readonly DiContainer _container;
 
 
+    [Inject]
     public AttackStrategyFactory(DiContainer container)
     {
         _container = container;

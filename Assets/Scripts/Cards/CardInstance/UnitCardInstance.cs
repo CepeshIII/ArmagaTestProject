@@ -8,8 +8,8 @@ public class UnitCardInstance : CardInstance
     public float CurrentStrength { get; set; }
 
 
-    public UnitCardInstance(UnitCard data, Vector2Int indexCoords = default)
-        : base(data, indexCoords)
+    public UnitCardInstance(UnitCard data, Vector2Int indexCoords = default, Team team = Team.Player)
+        : base(data, indexCoords, team)
     {
         CurrentUnitCount = data.baseCount;
         CurrentStrength = data.baseStrength;

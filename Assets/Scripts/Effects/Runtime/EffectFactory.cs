@@ -65,7 +65,7 @@ public class EffectFactory
     /// </summary>
     public IEffect GetEffect(EffectData effectData)
     {
-        switch (effectData.effectTarget)
+        switch (effectData.filter.targetType)
         {
             default:
                 return GetEffect(effectData.unitEffectType);

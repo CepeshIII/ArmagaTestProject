@@ -7,6 +7,7 @@ public class SettingBindingFactory
 
 
 
+    [Inject]
     public SettingBindingFactory(DiContainer container)
     {
         this.container = container;

@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e8be5dedbb6fd74f94852ba51f60e23, type: 3}
+  m_Name: DevilTower
+  m_EditorClassIdentifier: 
+  cardId: 8
+  cardName: DevilTower
+  description: 
+  sprite: {fileID: -383706766, guid: 3c0b3ccedc5b813439e04420ad365850, type: 3}
+  tile: {fileID: 11400000, guid: 78e21985c7391e04bbaa10820f5373a0, type: 2}
+  battleEntityDefinition: {fileID: 11400000, guid: 3ff12dabcc247ae469a38ef546bdab99, type: 2}
+  buildingPrefab: {fileID: 6523121067464140007, guid: a588088919f25ae478edc5fda4b29ac0, type: 3}
+  effects:
+  - effectsId: 0
+    effectsName: 
+    effectArea:
+      areaType: 3
+      range: 1
+    effectTarget: 1
+    unitEffectType: 0
+    buildingEffectType: 0
+    effectValue: 2
+    filter:
+      targetType: 1
+      teamFilter: 3

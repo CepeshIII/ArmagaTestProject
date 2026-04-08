@@ -1,10 +1,12 @@
 using UnityEngine;
+using Zenject;
 
 public class SimpleMeleeBehavior : ICombatBehavior
 {
     private readonly ITargetFinder targetFinder;
 
-    
+
+    [Inject]
     public SimpleMeleeBehavior(ITargetFinder targetFinder)
     {
         this.targetFinder = targetFinder;

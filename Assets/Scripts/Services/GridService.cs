@@ -1,4 +1,5 @@
 using UnityEngine;
+using Zenject;
 
 public class GridService : IGridService
 {
@@ -6,6 +7,7 @@ public class GridService : IGridService
     private readonly ILinearGrid grid;
 
 
+    [Inject]
     public GridService(IGridBoundsBehaviour gridBounds, ILinearGrid grid)
     {
         this.gridBounds = gridBounds;

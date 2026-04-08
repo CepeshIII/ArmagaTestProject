@@ -54,7 +54,7 @@ public class BattleEntityHolder
         }
 
         //return battleEntities
-        //    .Where(entity => entity.Value.Context.BattleEntityData.team == team)
+        //    .Where(entity => entity.Value.Context.BattleEntityData.Team == Team)
         //    .Select(x => x.Value);
     }
 

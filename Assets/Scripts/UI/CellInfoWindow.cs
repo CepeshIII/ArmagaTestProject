@@ -133,7 +133,7 @@ public class CellInfoWindow : MonoBehaviour, ICellInfoWindow
             var effect = effectFactory.GetEffect(effectInstance.Data);
             var description = effect.GetDescription();
             var value = effectInstance.Data.effectValue.ToString();
-            var target = effectInstance.Data.effectTarget.ToString();
+            var target = effectInstance.Data.filter.targetType.ToString();
 
             sb.AppendLine($"-({(effectInstance.Source as CardData).name.ToString().Green()}){description.Blue()}: {value.Yellow()}");
             sb.AppendLine($"\t+Target: {target.Green()}");

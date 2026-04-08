@@ -6,8 +6,8 @@ public class BuildingCardInstance : CardInstance
     public BattleEntityDefinition entityDefinition { get; set; }
 
 
-    public BuildingCardInstance(BuildingCard data, Vector2Int indexCoords = default)
-        : base(data, indexCoords)
+    public BuildingCardInstance(BuildingCard data, Vector2Int indexCoords = default, Team team = Team.Player)
+        : base(data, indexCoords, team)
     {
         entityDefinition = data.battleEntityDefinition;
     }

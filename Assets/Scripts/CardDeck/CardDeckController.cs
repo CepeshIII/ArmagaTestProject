@@ -96,7 +96,7 @@ public class CardDeckController : IInitializable, IDisposable
             cardDeck.RemoveCard(cardData);
 
             // In future, should be building a more complex system of control how many card can be placed, for now just fire after each placement
-            signalBus.Fire<PlacementCompletedSignal>();
+            //signalBus.Fire<PlacementCompletedSignal>();
         }
 
     }

@@ -68,7 +68,7 @@ public class CardInstanceFactory
     {
         cardInstances = new()
         {
-            { CardType.Unit,     (data) => new UnitCardInstance((UnitCard)data) },
+            { CardType.Unit,     (data) => new UnitCardInstance((UnitCard)data)},
             { CardType.Building, (data) => new BuildingCardInstance((BuildingCard)data) },
             { CardType.Spell,    (data) => new SpellCardInstance((SpellCard)data) }
         };

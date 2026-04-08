@@ -5,6 +5,7 @@ public class FacingFactory : IFactory<FacingDefinition, IFacingStrategy>
     private readonly DiContainer _container;
 
 
+    [Inject]
     public FacingFactory(DiContainer container)
     {
         _container = container;

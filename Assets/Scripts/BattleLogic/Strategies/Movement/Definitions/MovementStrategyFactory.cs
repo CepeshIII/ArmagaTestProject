@@ -5,6 +5,7 @@ public class MovementStrategyFactory : IFactory<MovementDefinition, IMovementStr
     private readonly DiContainer _container;
 
 
+    [Inject]
     public MovementStrategyFactory(DiContainer container)
     {
         _container = container;

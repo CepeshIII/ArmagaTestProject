@@ -1,9 +1,12 @@
-public class CardViewHandlerFactory 
-{ 
+using Zenject;
+
+public class CardViewHandlerFactory
+{
     private UnitsManager unitsManager;
     private BoardEntityRegistry boardEntityRegistry;
 
 
+    [Inject]
     public CardViewHandlerFactory(UnitsManager unitsManager, BoardEntityRegistry boardEntityRegistry)
     {
         this.unitsManager = unitsManager;

@@ -1,5 +1,6 @@
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 
 [CustomPropertyDrawer(typeof(EffectData), true)]
@@ -24,6 +25,13 @@ public class EffectDataPropertyDrawer : PropertyDrawer
         // Unit/Building Effect
         height += 2 * line;
 
+        // Filter Mode
+        var filterValueProp = property.FindPropertyRelative("filter");
+        height += EditorGUI.GetPropertyHeight(filterValueProp, label, true);
+
+        // Stack Type
+        height += line;
+
         return height;
     }
 
@@ -42,14 +50,32 @@ public class EffectDataPropertyDrawer : PropertyDrawer
         y += line * 2;
 
 
-        // Draw effectTarget information
-        var effectTargetProp = property.FindPropertyRelative("effectTarget");
-        var effectTargetRect = new Rect(position.x, y, position.width, line);
-        EditorGUI.PropertyField(effectTargetRect, effectTargetProp);
+        //// Draw effectTarget information
+        //var effectTargetProp = property.FindPropertyRelative("effectTarget");
+        //var effectTargetRect = new Rect(position.x, y, position.width, line);
+        //EditorGUI.PropertyField(effectTargetRect, effectTargetProp);
+        //y += line;
+
+
+        // Draw Effect Value Property
+        var effectValueProp = property.FindPropertyRelative("effectValue");
+        var effectValueRect = new Rect(position.x, y, position.width, line);
+        EditorGUI.PropertyField(effectValueRect, effectValueProp, new GUIContent("Effect Type"), true);
         y += line;
 
+        // Draw Effect Value Property
+        var filterValueProp = property.FindPropertyRelative("filter");
+        var height = EditorGUI.GetPropertyHeight(filterValueProp, label, true);
         
+        height += line;
+        var filterValueRect = new Rect(position.x, y, position.width, height);
+        
+        EditorGUI.PropertyField(filterValueRect, filterValueProp, new GUIContent("Filter Mode"), true);
+        y += height;
+
+
         //Draw unitEffectType or buildingEffectType
+        var effectTargetProp = filterValueProp.FindPropertyRelative("targetType");
         var effectTypeRect = new Rect(position.x, y, position.width, line);
         if ((EffectTarget)effectTargetProp.enumValueIndex == EffectTarget.Unit)
         {
@@ -64,10 +90,11 @@ public class EffectDataPropertyDrawer : PropertyDrawer
         y += line;
 
         // Draw Effect Value Property
-        var effectValueProp = property.FindPropertyRelative("effectValue");
-        var effectValueRect = new Rect(position.x, y, position.width, line);
-        EditorGUI.PropertyField(effectValueRect, effectValueProp, new GUIContent("Effect Type"), true);
+        var stackTypeValueProp = property.FindPropertyRelative("stackType");
+        var stackTypeValueRect = new Rect(position.x, y, position.width, line);
+        EditorGUI.PropertyField(stackTypeValueRect, stackTypeValueProp, new GUIContent("Stack Type"), true);
         y += line;
+
     }
 
 

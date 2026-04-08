@@ -1,4 +1,5 @@
 using UnityEngine;
+using Zenject;
 
 
 public class NearestTargetFinder : ITargetFinder
@@ -6,6 +7,7 @@ public class NearestTargetFinder : ITargetFinder
     private readonly UnitsManager unitsManager;
 
 
+    [Inject]
     public NearestTargetFinder(UnitsManager unitsManager)
     {
         this.unitsManager = unitsManager;

@@ -1,4 +1,5 @@
 using UnityEngine;
+using Zenject;
 
 public class CenterPlacementStrategy : ICellPlacementStrategy
 {
@@ -6,6 +7,7 @@ public class CenterPlacementStrategy : ICellPlacementStrategy
 
 
 
+    [Inject]
     public CenterPlacementStrategy(ILinearGrid grid)
     {
         this.grid = grid;

@@ -1,4 +1,5 @@
 using UnityEngine;
+using Zenject;
 
 
 
@@ -8,6 +9,7 @@ public class DistributedPlacementStrategy : ICellPlacementStrategy
 
 
 
+    [Inject]
     public DistributedPlacementStrategy(ILinearGrid grid)
     {
         this.grid = grid;

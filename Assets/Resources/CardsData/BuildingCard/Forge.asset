@@ -25,16 +25,22 @@ MonoBehaviour:
     effectArea:
       areaType: 1
       range: 1
-    effectTarget: 1
     unitEffectType: 2
     buildingEffectType: 0
     effectValue: 1.5
+    filter:
+      targetType: 1
+      teamFilter: 0
+    stackType: 0
   - effectsId: 0
     effectsName: 
     effectArea:
       areaType: 1
       range: 1
-    effectTarget: 1
     unitEffectType: 2
     buildingEffectType: 0
     effectValue: 1.5
+    filter:
+      targetType: 1
+      teamFilter: 0
+    stackType: 0
