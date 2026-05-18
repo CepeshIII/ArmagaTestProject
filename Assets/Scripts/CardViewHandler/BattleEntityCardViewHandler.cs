@@ -39,6 +39,14 @@ public class BattleEntityCardViewHandler : ICardViewHandler
 
     public void RemoveView()
     {
+        if (Instance is UnitCardInstance unitInstance)
+        {
+            foreach (var viewObject in viewObjects)
+            {
+                unitInstance.RemoveLinkedEntity(viewObject);
+            }
+        }
+
         battleEntityManager.DeactivateEntities(viewObjects);
 
         foreach (var viewObject in viewObjects)
@@ -58,25 +66,34 @@ public class BattleEntityCardViewHandler : ICardViewHandler
         RemoveView();
 
         var positions = placementStrategy.GetPositions(
-            Instance.IndexCoords, 
+            Instance.IndexCoords,
             unitInstance.CurrentUnitCount
             );
 
         viewObjects = battleEntityManager.GetFreeEntities(
-            definition, 
+            definition,
             positions.Count()
             );
 
         foreach (var (entity, index) in viewObjects.Select((value, i) => (value, i)))
         {
-            Debug.Log($"value: {entity}, index: {index}, position: {positions[index]}");
-            
             var position = positions[index];
             boardEntityRegistry.Register(entity, Position, position);
 
             entity.SetTeam(Team.Player);
             entity.transform.position = positions[index];
             entity.gameObject.SetActive(true);
+
+            unitInstance.AddLinkedEntity(entity);
+            ApplyCurrentStatsToEntity(entity, unitInstance);
         }
+    }
+
+
+    private void ApplyCurrentStatsToEntity(BattleEntity entity, UnitCardInstance card)
+    {
+        var attack = entity.Context.AttackData;
+        attack.attackDamage = card.CurrentStrength;
+        entity.Context.SetAttackData(attack);
     }
 }

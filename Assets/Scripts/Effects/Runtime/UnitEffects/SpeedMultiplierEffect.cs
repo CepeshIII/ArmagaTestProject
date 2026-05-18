@@ -1,16 +1,26 @@
 using System;
 
+
 [EffectType(UnitEffectType.SpeedMultiplierEffect)]
 public class SpeedMultiplierEffect : IUnitEffect
 {
-    public void Apply(CardInstance target, float effectValue)
+    public void Apply(CardInstance target, float value)
     {
-        throw new NotImplementedException();
+        if (target is UnitCardInstance unitCardInstance)
+        {
+            unitCardInstance.PropagateStatChange(
+                EffectStatTarget.Speed,
+                value,
+                EffectStackType.Multiplicative);
+        }
     }
+
 
     public string GetDescription()
     {
-        throw new NotImplementedException();
+        return "SpeedMultiplierEffect";
     }
-}
 
+
+    public EffectStatTarget GetStatTarget() => EffectStatTarget.Speed;
+}

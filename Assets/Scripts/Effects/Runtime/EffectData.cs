@@ -20,6 +20,8 @@ public class EffectData
     public EffectFilter filter;
 
     public EffectStackType stackType;
+
+    public EffectStatTarget statTarget;
 }
 
 
